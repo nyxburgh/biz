@@ -1,0 +1,20 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Subdomain routing: kodai.bizguide.in → cities/kodaikanal/index.php ──
+# (Uncomment on production with subdomain setup)
+# RewriteCond %{HTTP_HOST} ^([^.]+)\.bizguide\.in$ [NC]
+# RewriteRule ^ cities/%1/index.php [QSA,L]
+
+# ── Subfolder routing (local + production subfolder) ─────────
+# Admin
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^admin(/.*)?$ admin/index.php [QSA,L]
+
+# City subfolder: /cities/kodaikanal/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^cities/([^/]+)(/.*)?$ cities/$1/index.php [QSA,L]
+
+# Main landing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]

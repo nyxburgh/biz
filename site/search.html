@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Businesses — BizGuide Kodaikanal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --sand:#f5ede0; --sand-light:#faf6f0; --sand-dark:#e8d9c4;
+  --purple:#7c3aed; --purple-light:#ede9fe; --purple-muted:#a78bfa;
+  --maroon:#9b2335; --maroon-light:#fde8eb;
+  --green:#3a7c5a; --green-light:#e6f4ec;
+  --teal:#2a7d8c; --teal-light:#e0f5f8;
+  --amber:#b45309; --amber-light:#fef3c7;
+  --text-dark:#1a1018; --text-mid:#4a3f52; --text-muted:#8b7d96;
+  --border:#e2d5f0; --white:#ffffff;
+  --header-h:68px; --footer-h:64px;
+  --radius:14px; --radius-sm:8px;
+  --shadow:0 4px 20px rgba(124,58,237,0.08);
+  --shadow-hover:0 12px 40px rgba(124,58,237,0.18);
+  --transition:all 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--sand-light);color:var(--text-dark);font-size:15px;line-height:1.6;padding-top:var(--header-h);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── HEADER ── */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--header-h);background:rgba(250,246,240,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box;transition:box-shadow 0.2s}
+.site-header.scrolled{box-shadow:0 2px 24px rgba(124,58,237,0.1)}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--purple)}
+.header-logo .city-tag{font-size:0.7rem;font-weight:600;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:40px;margin-left:4px}
+.header-nav a{padding:7px 14px;border-radius:40px;font-size:0.88rem;font-weight:500;color:var(--text-mid);transition:var(--transition)}
+.header-nav a:hover{background:var(--purple-light);color:var(--purple)}
+.header-nav{display:flex;align-items:center;gap:4px}
+.btn-login{padding:8px 20px;border-radius:40px;font-size:0.88rem;font-weight:600;border:1.5px solid var(--purple);color:var(--purple);background:transparent;cursor:pointer;transition:var(--transition)}
+.btn-login:hover{background:var(--purple);color:#fff}
+.btn-post{padding:8px 20px;border-radius:40px;font-size:0.88rem;font-weight:600;background:var(--purple);color:#fff;border:none;cursor:pointer;transition:var(--transition)}
+.btn-post:hover{background:#6d28d9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,0.35)}
+.header-actions{display:flex;align-items:center;gap:10px}
+
+/* ── SEARCH BAR SECTION ── */
+.search-hero{background:linear-gradient(135deg,#2d1b69 0%,#7c3aed 60%,#3a7c5a 100%);padding:28px 24px 0;position:relative;overflow:hidden}
+.search-hero-inner{max-width:860px;margin:0 auto;text-align:center;padding-bottom:50px}
+.search-hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.3rem,2.8vw,2rem);color:#fff;margin-bottom:6px}
+.search-hero p{color:rgba(255,255,255,0.72);font-size:0.88rem;margin-bottom:20px}
+.search-bar-wrap{background:#fff;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;box-shadow:0 8px 40px rgba(0,0,0,0.2);flex-wrap:wrap}
+.search-bar-wrap input{flex:1;min-width:160px;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:var(--text-dark);padding:6px 10px;background:var(--sand-light);border-radius:8px}
+.search-bar-wrap select{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text-mid);padding:6px 10px;background:var(--sand-light);border-radius:8px;cursor:pointer}
+.btn-search{padding:10px 24px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-search:hover{background:#6d28d9;transform:translateY(-1px)}
+
+/* ── FILTER CHIPS ── */
+.filter-row{background:#fff;border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;position:sticky;top:var(--header-h);z-index:80}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:40px;font-size:0.8rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--text-mid);cursor:pointer;transition:var(--transition);white-space:nowrap;flex-shrink:0}
+.filter-chip:hover{border-color:var(--purple-muted);background:var(--purple-light);color:var(--purple)}
+.filter-chip.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.filter-divider{width:1px;height:24px;background:var(--border);flex-shrink:0}
+
+/* ── MAIN LAYOUT ── */
+.search-wrap{max-width:1200px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:260px 1fr;gap:20px}
+
+/* ── SIDEBAR FILTERS ── */
+.filter-panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;height:fit-content;position:sticky;top:calc(var(--header-h) + 50px)}
+.filter-panel h3{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.filter-panel h3 button{font-size:0.72rem;color:var(--purple);font-weight:600;background:none;border:none;cursor:pointer}
+.filter-group{margin-bottom:18px}
+.filter-group label.group-label{font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:10px}
+.filter-check{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;font-size:0.85rem;color:var(--text-mid)}
+.filter-check input{accent-color:var(--purple);width:15px;height:15px;cursor:pointer}
+.filter-check span{flex:1}
+.filter-check .count{font-size:0.72rem;color:var(--text-muted);background:var(--sand-dark);padding:1px 6px;border-radius:20px}
+.filter-divider-h{height:1px;background:var(--border);margin:14px 0}
+.range-label{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);margin-bottom:6px}
+input[type=range]{width:100%;accent-color:var(--purple)}
+.btn-apply{width:100%;padding:11px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--transition);margin-top:6px}
+.btn-apply:hover{background:#6d28d9}
+
+/* ── RESULTS ── */
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.results-header h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text-dark)}
+.results-header span{font-size:0.82rem;color:var(--text-muted)}
+.sort-select{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.82rem;color:var(--text-mid);background:#fff;cursor:pointer;outline:none}
+
+.results-grid{display:flex;flex-direction:column;gap:14px}
+
+/* ── BUSINESS LIST CARD ── */
+.biz-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;overflow:hidden;transition:var(--transition);border:1.5px solid transparent;cursor:pointer}
+.biz-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--purple-muted)}
+.biz-card-thumb{width:140px;flex-shrink:0;background:linear-gradient(135deg,var(--sand-dark),var(--sand));display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative}
+.biz-card-badge{position:absolute;top:8px;left:8px;padding:2px 8px;border-radius:4px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.plan-pro{background:var(--purple-light);color:var(--purple)}
+.plan-premium{background:var(--amber-light);color:var(--amber)}
+.plan-basic{background:var(--green-light);color:var(--green)}
+.biz-card-body{flex:1;padding:16px;min-width:0}
+.biz-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.biz-card-top h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text-dark)}
+.biz-rating{display:flex;align-items:center;gap:4px;font-size:0.8rem;font-weight:700;color:var(--amber);flex-shrink:0}
+.biz-rating span{color:var(--text-muted);font-weight:400;font-size:0.72rem}
+.biz-category{font-size:0.75rem;color:var(--purple);font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.biz-desc{font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.biz-card-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.biz-meta-item{display:flex;align-items:center;gap:4px;font-size:0.76rem;color:var(--text-mid)}
+.biz-card-actions{display:flex;gap:8px;align-items:center;padding:16px 16px 16px 0}
+.btn-call{padding:8px 16px;background:var(--purple);color:#fff;border:none;border-radius:40px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-call:hover{background:#6d28d9}
+.btn-wa{padding:8px 12px;background:#e7fdf0;color:#25d366;border:none;border-radius:40px;font-size:1rem;cursor:pointer;transition:var(--transition)}
+.btn-wa:hover{background:#25d366;color:#fff}
+.btn-view{padding:8px 12px;background:var(--sand-light);color:var(--text-mid);border:1.5px solid var(--border);border-radius:40px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:var(--transition)}
+.btn-view:hover{border-color:var(--purple);color:var(--purple)}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:24px}
+.page-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:600;color:var(--text-mid);cursor:pointer;transition:var(--transition)}
+.page-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-light)}
+.page-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+/* ── MOBILE BOTTOM BAR ── */
+.mobile-bottom-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;height:var(--footer-h);background:rgba(250,246,240,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center;justify-content:space-around;padding:0 10px}
+.mb-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:12px;cursor:pointer;transition:var(--transition);background:none;border:none;color:var(--text-muted);font-family:inherit}
+.mb-btn span{font-size:0.6rem;font-weight:600;letter-spacing:0.03em;text-transform:uppercase}
+.mb-btn i{font-size:1.3rem}
+.mb-btn.active,.mb-btn:hover{color:var(--purple)}
+.mb-btn-menu{width:52px;height:52px;border-radius:50%;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-top:-18px;box-shadow:0 4px 20px rgba(124,58,237,0.4);border:3px solid rgba(250,246,240,0.97)}
+
+@media(max-width:900px){
+  .search-wrap{grid-template-columns:1fr}
+  .filter-panel{display:none}
+  .biz-card-thumb{width:100px}
+  .biz-card-actions{flex-direction:column;padding:12px 12px 12px 0;gap:6px}
+  body{padding-bottom:var(--footer-h)}
+  .mobile-bottom-bar{display:flex}
+  .header-nav,.header-actions{display:none}
+  .site-header{justify-content:center}
+}
+@media(max-width:560px){
+  .biz-card{flex-direction:column}
+  .biz-card-thumb{width:100%;height:120px}
+  .biz-card-actions{flex-direction:row;padding:0 14px 14px}
+  .search-bar-wrap{flex-direction:column;gap:8px}
+  .search-bar-wrap input,.search-bar-wrap select,.btn-search{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-logo">
+    <i class="bi bi-grid-3x3-gap-fill"></i> BizGuide
+    <span class="city-tag">Kodaikanal</span>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html">Home</a>
+    <a href="search.html" style="color:var(--purple);background:var(--purple-light);border-radius:40px;padding:7px 14px">Search</a>
+    <a href="#">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-login">Login</button>
+    <button class="btn-post" onclick="location.href='post-ad.html'"><i class="bi bi-plus-lg"></i> Post Ad</button>
+  </div>
+</header>
+
+<!-- Search Hero -->
+<section class="search-hero">
+  <div class="search-hero-inner">
+    <h1>Find Businesses in Kodaikanal</h1>
+    <p>Search 200+ verified local businesses, shops & service providers</p>
+    <div class="search-bar-wrap">
+      <i class="bi bi-search" style="color:var(--text-muted);font-size:1.1rem;flex-shrink:0"></i>
+      <input type="text" id="searchInput" placeholder="Business name, keyword..." value="restaurants">
+      <select id="catSelect">
+        <option>All Categories</option>
+        <option>Restaurants</option>
+        <option>Hotels & Stays</option>
+        <option>Shopping</option>
+        <option>Health & Clinic</option>
+        <option>Services</option>
+        <option>Education</option>
+        <option>Automobile</option>
+      </select>
+      <button class="btn-search"><i class="bi bi-search"></i> Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Chips -->
+<div class="filter-row">
+  <div class="filter-chip active" onclick="toggleChip(this)"><i class="bi bi-grid"></i> All</div>
+  <div class="filter-chip" onclick="toggleChip(this)"><i class="bi bi-star-fill" style="color:var(--amber)"></i> Top Rated</div>
+  <div class="filter-chip" onclick="toggleChip(this)">PRO</div>
+  <div class="filter-chip" onclick="toggleChip(this)">Premium</div>
+  <div class="filter-chip" onclick="toggleChip(this)">Basic</div>
+  <div class="filter-divider"></div>
+  <div class="filter-chip" onclick="toggleChip(this)"><i class="bi bi-whatsapp"></i> WhatsApp</div>
+  <div class="filter-chip" onclick="toggleChip(this)"><i class="bi bi-globe"></i> Has Website</div>
+  <div class="filter-chip" onclick="toggleChip(this)"><i class="bi bi-camera"></i> With Photos</div>
+</div>
+
+<div class="search-wrap">
+  <!-- Sidebar Filter Panel -->
+  <aside class="filter-panel">
+    <h3>Filters <button onclick="clearFilters()">Clear all</button></h3>
+
+    <div class="filter-group">
+      <label class="group-label">Category</label>
+      <label class="filter-check"><input type="checkbox" checked> <span>Restaurants</span> <span class="count">48</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Hotels & Stays</span> <span class="count">32</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Shopping</span> <span class="count">61</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Health & Clinic</span> <span class="count">27</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Services</span> <span class="count">54</span></label>
+    </div>
+
+    <div class="filter-divider-h"></div>
+
+    <div class="filter-group">
+      <label class="group-label">Plan</label>
+      <label class="filter-check"><input type="checkbox" checked> <span>PRO</span> <span class="count">18</span></label>
+      <label class="filter-check"><input type="checkbox" checked> <span>Premium</span> <span class="count">34</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Basic</span> <span class="count">67</span></label>
+    </div>
+
+    <div class="filter-divider-h"></div>
+
+    <div class="filter-group">
+      <label class="group-label">Rating</label>
+      <label class="filter-check"><input type="checkbox"> <span>⭐ 4.5 & above</span></label>
+      <label class="filter-check"><input type="checkbox" checked> <span>⭐ 4.0 & above</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>⭐ 3.5 & above</span></label>
+    </div>
+
+    <div class="filter-divider-h"></div>
+
+    <div class="filter-group">
+      <label class="group-label">Features</label>
+      <label class="filter-check"><input type="checkbox"> <span>WhatsApp</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Website</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>Photos</span></label>
+      <label class="filter-check"><input type="checkbox"> <span>YouTube Video</span></label>
+    </div>
+
+    <button class="btn-apply">Apply Filters</button>
+  </aside>
+
+  <!-- Results -->
+  <div>
+    <div class="results-header">
+      <div>
+        <h2>Search Results</h2>
+        <span id="resultCount">Showing 8 of 48 results for "restaurants"</span>
+      </div>
+      <select class="sort-select" onchange="sortResults(this.value)">
+        <option value="relevance">Relevance</option>
+        <option value="rating">Top Rated</option>
+        <option value="newest">Newest</option>
+        <option value="plan">Plan (Pro first)</option>
+      </select>
+    </div>
+
+    <div class="results-grid" id="resultsGrid">
+      <!-- Cards injected by JS -->
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">…</button>
+      <button class="page-btn">8</button>
+      <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<nav class="mobile-bottom-bar">
+  <button class="mb-btn" onclick="location.href='index.html'"><i class="bi bi-house-fill"></i><span>Home</span></button>
+  <button class="mb-btn"><div class="mb-btn-menu"><i class="bi bi-grid-3x3"></i></div></button>
+  <button class="mb-btn"><i class="bi bi-person-circle"></i><span>Login</span></button>
+</nav>
+
+<script>
+const businesses = [
+  { emoji:'🍽️', name:'Silver Oak Restaurant', cat:'Restaurant', plan:'pro',     rating:4.8, reviews:213, desc:'Award-winning multi-cuisine restaurant with scenic lake views. Known for traditional Tamil Nadu thali and Continental specials.',     addr:'Lake Road, Kodaikanal', phone:'+91 98765 43210', wa:true,  website:true  },
+  { emoji:'🏨', name:'Cloud Valley Resort',    cat:'Hotel',      plan:'premium', rating:4.6, reviews:184, desc:'Boutique hillside resort with misty valley views, cozy rooms and exceptional hospitality. Perfect for couples and families.',        addr:"Coaker's Walk Area",   phone:'+91 97654 32109', wa:true,  website:true  },
+  { emoji:'🌿', name:'GreenHeal Ayurveda',     cat:'Health',     plan:'premium', rating:4.9, reviews:96,  desc:'Certified Ayurvedic treatments, Panchakarma therapy and herbal wellness consultations by experienced doctors.',                      addr:'Club Road, Kodaikanal',phone:'+91 96543 21098', wa:false, website:false },
+  { emoji:'🍰', name:'Kodai Bakehouse',        cat:'Bakery',     plan:'basic',   rating:4.5, reviews:78,  desc:'Freshly baked artisan breads, cakes, cookies and pastries daily. Vegan options available. Best banana bread in the hills!',         addr:'Market Street',        phone:'+91 95432 10987', wa:true,  website:false },
+  { emoji:'🎬', name:'Mountain View Tours',    cat:'Tourism',    plan:'pro',     rating:4.7, reviews:312, desc:'Guided trekking, sightseeing tours and comfortable transport packages. 10+ years serving Kodaikanal visitors with care.',            addr:'Bus Stand Road',       phone:'+91 94321 09876', wa:true,  website:true  },
+  { emoji:'💇', name:'Glow & Groom Salon',     cat:'Beauty',     plan:'premium', rating:4.4, reviews:62,  desc:'Premium unisex salon offering hair styling, spa treatments, skin care and grooming services with premium products.',                  addr:'Main Market Street',   phone:'+91 93210 98765', wa:true,  website:false },
+  { emoji:'🔧', name:'Kodai Auto Works',       cat:'Automobile', plan:'basic',   rating:4.2, reviews:43,  desc:'Trusted multi-brand vehicle service centre. Bike & car repairs, oil change, tyre service and AC repairs at fair prices.',           addr:'Bus Stand Road',       phone:'+91 92109 87654', wa:false, website:false },
+  { emoji:'📚', name:'Hilltop Tutorials',      cat:'Education',  plan:'basic',   rating:4.6, reviews:55,  desc:'Home tuition and coaching for students from grade 6 to 12. Maths, Science, English. Weekend batches available.',                    addr:'Bryant Park Road',     phone:'+91 91098 76543', wa:true,  website:false },
+];
+
+const planLabel = { pro:'PRO', premium:'Premium', basic:'Basic' };
+
+function renderCards(data) {
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = data.map(b => `
+    <div class="biz-card">
+      <div class="biz-card-thumb">
+        ${b.emoji}
+        <span class="biz-card-badge plan-${b.plan}">${planLabel[b.plan]}</span>
+      </div>
+      <div class="biz-card-body">
+        <div class="biz-card-top">
+          <h3>${b.name}</h3>
+          <div class="biz-rating"><i class="bi bi-star-fill"></i> ${b.rating} <span>(${b.reviews})</span></div>
+        </div>
+        <div class="biz-category"><i class="bi bi-tag-fill"></i> ${b.cat}</div>
+        <p class="biz-desc">${b.desc}</p>
+        <div class="biz-card-meta">
+          <span class="biz-meta-item"><i class="bi bi-geo-alt-fill" style="color:var(--maroon)"></i> ${b.addr}</span>
+          ${b.website ? '<span class="biz-meta-item"><i class="bi bi-globe" style="color:var(--teal)"></i> Website</span>' : ''}
+          ${b.wa ? '<span class="biz-meta-item"><i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp</span>' : ''}
+        </div>
+      </div>
+      <div class="biz-card-actions">
+        <button class="btn-call" onclick="event.stopPropagation()"><i class="bi bi-telephone-fill"></i> Call</button>
+        ${b.wa ? '<button class="btn-wa" title="WhatsApp"><i class="bi bi-whatsapp"></i></button>' : ''}
+        <button class="btn-view">View →</button>
+      </div>
+    </div>`).join('');
+}
+
+function sortResults(by) {
+  let sorted = [...businesses];
+  if (by === 'rating') sorted.sort((a,b) => b.rating - a.rating);
+  else if (by === 'plan') sorted.sort((a,b) => ['pro','premium','basic'].indexOf(a.plan) - ['pro','premium','basic'].indexOf(b.plan));
+  else if (by === 'newest') sorted.reverse();
+  renderCards(sorted);
+}
+
+function toggleChip(el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function clearFilters() {
+  document.querySelectorAll('.filter-check input').forEach(i => i.checked = false);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Pagination buttons
+document.querySelectorAll('.page-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+    if (!this.querySelector('i')) this.classList.add('active');
+  });
+});
+
+renderCards(businesses);
+</script>
+</body>
+</html>

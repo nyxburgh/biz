@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizGuide — Kodaikanal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --sand: #f5ede0;
+  --sand-light: #faf6f0;
+  --sand-dark: #e8d9c4;
+  --purple: #7c3aed;
+  --purple-light: #ede9fe;
+  --purple-muted: #a78bfa;
+  --maroon: #9b2335;
+  --maroon-light: #fde8eb;
+  --green: #3a7c5a;
+  --green-light: #e6f4ec;
+  --teal: #2a7d8c;
+  --teal-light: #e0f5f8;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --text-dark: #1a1018;
+  --text-mid: #4a3f52;
+  --text-muted: #8b7d96;
+  --border: #e2d5f0;
+  --white: #ffffff;
+  --header-h: 68px;
+  --footer-h: 64px;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 20px rgba(124,58,237,0.08);
+  --shadow-hover: 0 12px 40px rgba(124,58,237,0.18);
+  --transition: all 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--sand-light);
+  color: var(--text-dark);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-top: var(--header-h);
+  padding-bottom: 0;
+  overflow-x: hidden;
+  width: 100%;
+  min-width: 0;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ═══════════════ HEADER ═══════════════ */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  height: var(--header-h);
+  width: 100%;
+  background: rgba(250,246,240,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  transition: box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.site-header.scrolled { box-shadow: 0 2px 24px rgba(124,58,237,0.1); }
+
+.header-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
+  color: var(--purple);
+}
+.header-logo .city-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); display: inline-block; margin-left: 2px;
+}
+.header-logo span.city-name { color: var(--green); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-top: -4px; }
+
+.header-nav {
+  display: flex; align-items: center; gap: 6px;
+}
+.header-nav a {
+  padding: 7px 14px; border-radius: 40px; font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+  transition: var(--transition);
+}
+.header-nav a:hover { background: var(--purple-light); color: var(--purple); }
+
+.header-actions {
+  display: flex; align-items: center; gap: 10px;
+}
+.btn-login {
+  padding: 8px 20px; border-radius: 40px; font-size: 0.88rem; font-weight: 600;
+  border: 1.5px solid var(--purple); color: var(--purple); background: transparent;
+  cursor: pointer; transition: var(--transition);
+}
+.btn-login:hover { background: var(--purple); color: #fff; }
+.btn-post {
+  padding: 8px 20px; border-radius: 40px; font-size: 0.88rem; font-weight: 600;
+  background: var(--purple); color: #fff; border: none; cursor: pointer; transition: var(--transition);
+}
+.btn-post:hover { background: #6d28d9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.35); }
+
+/* mobile header — hidden on desktop */
+.mobile-logo-center { display: none; }
+
+/* ═══════════════ HERO ═══════════════ */
+.hero {
+  background: linear-gradient(135deg, #2d1b69 0%, #7c3aed 55%, #3a7c5a 100%);
+  padding: 28px 24px 26px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+#heroCanvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+.hero-inner {
+  position: relative; z-index: 1; max-width: 860px; margin: 0 auto; text-align: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 40px; padding: 4px 13px; font-size: 0.75rem; font-weight: 600;
+  color: rgba(255,255,255,0.9); margin-bottom: 12px; backdrop-filter: blur(8px);
+  animation: fadeSlideDown 0.7s ease both;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+  color: #fff; line-height: 1.15; margin-bottom: 8px;
+  animation: fadeSlideDown 0.7s 0.1s ease both;
+}
+.hero h1 em { font-style: normal; color: #a5f3a0; }
+.hero p {
+  color: rgba(255,255,255,0.78); font-size: 0.92rem; max-width: 520px; margin: 0 auto 20px;
+  animation: fadeSlideDown 0.7s 0.2s ease both;
+}
+.hero-search {
+  display: flex; max-width: 520px; margin: 0 auto;
+  background: #fff; border-radius: 50px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  animation: fadeSlideDown 0.7s 0.3s ease both;
+}
+.hero-search input {
+  flex: 1; border: none; outline: none; padding: 12px 20px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; background: transparent; color: var(--text-dark);
+}
+.hero-search button {
+  padding: 9px 20px; background: var(--purple); border: none; color: #fff;
+  font-size: 1rem; cursor: pointer; border-radius: 0 50px 50px 0; transition: var(--transition);
+}
+.hero-search button:hover { background: #6d28d9; }
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════ LAYOUT ═══════════════ */
+.main-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+}
+.main-content { min-width: 0; }
+.sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+/* ═══════════════ CATEGORIES ═══════════════ */
+.section-title {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem;
+  color: var(--text-dark); margin-bottom: 12px; margin-top: 18px; display: flex; align-items: center; gap: 8px;
+}
+.section-title:first-child { margin-top: 0; }
+.section-title::after {
+  content: ''; flex: 1; height: 1.5px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+
+.cat-card {
+  background: #fff; border-radius: var(--radius); padding: 18px 14px;
+  text-align: center; cursor: pointer; transition: var(--transition);
+  border: 1.5px solid transparent; box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
+}
+.cat-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--purple-light), transparent);
+  opacity: 0; transition: opacity 0.28s;
+}
+.cat-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: var(--shadow-hover); border-color: var(--purple-muted); }
+.cat-card:hover::before { opacity: 1; }
+.cat-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin: 0 auto 10px; position: relative;
+  transition: var(--transition);
+}
+.cat-card:hover .cat-icon { transform: scale(1.12) rotate(-3deg); }
+.cat-card h4 { font-size: 0.82rem; font-weight: 600; color: var(--text-mid); position: relative; }
+.cat-card span { font-size: 0.72rem; color: var(--text-muted); position: relative; }
+
+/* icon colors */
+.ic-purple { background: var(--purple-light); color: var(--purple); }
+.ic-green  { background: var(--green-light);  color: var(--green); }
+.ic-maroon { background: var(--maroon-light); color: var(--maroon); }
+.ic-teal   { background: var(--teal-light);   color: var(--teal); }
+.ic-amber  { background: var(--amber-light);  color: var(--amber); }
+
+/* ═══════════════ AD CARDS ═══════════════ */
+.ads-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
+
+.ad-card {
+  background: #fff; border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); transition: var(--transition);
+  border: 1.5px solid transparent; cursor: pointer;
+}
+.ad-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--purple-muted); }
+
+.ad-card-img { width: 100%; height: 140px; object-fit: cover; background: var(--sand-dark); position: relative; }
+.ad-card-img-placeholder {
+  width: 100%; height: 140px;
+  background: linear-gradient(135deg, var(--sand-dark), var(--sand));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; color: var(--text-muted);
+}
+.ad-card-body { padding: 14px; }
+.ad-card-plan {
+  display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;
+}
+.plan-pro     { background: var(--purple-light); color: var(--purple); }
+.plan-premium { background: var(--amber-light);  color: var(--amber); }
+.plan-basic   { background: var(--green-light);  color: var(--green); }
+.plan-free    { background: var(--sand-dark);    color: var(--text-muted); }
+
+.ad-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--text-dark); margin-bottom: 4px; }
+.ad-card p  { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ad-card-meta { display: flex; align-items: center; justify-content: space-between; }
+.ad-card-rating { display: flex; align-items: center; gap: 3px; font-size: 0.78rem; color: var(--amber); font-weight: 600; }
+.ad-card-phone { display: flex; align-items: center; gap: 4px; font-size: 0.78rem; color: var(--purple); font-weight: 500; }
+
+/* ═══════════════ PREMIUM BANNER SLIDER ═══════════════ */
+.banner-slider-wrap {
+  position: relative; margin-bottom: 18px; overflow: hidden; border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.banner-slider-track {
+  display: flex; transition: transform 0.55s cubic-bezier(0.77,0,0.18,1);
+  will-change: transform;
+}
+.promo-banner {
+  min-width: 100%; width: 100%; border-radius: 0;
+  display: flex; align-items: stretch; min-height: 108px;
+  cursor: pointer; transition: none;
+  border: none; position: relative; flex-shrink: 0;
+  box-shadow: none;
+}
+.promo-banner:hover { transform: none; box-shadow: none; border-color: transparent; }
+
+.promo-banner-accent {
+  width: 7px; flex-shrink: 0;
+}
+.promo-banner.banner-maroon .promo-banner-accent { background: linear-gradient(180deg, var(--maroon), #c0392b); }
+.promo-banner.banner-teal   .promo-banner-accent { background: linear-gradient(180deg, var(--teal), #1a6e7a); }
+.promo-banner.banner-amber  .promo-banner-accent { background: linear-gradient(180deg, var(--amber), #92400e); }
+
+.promo-banner-img {
+  width: 130px; flex-shrink: 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+}
+.promo-banner.banner-maroon .promo-banner-img { background: linear-gradient(135deg, #fde8eb, #f9c6cc); }
+.promo-banner.banner-teal   .promo-banner-img { background: linear-gradient(135deg, var(--teal-light), #b8eaf0); }
+.promo-banner.banner-amber  .promo-banner-img { background: linear-gradient(135deg, var(--amber-light), #fde68a); }
+
+.promo-banner-body {
+  flex: 1; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center;
+  background: #fff; gap: 3px;
+}
+.promo-banner-top { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.promo-banner-top h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.98rem; color: var(--text-dark); }
+.promo-banner p { font-size: 0.79rem; color: var(--text-muted); line-height: 1.45; }
+.promo-banner-meta { display: flex; align-items: center; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
+.promo-banner-meta span { font-size: 0.74rem; font-weight: 500; color: var(--text-mid); display: flex; align-items: center; gap: 4px; }
+
+.promo-banner-cta {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 14px 18px; gap: 8px; background: var(--sand-light);
+}
+.promo-cta-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 40px; font-size: 0.78rem; font-weight: 700;
+  white-space: nowrap; transition: var(--transition);
+}
+.banner-maroon .promo-cta-btn { background: var(--maroon); color: #fff; }
+.banner-maroon .promo-cta-btn:hover { background: #7f1d2c; }
+.banner-teal   .promo-cta-btn { background: var(--teal); color: #fff; }
+.banner-teal   .promo-cta-btn:hover { background: #1f636f; }
+.banner-amber  .promo-cta-btn { background: var(--amber); color: #fff; }
+.banner-amber  .promo-cta-btn:hover { background: #92400e; }
+
+.promo-cta-rating { display: flex; align-items: center; gap: 3px; font-size: 0.75rem; color: var(--amber); font-weight: 600; }
+
+/* dots + arrows */
+.banner-controls {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px; z-index: 2;
+}
+.banner-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(124,58,237,0.25);
+  cursor: pointer; transition: all 0.25s; border: none; padding: 0;
+}
+.banner-dot.active { background: var(--purple); width: 20px; border-radius: 4px; }
+
+.banner-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.85);
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; color: var(--purple); box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transition: var(--transition); backdrop-filter: blur(4px);
+}
+.banner-arrow:hover { background: var(--purple); color: #fff; }
+.banner-arrow.prev { left: 10px; }
+.banner-arrow.next { right: 10px; }
+
+@media (max-width: 600px) {
+  .promo-banner-img { width: 76px; font-size: 1.9rem; }
+  .promo-banner-cta { padding: 10px 12px; }
+  .promo-banner-top h3 { font-size: 0.85rem; }
+}
+
+/* ═══════════════ SLIDER ═══════════════ */
+.slider-wrap {
+  margin-bottom: 0;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+.slider-track {
+  display: flex; gap: 14px;
+  overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; padding-bottom: 4px;
+  width: 100%;
+}
+.slider-track::-webkit-scrollbar { display: none; }
+.slider-card {
+  flex: 0 0 220px; background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden; cursor: pointer; transition: var(--transition);
+  border: 1.5px solid transparent;
+}
+.slider-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-hover); border-color: var(--purple-muted); }
+.slider-img {
+  height: 110px; background: linear-gradient(135deg, var(--sand-dark), var(--sand));
+  display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--text-muted);
+}
+.slider-body { padding: 12px; }
+.slider-body h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+.slider-body p { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ═══════════════ RIGHT SIDEBAR ═══════════════ */
+
+/* Free user scroll */
+.free-scroll-box {
+  background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.free-scroll-head {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.free-scroll-head h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--text-dark); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(58,124,90,0.5); } 50% { box-shadow: 0 0 0 5px rgba(58,124,90,0); } }
+
+.free-scroll-list { height: 320px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.free-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-bottom: 1px solid var(--sand-dark); transition: var(--transition); cursor: pointer;
+}
+.free-item:hover { background: var(--purple-light); }
+.free-avatar {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--purple-light);
+  display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--purple); flex-shrink: 0;
+}
+.free-info h5 { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); margin-bottom: 1px; }
+.free-info p  { font-size: 0.72rem; color: var(--text-muted); }
+
+/* Premium banner */
+.premium-banner {
+  border-radius: var(--radius); overflow: hidden; cursor: pointer;
+  background: linear-gradient(135deg, var(--purple), #9333ea);
+  padding: 20px 16px; text-align: center; transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+.premium-banner:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(124,58,237,0.3); }
+.premium-banner h4 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: #fff; margin-bottom: 6px; }
+.premium-banner p { font-size: 0.78rem; color: rgba(255,255,255,0.75); margin-bottom: 14px; }
+.btn-upgrade {
+  display: inline-block; padding: 8px 20px; background: #fff; color: var(--purple);
+  border-radius: 40px; font-size: 0.82rem; font-weight: 700; transition: var(--transition);
+}
+.btn-upgrade:hover { background: var(--sand); transform: scale(1.04); }
+
+/* Pro ad card in sidebar */
+.pro-ad-card {
+  background: #fff; border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; border: 1.5px solid transparent;
+}
+.pro-ad-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--amber); }
+.pro-thumb {
+  height: 100px; background: linear-gradient(135deg, #1a1018 0%, var(--maroon) 100%);
+  display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: rgba(255,255,255,0.5);
+  position: relative;
+}
+.pro-yt-badge {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.6); color: #fff; border-radius: 4px; padding: 2px 6px; font-size: 0.65rem; font-weight: 700;
+  display: flex; align-items: center; gap: 4px;
+}
+.pro-ad-body { padding: 12px 14px; }
+.pro-ad-body h4 { font-weight: 700; font-size: 0.88rem; color: var(--text-dark); margin-bottom: 3px; }
+.pro-ad-body p { font-size: 0.75rem; color: var(--text-muted); }
+.pro-services { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.pro-services span {
+  background: var(--purple-light); color: var(--purple); font-size: 0.68rem; font-weight: 600;
+  padding: 2px 8px; border-radius: 40px;
+}
+
+/* ═══════════════ FOOTER ═══════════════ */
+.site-footer {
+  background: linear-gradient(135deg, #1a1018, #2d1b69);
+  color: rgba(255,255,255,0.75); padding: 32px 24px 24px;
+  margin-top: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+.footer-brand h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
+.footer-brand p { font-size: 0.82rem; line-height: 1.7; max-width: 240px; }
+.footer-col h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: #fff; margin-bottom: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 7px; }
+.footer-col ul li a { font-size: 0.82rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--purple-muted); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+.footer-bottom p { font-size: 0.78rem; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social a {
+  width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #fff; transition: var(--transition);
+}
+.footer-social a:hover { background: var(--purple); transform: translateY(-2px); }
+
+/* ═══════════════ MOBILE BOTTOM BAR ═══════════════ */
+.mobile-bottom-bar {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 950;
+  height: var(--footer-h); background: rgba(250,246,240,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(124,58,237,0.08);
+  align-items: center; justify-content: space-around; padding: 0 10px;
+}
+.mb-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 14px; border-radius: 12px; cursor: pointer; transition: var(--transition);
+  background: none; border: none; color: var(--text-muted); font-family: inherit;
+}
+.mb-btn span { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
+.mb-btn i { font-size: 1.3rem; }
+.mb-btn.active, .mb-btn:hover { color: var(--purple); }
+.mb-btn-menu {
+  width: 52px; height: 52px; border-radius: 50%; background: var(--purple);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-top: -18px; box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+  transition: var(--transition); cursor: pointer; flex-shrink: 0;
+  border: 3px solid rgba(250,246,240,0.97);
+}
+.mb-btn-menu:hover, .mb-btn-menu.open { background: #6d28d9; transform: scale(1.06); }
+
+/* ═══════════════ DRAWER ═══════════════ */
+.drawer-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(26,16,24,0.5); backdrop-filter: blur(4px);
+}
+.drawer-overlay.open { display: block; animation: fadeIn 0.2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.drawer {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 1010;
+  background: var(--white); border-radius: 24px 24px 0 0;
+  padding: 12px 20px 80px;
+  transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.34,1.1,0.64,1);
+  max-height: 72vh; overflow-y: auto;
+}
+.drawer.open { transform: translateY(0); }
+.drawer-pill {
+  width: 44px; height: 4px; border-radius: 4px; background: var(--border);
+  margin: 0 auto 18px;
+}
+.drawer-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text-dark); margin-bottom: 16px; }
+.drawer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+.drawer-item {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 14px 8px; border-radius: var(--radius-sm); background: var(--sand-light);
+  cursor: pointer; transition: var(--transition); border: 1.5px solid transparent;
+}
+.drawer-item:hover, .drawer-item:active { background: var(--purple-light); border-color: var(--purple-muted); }
+.drawer-item i { font-size: 1.4rem; color: var(--purple); }
+.drawer-item span { font-size: 0.68rem; font-weight: 600; color: var(--text-mid); text-align: center; }
+
+.drawer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.drawer-btn {
+  padding: 13px; border-radius: var(--radius-sm); text-align: center; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer; transition: var(--transition);
+}
+.drawer-btn-primary { background: var(--purple); color: #fff; }
+.drawer-btn-primary:hover { background: #6d28d9; }
+.drawer-btn-outline { border: 1.5px solid var(--purple); color: var(--purple); background: transparent; }
+.drawer-btn-outline:hover { background: var(--purple-light); }
+
+/* ═══ MOBILE SIDEBAR AD ROW — hidden on desktop ═══ */
+.mobile-sidebar-ads {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .main-grid { grid-template-columns: minmax(0, 1fr) 240px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+
+@media (max-width: 860px) {
+  /* Collapse to single column, sidebar hidden */
+  .main-grid { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+
+  /* Turn main-content into flex column so we can reorder */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Mobile order:
+     1. category title + grid
+     2. free scroll (from sidebar)  → inject via JS or use CSS order trick — done via show/hide clone */
+  #catTitle       { order: 1; }
+  #catGrid        { order: 2; }
+  /* free scroll box gets injected here by JS at order 3 */
+  .banner-slider-wrap   { order: 4; }
+  #recentSliderSection  { order: 5; }
+  #topPicksSection      { order: 6; }
+
+  /* Show mobile sidebar ad row */
+  .mobile-sidebar-ads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  /* Free scroll: horizontal marquee strip on mobile */
+  .mobile-free-strip {
+    order: 3;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .mobile-free-strip .free-scroll-head {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mobile-free-strip .free-scroll-head h4 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--text-dark);
+  }
+  .mobile-free-marquee {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .mobile-free-marquee::-webkit-scrollbar { display: none; }
+  .mobile-free-chip {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--sand-light); border-radius: 40px;
+    padding: 6px 12px 6px 6px;
+    flex-shrink: 0; cursor: pointer; transition: var(--transition);
+    border: 1px solid var(--border);
+  }
+  .mobile-free-chip:hover { background: var(--purple-light); border-color: var(--purple-muted); }
+  .mobile-free-chip .chip-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-light); color: var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+  }
+  .mobile-free-chip span { font-size: 0.72rem; font-weight: 600; color: var(--text-mid); white-space: nowrap; }
+  .mobile-free-chip small { font-size: 0.62rem; color: var(--text-muted); display: block; margin-top: 1px; }
+}
+
+@media (max-width: 768px) {
+  body { padding-bottom: var(--footer-h); }
+
+  /* Desktop header hidden on mobile */
+  .header-nav, .header-actions, .desktop-logo { display: none !important; }
+  .mobile-logo-center {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; gap: 8px;
+  }
+  .site-header { justify-content: center; }
+
+  .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .ads-grid { grid-template-columns: 1fr 1fr; }
+
+  .hero { padding: 22px 14px 20px; }
+  .hero h1 { font-size: 1.35rem; }
+  .hero-search { max-width: 100%; }
+
+  /* Mobile bottom bar */
+  .mobile-bottom-bar { display: flex; }
+
+  .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+  .footer-brand p { max-width: 100%; }
+  .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
+
+  .main-wrap { padding: 14px 12px 0; }
+}
+
+@media (max-width: 480px) {
+  .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .cat-card { padding: 12px 8px; }
+  .cat-icon { width: 38px; height: 38px; font-size: 1.1rem; }
+  .cat-card h4 { font-size: 0.72rem; }
+  .ads-grid { grid-template-columns: 1fr; }
+  .slider-card { flex: 0 0 170px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header" id="siteHeader">
+  <!-- Desktop logo -->
+  <div class="header-logo desktop-logo">
+    <i class="bi bi-grid-3x3-gap-fill" style="font-size:1.5rem"></i>
+    <div>
+      BizGuide<span class="city-name">Kodaikanal</span>
+    </div>
+  </div>
+
+  <!-- Mobile center logo -->
+  <div class="mobile-logo-center">
+    <i class="bi bi-grid-3x3-gap-fill" style="font-size:1.4rem;color:var(--purple)"></i>
+    <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--purple)">BizGuide</span>
+    <span style="font-size:0.7rem;font-weight:600;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:40px">Kodaikanal</span>
+  </div>
+
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="#">Categories</a>
+    <a href="#">Businesses</a>
+    <a href="#">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-login">Login</button>
+    <button class="btn-post"><i class="bi bi-plus-lg"></i> Post Ad</button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-badge"><i class="bi bi-geo-alt-fill"></i> Kodaikanal, Tamil Nadu</div>
+    <h1>Find the Best <em>Local Businesses</em> Near You</h1>
+    <p>Discover trusted shops, services & professionals in Kodaikanal — all in one place.</p>
+    <div class="hero-search">
+      <input type="text" placeholder="Search businesses, categories...">
+      <button><i class="bi bi-search"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main-wrap">
+  <div class="main-grid">
+
+    <!-- LEFT (75%) -->
+    <div class="main-content">
+
+      <!-- Categories -->
+      <h2 class="section-title" id="catTitle"><i class="bi bi-grid-fill" style="color:var(--purple)"></i> Browse Categories</h2>
+      <div class="cat-grid" id="catGrid">
+        <div class="cat-card">
+          <div class="cat-icon ic-purple"><i class="bi bi-shop"></i></div>
+          <h4>Restaurants</h4><span>48 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-green"><i class="bi bi-tree"></i></div>
+          <h4>Hotels & Stays</h4><span>32 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-maroon"><i class="bi bi-bag-heart"></i></div>
+          <h4>Shopping</h4><span>61 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-teal"><i class="bi bi-heart-pulse"></i></div>
+          <h4>Health & Clinic</h4><span>27 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-amber"><i class="bi bi-tools"></i></div>
+          <h4>Services</h4><span>54 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-purple"><i class="bi bi-mortarboard"></i></div>
+          <h4>Education</h4><span>19 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-green"><i class="bi bi-car-front"></i></div>
+          <h4>Automobile</h4><span>23 listings</span>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon ic-maroon"><i class="bi bi-camera"></i></div>
+          <h4>Photography</h4><span>14 listings</span>
+        </div>
+      </div>
+
+      <!-- Featured Ads -->
+      <h2 class="section-title"><i class="bi bi-star-fill" style="color:var(--amber)"></i> Featured Businesses</h2>
+
+      <!-- Premium Banner Slider -->
+      <div class="banner-slider-wrap" id="bannerSlider">
+        <button class="banner-arrow prev" id="bannerPrev"><i class="bi bi-chevron-left"></i></button>
+        <button class="banner-arrow next" id="bannerNext"><i class="bi bi-chevron-right"></i></button>
+
+        <div class="banner-slider-track" id="bannerTrack">
+
+          <!-- Slide 1 — Maroon -->
+          <div class="promo-banner banner-maroon">
+            <div class="promo-banner-accent"></div>
+            <div class="promo-banner-img">🏡</div>
+            <div class="promo-banner-body">
+              <div class="promo-banner-top">
+                <span class="ad-card-plan plan-premium">Premium</span>
+                <h3>Misty Meadows Homestay</h3>
+              </div>
+              <p>Cozy hillside rooms with valley views, home-cooked meals & bonfire evenings.</p>
+              <div class="promo-banner-meta">
+                <span><i class="bi bi-geo-alt-fill" style="color:var(--maroon)"></i> Bryant Park Road</span>
+                <span><i class="bi bi-telephone-fill" style="color:var(--maroon)"></i> +91 98765 43210</span>
+              </div>
+            </div>
+            <div class="promo-banner-cta">
+              <div class="promo-cta-rating"><i class="bi bi-star-fill"></i> 4.7 <span style="color:var(--text-muted);font-weight:400">(128)</span></div>
+              <div class="promo-cta-btn"><i class="bi bi-whatsapp"></i> WhatsApp</div>
+            </div>
+          </div>
+
+          <!-- Slide 2 — Teal -->
+          <div class="promo-banner banner-teal">
+            <div class="promo-banner-accent"></div>
+            <div class="promo-banner-img">🌿</div>
+            <div class="promo-banner-body">
+              <div class="promo-banner-top">
+                <span class="ad-card-plan plan-premium">Premium</span>
+                <h3>GreenHeal Ayurveda Clinic</h3>
+              </div>
+              <p>Authentic Panchakarma treatments & wellness packages by certified Ayurvedic doctors.</p>
+              <div class="promo-banner-meta">
+                <span><i class="bi bi-geo-alt-fill" style="color:var(--teal)"></i> Club Road, Kodaikanal</span>
+                <span><i class="bi bi-clock-fill" style="color:var(--teal)"></i> 9am – 7pm Daily</span>
+              </div>
+            </div>
+            <div class="promo-banner-cta">
+              <div class="promo-cta-rating"><i class="bi bi-star-fill"></i> 4.9 <span style="color:var(--text-muted);font-weight:400">(84)</span></div>
+              <div class="promo-cta-btn"><i class="bi bi-telephone-fill"></i> Call Now</div>
+            </div>
+          </div>
+
+          <!-- Slide 3 — Amber -->
+          <div class="promo-banner banner-amber">
+            <div class="promo-banner-accent"></div>
+            <div class="promo-banner-img">🍽️</div>
+            <div class="promo-banner-body">
+              <div class="promo-banner-top">
+                <span class="ad-card-plan plan-premium">Premium</span>
+                <h3>Silver Spoon Restaurant</h3>
+              </div>
+              <p>Multi-cuisine dining with panoramic lake views. Ideal for family & corporate gatherings.</p>
+              <div class="promo-banner-meta">
+                <span><i class="bi bi-geo-alt-fill" style="color:var(--amber)"></i> Lake Road, Kodaikanal</span>
+                <span><i class="bi bi-clock-fill" style="color:var(--amber)"></i> 11am – 10pm</span>
+              </div>
+            </div>
+            <div class="promo-banner-cta">
+              <div class="promo-cta-rating"><i class="bi bi-star-fill"></i> 4.6 <span style="color:var(--text-muted);font-weight:400">(203)</span></div>
+              <div class="promo-cta-btn"><i class="bi bi-whatsapp"></i> Reserve</div>
+            </div>
+          </div>
+
+        </div><!-- end track -->
+
+        <div class="banner-controls">
+          <button class="banner-dot active" data-i="0"></button>
+          <button class="banner-dot" data-i="1"></button>
+          <button class="banner-dot" data-i="2"></button>
+        </div>
+      </div>
+      <!-- End Banner Slider -->
+
+      <!-- Recently Updated Slider — moved up, right after banners -->
+      <div id="recentSliderSection">
+      <h2 class="section-title"><i class="bi bi-clock-history" style="color:var(--teal)"></i> Recently Updated</h2>
+      <div class="slider-wrap">
+        <div class="slider-track" id="sliderTrack">
+          <div class="slider-card"><div class="slider-img">🥦</div><div class="slider-body"><h4>Fresh Farms Organic</h4><p>Groceries & Vegetables</p></div></div>
+          <div class="slider-card"><div class="slider-img">📚</div><div class="slider-body"><h4>Hilltop Tutorials</h4><p>Education Center</p></div></div>
+          <div class="slider-card"><div class="slider-img">💊</div><div class="slider-body"><h4>MediCare Pharmacy</h4><p>Health & Medicine</p></div></div>
+          <div class="slider-card"><div class="slider-img">🛕</div><div class="slider-body"><h4>Artisan Crafts Hub</h4><p>Local Handicrafts</p></div></div>
+          <div class="slider-card"><div class="slider-img">🎸</div><div class="slider-body"><h4>Music Point Studio</h4><p>Arts & Entertainment</p></div></div>
+          <div class="slider-card"><div class="slider-img">🏋️</div><div class="slider-body"><h4>Peak Fitness Gym</h4><p>Health & Fitness</p></div></div>
+          <div class="slider-card"><div class="slider-img">🌿</div><div class="slider-body"><h4>Herbs & Spice Store</h4><p>Specialty Foods</p></div></div>
+          <div class="slider-card"><div class="slider-img">📸</div><div class="slider-body"><h4>Misty Lens Studio</h4><p>Photography</p></div></div>
+        </div>
+      </div>
+      </div>
+
+      <!-- 2 Featured Ad Cards -->
+      <div id="topPicksSection">
+      <h2 class="section-title"><i class="bi bi-star-fill" style="color:var(--amber)"></i> Top Picks</h2>
+      <div class="ads-grid">
+        <div class="ad-card">
+          <div class="ad-card-img-placeholder">🍽️</div>
+          <div class="ad-card-body">
+            <span class="ad-card-plan plan-pro">PRO</span>
+            <h3>Silver Oak Restaurant</h3>
+            <p><i class="bi bi-geo-alt" style="font-size:0.72rem"></i> Lake Road, Kodaikanal</p>
+            <div class="ad-card-meta">
+              <div class="ad-card-rating"><i class="bi bi-star-fill"></i> 4.8</div>
+              <div class="ad-card-phone"><i class="bi bi-telephone-fill"></i> Call Now</div>
+            </div>
+          </div>
+        </div>
+        <div class="ad-card">
+          <div class="ad-card-img-placeholder">🏨</div>
+          <div class="ad-card-body">
+            <span class="ad-card-plan plan-premium">Premium</span>
+            <h3>Cloud Valley Resort</h3>
+            <p><i class="bi bi-geo-alt" style="font-size:0.72rem"></i> Coaker's Walk Area</p>
+            <div class="ad-card-meta">
+              <div class="ad-card-rating"><i class="bi bi-star-fill"></i> 4.6</div>
+              <div class="ad-card-phone"><i class="bi bi-telephone-fill"></i> Call Now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile-only sidebar ad row (Pro + Basic side by side) -->
+      <div class="mobile-sidebar-ads">
+        <div class="pro-ad-card">
+          <div class="pro-thumb">🎬<div class="pro-yt-badge"><i class="bi bi-youtube"></i> Watch</div></div>
+          <div class="pro-ad-body">
+            <span class="ad-card-plan plan-pro">PRO AD</span>
+            <h4>Mountain View Tours</h4>
+            <p>Guided treks & sightseeing</p>
+            <div class="pro-services"><span>Trekking</span><span>Tours</span></div>
+          </div>
+        </div>
+        <div class="ad-card">
+          <div class="ad-card-img-placeholder" style="height:90px;font-size:2rem">🍰</div>
+          <div class="ad-card-body">
+            <span class="ad-card-plan plan-basic">Basic</span>
+            <h3>Kodai Bakehouse</h3>
+            <p>Fresh bakes & artisan breads</p>
+            <div class="ad-card-meta">
+              <div class="ad-card-rating"><i class="bi bi-star-fill"></i> 4.5</div>
+              <div class="ad-card-phone"><i class="bi bi-whatsapp" style="color:#25d366"></i> Chat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    </div>
+    <!-- END LEFT -->
+
+    <!-- RIGHT SIDEBAR (25%) -->
+    <aside class="sidebar">
+      <!-- Free Users Scroll -->
+      <div class="free-scroll-box" id="freeScrollBox">
+        <div class="free-scroll-head">
+          <h4>Local Members</h4>
+          <div class="live-dot"></div>
+        </div>
+        <div class="free-scroll-list">
+          <div class="free-item"><div class="free-avatar">RK</div><div class="free-info"><h5>Ravi Kumar</h5><p>Electrician</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--green-light);color:var(--green)">SM</div><div class="free-info"><h5>Selva Murugan</h5><p>Plumber</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--maroon-light);color:var(--maroon)">PD</div><div class="free-info"><h5>Priya Devi</h5><p>Tailoring</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--teal-light);color:var(--teal)">AK</div><div class="free-info"><h5>Arjun Kannan</h5><p>Carpenter</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--amber-light);color:var(--amber)">MS</div><div class="free-info"><h5>Meena Shankar</h5><p>Caterer</p></div></div>
+          <div class="free-item"><div class="free-avatar">VR</div><div class="free-info"><h5>Vijay Raj</h5><p>Auto Driver</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--green-light);color:var(--green)">LN</div><div class="free-info"><h5>Lakshmi Nair</h5><p>Home Tutor</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--maroon-light);color:var(--maroon)">KP</div><div class="free-info"><h5>Karthik Pandi</h5><p>Painter</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--teal-light);color:var(--teal)">ST</div><div class="free-info"><h5>Suresh Thangaraj</h5><p>Welder</p></div></div>
+          <div class="free-item"><div class="free-avatar" style="background:var(--amber-light);color:var(--amber)">NB</div><div class="free-info"><h5>Nithya Balan</h5><p>Nurse / Healthcare</p></div></div>
+        </div>
+      </div>
+
+      <!-- Upgrade Banner -->
+      <div class="premium-banner" id="upgradeBanner">
+        <h4>🚀 Boost Your Business</h4>
+        <p>Upgrade to Pro and reach thousands of customers in Kodaikanal daily.</p>
+        <div class="btn-upgrade">Upgrade Now →</div>
+      </div>
+
+      <!-- Pro Ad -->
+      <div class="pro-ad-card" id="proAdCard">
+        <div class="pro-thumb">
+          🎬
+          <div class="pro-yt-badge"><i class="bi bi-youtube"></i> Watch</div>
+        </div>
+        <div class="pro-ad-body">
+          <span class="ad-card-plan plan-pro">PRO AD</span>
+          <h4>Mountain View Tours</h4>
+          <p>Guided treks & sightseeing packages</p>
+          <div class="pro-services">
+            <span>Trekking</span><span>Tours</span><span>Transport</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Ad -->
+      <div class="ad-card" id="basicAdCard">
+        <div class="ad-card-img-placeholder" style="height:90px;font-size:2rem">🍰</div>
+        <div class="ad-card-body">
+          <span class="ad-card-plan plan-basic">Basic</span>
+          <h3>Kodai Bakehouse</h3>
+          <p>Fresh bakes & artisan breads daily</p>
+          <div class="ad-card-meta">
+            <div class="ad-card-rating"><i class="bi bi-star-fill"></i> 4.5</div>
+            <div class="ad-card-phone"><i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>BizGuide Kodaikanal</h3>
+        <p>Your trusted local business directory. Find the best services, shops, and professionals in Kodaikanal.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="#">All Businesses</a></li>
+          <li><a href="#">Post Free Ad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Plans</h4>
+        <ul>
+          <li><a href="#">Free Listing</a></li>
+          <li><a href="#">Basic Plan</a></li>
+          <li><a href="#">Premium Plan</a></li>
+          <li><a href="#">Pro Plan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Report Issue</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 BizGuide Kodaikanal. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-whatsapp"></i></a>
+        <a href="#"><i class="bi bi-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ MOBILE BOTTOM BAR ═══ -->
+<nav class="mobile-bottom-bar" id="mobileBar">
+  <button class="mb-btn active" onclick="window.scrollTo({top:0})">
+    <i class="bi bi-house-fill"></i>
+    <span>Home</span>
+  </button>
+  <button class="mb-btn" id="menuBtn">
+    <div class="mb-btn-menu" id="menuFab"><i class="bi bi-grid-3x3"></i></div>
+  </button>
+  <button class="mb-btn" id="profileBtn">
+    <i class="bi bi-person-circle"></i>
+    <span>Login</span>
+  </button>
+</nav>
+
+<!-- ═══ DRAWER OVERLAY ═══ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-pill"></div>
+  <div class="drawer-title">Browse BizGuide</div>
+  <div class="drawer-grid">
+    <div class="drawer-item"><i class="bi bi-shop"></i><span>Restaurants</span></div>
+    <div class="drawer-item"><i class="bi bi-building"></i><span>Hotels</span></div>
+    <div class="drawer-item"><i class="bi bi-bag-heart"></i><span>Shopping</span></div>
+    <div class="drawer-item"><i class="bi bi-heart-pulse"></i><span>Health</span></div>
+    <div class="drawer-item"><i class="bi bi-tools"></i><span>Services</span></div>
+    <div class="drawer-item"><i class="bi bi-mortarboard"></i><span>Education</span></div>
+    <div class="drawer-item"><i class="bi bi-car-front"></i><span>Automobile</span></div>
+    <div class="drawer-item"><i class="bi bi-three-dots"></i><span>More</span></div>
+  </div>
+  <div class="drawer-actions">
+    <div class="drawer-btn drawer-btn-primary"><i class="bi bi-plus-lg"></i> Post Free Ad</div>
+    <div class="drawer-btn drawer-btn-outline"><i class="bi bi-star"></i> Upgrade Plan</div>
+  </div>
+</div>
+
+<script>
+// ── Header scroll shadow ──────────────────────────────
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── Hero Canvas Particles ─────────────────────────────
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = { x: -999, y: -999 };
+
+  function resize() {
+    const hero = canvas.parentElement;
+    W = canvas.width  = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); });
+
+  canvas.parentElement.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+  canvas.parentElement.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+
+  const COLORS = ['rgba(165,243,160,', 'rgba(167,139,250,', 'rgba(255,255,255,', 'rgba(196,181,253,'];
+
+  function Particle() {
+    this.reset = function(born) {
+      this.x  = Math.random() * W;
+      this.y  = born ? Math.random() * H : H + 10;
+      this.r  = Math.random() * 2.2 + 0.4;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = -(Math.random() * 0.45 + 0.15);
+      this.alpha = Math.random() * 0.55 + 0.15;
+      this.da = (Math.random() * 0.003 + 0.001) * (Math.random() < 0.5 ? 1 : -1);
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+      this.twinklePhase = Math.random() * Math.PI * 2;
+    };
+    this.reset(true);
+  }
+
+  for (let i = 0; i < 72; i++) particles.push(new Particle());
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.016;
+
+    particles.forEach(p => {
+      // mouse repel
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 80) {
+        const force = (80 - dist) / 80 * 0.8;
+        p.vx += (dx / dist) * force * 0.06;
+        p.vy += (dy / dist) * force * 0.06;
+      }
+
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vx *= 0.992;
+      p.vy *= 0.992;
+
+      const twinkle = 0.5 + 0.5 * Math.sin(t * p.twinkleSpeed * 60 + p.twinklePhase);
+      const a = p.alpha * twinkle;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + a + ')';
+      ctx.fill();
+
+      if (p.y < -10) p.reset(false);
+    });
+
+    // draw faint connecting lines between close particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < 70) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(255,255,255,' + (0.07 * (1 - d / 70)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Recent ads Slider auto-scroll ─────────────────────
+const track = document.getElementById('sliderTrack');
+let sliderDir = 1, sliderAnim;
+function startSlider() {
+  sliderAnim = setInterval(() => {
+    track.scrollLeft += sliderDir * 1.5;
+    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) sliderDir = -1;
+    if (track.scrollLeft <= 0) sliderDir = 1;
+  }, 16);
+}
+startSlider();
+track.addEventListener('mouseenter', () => clearInterval(sliderAnim));
+track.addEventListener('mouseleave', startSlider);
+track.addEventListener('touchstart', () => clearInterval(sliderAnim));
+
+// ── Premium Banner Slider ─────────────────────────────
+(function() {
+  const bTrack = document.getElementById('bannerTrack');
+  const dots   = document.querySelectorAll('.banner-dot');
+  const total  = dots.length;
+  let cur = 0, autoTimer;
+
+  function goTo(n) {
+    cur = (n + total) % total;
+    bTrack.style.transform = `translateX(-${cur * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+  }
+
+  function startAuto() {
+    autoTimer = setInterval(() => goTo(cur + 1), 4000);
+  }
+  function stopAuto() { clearInterval(autoTimer); }
+
+  startAuto();
+
+  document.getElementById('bannerNext').addEventListener('click', () => { stopAuto(); goTo(cur + 1); startAuto(); });
+  document.getElementById('bannerPrev').addEventListener('click', () => { stopAuto(); goTo(cur - 1); startAuto(); });
+  dots.forEach(d => d.addEventListener('click', () => { stopAuto(); goTo(+d.dataset.i); startAuto(); }));
+
+  // touch swipe support
+  let tx = 0;
+  bTrack.addEventListener('touchstart', e => { tx = e.touches[0].clientX; stopAuto(); });
+  bTrack.addEventListener('touchend',   e => {
+    const diff = tx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? cur + 1 : cur - 1);
+    startAuto();
+  });
+})();
+
+// ── Drawer ────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('menuFab').classList.add('open');
+  document.getElementById('menuFab').innerHTML = '<i class="bi bi-x-lg"></i>';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('menuFab').classList.remove('open');
+  document.getElementById('menuFab').innerHTML = '<i class="bi bi-grid-3x3"></i>';
+}
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('drawer').classList.contains('open') ? closeDrawer() : openDrawer();
+});
+let touchStartY = 0;
+document.getElementById('drawer').addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
+document.getElementById('drawer').addEventListener('touchend',   e => {
+  if (e.changedTouches[0].clientY - touchStartY > 60) closeDrawer();
+});
+
+// ── Mobile: inject free-scroll horizontal chip strip above categories ──
+(function() {
+  if (window.innerWidth > 860) return;
+
+  // Hide upgrade banner on mobile
+  const upBanner = document.getElementById('upgradeBanner');
+  if (upBanner) upBanner.style.display = 'none';
+
+  const members = [
+    { initials:'RK', name:'Ravi Kumar',       job:'Electrician',  bg:'var(--purple-light)', color:'var(--purple)' },
+    { initials:'SM', name:'Selva Murugan',    job:'Plumber',      bg:'var(--green-light)',  color:'var(--green)'  },
+    { initials:'PD', name:'Priya Devi',       job:'Tailoring',    bg:'var(--maroon-light)', color:'var(--maroon)' },
+    { initials:'AK', name:'Arjun Kannan',     job:'Carpenter',    bg:'var(--teal-light)',   color:'var(--teal)'   },
+    { initials:'MS', name:'Meena Shankar',    job:'Caterer',      bg:'var(--amber-light)',  color:'var(--amber)'  },
+    { initials:'VR', name:'Vijay Raj',        job:'Auto Driver',  bg:'var(--purple-light)', color:'var(--purple)' },
+    { initials:'LN', name:'Lakshmi Nair',     job:'Home Tutor',   bg:'var(--green-light)',  color:'var(--green)'  },
+    { initials:'KP', name:'Karthik Pandi',    job:'Painter',      bg:'var(--maroon-light)', color:'var(--maroon)' },
+    { initials:'ST', name:'Suresh Thangaraj', job:'Welder',       bg:'var(--teal-light)',   color:'var(--teal)'   },
+    { initials:'NB', name:'Nithya Balan',     job:'Healthcare',   bg:'var(--amber-light)',  color:'var(--amber)'  },
+  ];
+
+  const strip = document.createElement('div');
+  strip.className = 'mobile-free-strip';
+  strip.innerHTML = `
+    <div class="free-scroll-head">
+      <h4>Local Members</h4>
+      <div class="live-dot"></div>
+    </div>
+    <div class="mobile-free-marquee">
+      ${members.map(m => `
+        <div class="mobile-free-chip">
+          <div class="chip-avatar" style="background:${m.bg};color:${m.color}">${m.initials}</div>
+          <div><span>${m.name}</span><small>${m.job}</small></div>
+        </div>`).join('')}
+    </div>`;
+
+  // Insert right before catTitle (first child of main-content)
+  const catTitle = document.getElementById('catTitle');
+  catTitle.parentNode.insertBefore(strip, catTitle);
+})();
+</script>
+</body>
+</html>

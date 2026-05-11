@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bizguide | City Business Mapping</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Styling - All CSS updated for video effect */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            /* Deeper purple to ground the high-detail background */
+            background-color: #06010a; 
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* NEW: The Full-Screen "Video-Simulation" Canvas Container */
+        #video-simulation-canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Lowest layer */
+            top: 0;
+            left: 0;
+        }
+
+        /* Content Card: Adjusted for depth above the complex BG */
+        .content-wrapper {
+            position: relative;
+            z-index: 10; /* Float above the animation */
+            text-align: center;
+            /* High contrast with background, subtle purple glow */
+            background: rgba(13, 2, 33, 0.85); 
+            padding: 4rem 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(50, 205, 50, 0.3); /* Defined Green border */
+            box-shadow: 0 10px 40px rgba(75, 0, 130, 0.4); /* Purple glow */
+            max-width: 620px;
+            width: 92%;
+            animation: emerge 1.5s ease-out;
+        }
+
+        @keyframes emerge {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Branding - Retained and refined */
+        .logo {
+            font-size: 3.8rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            letter-spacing: -2px;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #32CD32; /* Lime Green */
+            text-shadow: 0 0 20px rgba(50, 205, 50, 0.6);
+        }
+
+        .tagline {
+            color: #32CD32;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        /* Under Construction UI */
+        .construction-box {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+        }
+
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #e0d7f0;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #b0a4c5;
+            margin-bottom: 2rem;
+        }
+
+        /* Visual Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            height: 6px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(90deg, #4B0082, #32CD32);
+            box-shadow: 0 0 15px #32CD32;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #6a5a85;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .logo { font-size: 2.8rem; }
+            .content-wrapper { padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="video-simulation-canvas"></div>
+
+    <div class="content-wrapper">
+        <h1 class="logo">biz<span>guide</span></h1>
+        <span class="tagline">Local Business Intelligence</span>
+        
+        <div class="construction-box">
+            <h2 class="status-text">Site Under Construction</h2>
+            <p class="description">
+                We are mapping your city's digital infrastructure, connecting local data streams to build the definitive urban business directory.
+            </p>
+            
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <small style="color: #32CD32; font-size: 0.7rem; font-weight: 600;">MAPPING DATA STREAMS: 65%</small>
+        </div>
+
+        <footer>
+            &copy; 2026 BIZGUIDE CITY PORTAL. ALL RIGHTS RESERVED.
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        /* NEW: Comprehensive configuration for a fluid "Video Loop" effect */
+        particlesJS("video-simulation-canvas", {
+            "particles": {
+                "number": { 
+                    "value": 150, /* High particle count for detail */
+                    "density": { "enable": true, "value_area": 1000 } 
+                },
+                "color": { 
+                    /* Multiple green tones for glowing data look */
+                    "value": ["#32CD32", "#1a9c1a", "#ffffff"] 
+                },
+                "shape": { 
+                    "type": ["circle", "edge"], /* Mix shapes for structure */
+                    "stroke": { "width": 0, "color": "#000000" }
+                },
+                "opacity": { 
+                    "value": 0.4, 
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 0.5, "opacity_min": 0.1, "sync": false }
+                },
+                "size": { 
+                    "value": 3, 
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 10, "size_min": 0.1, "sync": false }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 160,
+                    "color": "#32CD32", /* Connect with Green lines */
+                    "opacity": 0.25,
+                    "width": 1.2
+                },
+                "move": {
+                    /* Slow, continuous movement simulating a video loop */
+                    "enable": true,
+                    "speed": 0.8,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out", /* Particles flow off screen */
+                    "bounce": false,
+                    "attract": { "enable": true, "rotateX": 600, "rotateY": 1200 }
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" }, /* Subtle interaction */
+                    "onclick": { "enable": false },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 250, "line_linked": { "opacity": 0.6 } }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>

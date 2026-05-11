@@ -1,0 +1,260 @@
+STORE POST: Array
+(
+    [csrf_token] => ea9e842762cf68660d1b76724344fae9eccec5e98cad6eeeaa17c5bc2b88e910
+    [user_id] => 23
+    [plan_level] => pro
+    [status] => approved
+    [city_id] => 1
+    [category_id] => 1
+    [subcategory_ids] => Array
+        (
+            [0] => 1
+            [1] => 2
+        )
+
+    [business_name] => Mindlogics Software Solutions
+    [phone] => 9344128015
+    [whatsapp] => 9952162077
+    [email] => suresh.kumarn@hotmail.com
+    [address] => madurai
+    [short_description] => 
+    [website] => https://www.mindlogics.in
+    [facebook] => https://facebook.com
+    [instagram] => https://instagram.com
+    [keyword_ids] => Array
+        (
+            [0] => 1
+        )
+
+    [youtube_url] => https://www.youtube.com/watch?v=sCZKM-Wzvto
+)
+
+FILES: Array
+(
+    [business_images] => Array
+        (
+            [name] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [full_path] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [type] => Array
+                (
+                    [0] => image/jpeg
+                    [1] => image/jpeg
+                    [2] => image/jpeg
+                )
+
+            [tmp_name] => Array
+                (
+                    [0] => /opt/lampp/temp/phpwSpq5G
+                    [1] => /opt/lampp/temp/phpyglufV
+                    [2] => /opt/lampp/temp/phpU2n0sh
+                )
+
+            [error] => Array
+                (
+                    [0] => 0
+                    [1] => 0
+                    [2] => 0
+                )
+
+            [size] => Array
+                (
+                    [0] => 7646
+                    [1] => 12916
+                    [2] => 14925
+                )
+
+        )
+
+    [top_banner] => Array
+        (
+            [name] => banner1.jpeg
+            [full_path] => banner1.jpeg
+            [type] => image/jpeg
+            [tmp_name] => /opt/lampp/temp/phpxFvwlw
+            [error] => 0
+            [size] => 10336
+        )
+
+)
+
+Listing Created ID: 17
+Top Banner Uploaded: bg_69f06a94b00e62.52576867.jpeg
+Processing 3 images
+Inserted Image: bg_69f06a94b12926.76724992.jpeg for Listing: 17
+Inserted Image: bg_69f06a94b179a2.15807809.jpeg for Listing: 17
+Inserted Image: bg_69f06a94b20bc6.76109672.jpeg for Listing: 17
+STORE POST: Array
+(
+    [csrf_token] => ea9e842762cf68660d1b76724344fae9eccec5e98cad6eeeaa17c5bc2b88e910
+    [user_id] => 23
+    [plan_level] => premium
+    [status] => approved
+    [city_id] => 1
+    [category_id] => 2
+    [business_name] => Mindlogics Software Solutions
+    [phone] => 9344128015
+    [whatsapp] => 9952162077
+    [email] => suresh.kumarn@hotmail.com
+    [address] => madurai
+    [short_description] => 
+    [website] => https://www.mindlogics.in
+    [facebook] => https://facebook.com
+    [instagram] => https://instagram.com
+    [youtube_url] => 
+)
+
+FILES: Array
+(
+    [business_images] => Array
+        (
+            [name] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [full_path] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [type] => Array
+                (
+                    [0] => image/jpeg
+                    [1] => image/jpeg
+                    [2] => image/jpeg
+                )
+
+            [tmp_name] => Array
+                (
+                    [0] => /opt/lampp/temp/phpHO1Cz5
+                    [1] => /opt/lampp/temp/phpTUuiO8
+                    [2] => /opt/lampp/temp/php3f2vwY
+                )
+
+            [error] => Array
+                (
+                    [0] => 0
+                    [1] => 0
+                    [2] => 0
+                )
+
+            [size] => Array
+                (
+                    [0] => 7646
+                    [1] => 12916
+                    [2] => 14925
+                )
+
+        )
+
+    [top_banner] => Array
+        (
+            [name] => 
+            [full_path] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+)
+
+Listing Created ID: 18
+Processing 3 images
+Inserted Image: bg_69f06b351c9376.84096165.jpeg for Listing: 18
+Inserted Image: bg_69f06b351d50c1.08232265.jpeg for Listing: 18
+Inserted Image: bg_69f06b351d93e4.27136129.jpeg for Listing: 18
+UPDATE POST: Array
+(
+    [csrf_token] => 574cd79a8b3edc83b59d2685def42d3d5e0e21ee1f3ddd755c48ce3ce394d051
+    [id] => 18
+    [business_name] => Mindlogics Software Solutions
+    [phone] => 9344128015
+    [whatsapp] => 9952162077
+    [email] => suresh.kumarn@hotmail.com
+    [city_id] => 1
+    [category_id] => 2
+    [address] => madurai
+    [short_description] => 
+    [website] => https://www.mindlogics.in
+    [facebook] => https://facebook.com
+    [instagram] => https://instagram.com
+    [youtube_url] => https://www.youtube.com/watch?v=sCZKM-Wzvto
+)
+
+FILES: Array
+(
+    [business_images] => Array
+        (
+            [name] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [full_path] => Array
+                (
+                    [0] => classified1.jpeg
+                    [1] => classified2.jpeg
+                    [2] => classified3.jpeg
+                )
+
+            [type] => Array
+                (
+                    [0] => image/jpeg
+                    [1] => image/jpeg
+                    [2] => image/jpeg
+                )
+
+            [tmp_name] => Array
+                (
+                    [0] => /opt/lampp/temp/phpEKZXjw
+                    [1] => /opt/lampp/temp/phpjbSj0u
+                    [2] => /opt/lampp/temp/php80gvpN
+                )
+
+            [error] => Array
+                (
+                    [0] => 0
+                    [1] => 0
+                    [2] => 0
+                )
+
+            [size] => Array
+                (
+                    [0] => 7646
+                    [1] => 12916
+                    [2] => 14925
+                )
+
+        )
+
+    [top_banner] => Array
+        (
+            [name] => banner1.jpeg
+            [full_path] => banner1.jpeg
+            [type] => image/jpeg
+            [tmp_name] => /opt/lampp/temp/phpOw14OG
+            [error] => 0
+            [size] => 10336
+        )
+
+)
+

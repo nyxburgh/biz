@@ -1,0 +1,31 @@
+Field	Type	Null	Key	Default	Extra
+id	int(10) unsigned	NO	PRI	NULL	auto_increment
+user_id	int(10) unsigned	NO	UNI	NULL	
+city_id	int(10) unsigned	YES	MUL	NULL	
+category_id	int(10) unsigned	YES	MUL	NULL	
+plan_level	enum('free','basic','premium','pro')	YES		free	
+business_name	varchar(200)	YES		NULL	
+profession	varchar(150)	YES		NULL	
+address	text	YES		NULL	
+phone	varchar(20)	YES		NULL	
+whatsapp	varchar(20)	YES		NULL	
+email	varchar(200)	YES		NULL	
+short_description	text	YES		NULL	
+website	varchar(255)	YES		NULL	
+facebook	varchar(255)	YES		NULL	
+instagram	varchar(255)	YES		NULL	
+twitter	varchar(255)	YES		NULL	
+linkedin	varchar(255)	YES		NULL	
+youtube_url	varchar(255)	YES		NULL	
+top_banner	varchar(255)	YES		NULL	
+slug	varchar(255)	YES	UNI	NULL	
+status	enum('draft','pending','approved','rejected','suspended','archived')	YES		pending	
+rejection_note	text	YES		NULL	
+approved_by	int(10) unsigned	YES	MUL	NULL	
+approved_at	datetime	YES		NULL	
+published_at	datetime	YES		NULL	
+archive_at	datetime	YES		NULL	
+views	int(11)	YES		0	
+is_featured	tinyint(1)	YES		0	
+created_at	datetime	YES		current_timestamp()	
+updated_at	datetime	YES		current_timestamp()	on update current_timestamp()

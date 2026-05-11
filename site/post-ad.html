@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Business Ad — BizGuide Kodaikanal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --sand:#f5ede0; --sand-light:#faf6f0; --sand-dark:#e8d9c4;
+  --purple:#7c3aed; --purple-light:#ede9fe; --purple-muted:#a78bfa;
+  --maroon:#9b2335; --maroon-light:#fde8eb;
+  --green:#3a7c5a; --green-light:#e6f4ec;
+  --teal:#2a7d8c; --teal-light:#e0f5f8;
+  --amber:#b45309; --amber-light:#fef3c7;
+  --text-dark:#1a1018; --text-mid:#4a3f52; --text-muted:#8b7d96;
+  --border:#e2d5f0; --white:#ffffff;
+  --header-h:68px; --footer-h:64px;
+  --radius:14px; --radius-sm:8px;
+  --shadow:0 4px 20px rgba(124,58,237,0.08);
+  --shadow-hover:0 12px 40px rgba(124,58,237,0.18);
+  --transition:all 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--sand-light);color:var(--text-dark);font-size:15px;line-height:1.6;padding-top:var(--header-h);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── HEADER ── */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--header-h);background:rgba(250,246,240,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box;transition:box-shadow 0.2s}
+.site-header.scrolled{box-shadow:0 2px 24px rgba(124,58,237,0.1)}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--purple)}
+.city-tag{font-size:0.7rem;font-weight:600;color:var(--green);background:var(--green-light);padding:2px 8px;border-radius:40px;margin-left:4px}
+.btn-back{display:flex;align-items:center;gap:6px;font-size:0.88rem;font-weight:600;color:var(--text-mid);padding:8px 16px;border-radius:40px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:var(--transition)}
+.btn-back:hover{border-color:var(--purple);color:var(--purple)}
+.header-actions{display:flex;gap:10px;align-items:center}
+
+/* ── PAGE HEADER ── */
+.page-header{background:linear-gradient(135deg,#2d1b69 0%,#7c3aed 60%,#3a7c5a 100%);padding:28px 24px;text-align:center}
+.page-header h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.3rem,2.8vw,1.9rem);color:#fff;margin-bottom:6px}
+.page-header p{color:rgba(255,255,255,0.72);font-size:0.88rem}
+
+/* ── STEP INDICATOR ── */
+.steps-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;justify-content:center}
+.steps-inner{display:flex;align-items:center;gap:0;max-width:700px;width:100%;padding:14px 0}
+.step{display:flex;align-items:center;flex:1;position:relative}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;transition:var(--transition);border:2px solid var(--border);background:#fff;color:var(--text-muted)}
+.step.active .step-circle{background:var(--purple);border-color:var(--purple);color:#fff}
+.step.done  .step-circle{background:var(--green);border-color:var(--green);color:#fff}
+.step-label{font-size:0.75rem;font-weight:600;color:var(--text-muted);margin-left:8px;white-space:nowrap}
+.step.active .step-label,.step.done .step-label{color:var(--text-dark)}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 6px;min-width:20px}
+.step.done .step-line{background:var(--green)}
+
+/* ── PLAN PICKER ── */
+.plan-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.plan-card{border:2px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;transition:var(--transition);background:#fff;position:relative;overflow:hidden}
+.plan-card:hover{border-color:var(--purple-muted);transform:translateY(-2px);box-shadow:var(--shadow)}
+.plan-card.selected{border-color:var(--purple);background:var(--purple-light)}
+.plan-card.selected .plan-check{display:flex}
+.plan-check{display:none;position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-size:0.7rem}
+.plan-emoji{font-size:1.8rem;margin-bottom:6px;display:block}
+.plan-card h4{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;color:var(--text-dark);margin-bottom:2px}
+.plan-price{font-size:1.1rem;font-weight:800;color:var(--purple);margin-bottom:8px;font-family:'Syne',sans-serif}
+.plan-price span{font-size:0.7rem;font-weight:400;color:var(--text-muted)}
+.plan-features{list-style:none;text-align:left;padding:0}
+.plan-features li{font-size:0.72rem;color:var(--text-muted);padding:2px 0;display:flex;align-items:center;gap:5px}
+.plan-features li i{color:var(--green);font-size:0.7rem;flex-shrink:0}
+.plan-features li.locked i{color:var(--border)}
+.plan-features li.locked{opacity:0.5}
+.plan-popular{position:absolute;top:0;left:0;right:0;background:var(--amber);color:#fff;font-size:0.62rem;font-weight:700;text-align:center;padding:3px;letter-spacing:0.06em;text-transform:uppercase}
+
+/* ── FORM ── */
+.post-wrap{max-width:920px;margin:0 auto;padding:24px 16px 48px;display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.form-steps-wrap{min-width:0}
+.form-step{display:none}
+.form-step.active{display:block}
+
+.form-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px}
+.form-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.98rem;color:var(--text-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.form-card-title i{width:28px;height:28px;border-radius:8px;background:var(--purple-light);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--text-mid);margin-bottom:5px}
+.form-group label .req{color:var(--maroon)}
+.form-group label .hint{font-weight:400;color:var(--text-muted);margin-left:6px}
+.form-control{border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text-dark);background:#fff;outline:none;transition:border-color 0.2s;width:100%}
+.form-control:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,0.08)}
+textarea.form-control{min-height:90px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.char-count{font-size:0.7rem;color:var(--text-muted);text-align:right;margin-top:2px}
+
+/* plan-locked fields */
+.plan-lock-notice{display:flex;align-items:center;gap:8px;background:var(--sand-light);border:1.5px dashed var(--sand-dark);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--text-muted);margin-bottom:14px}
+.plan-lock-notice i{color:var(--purple);font-size:1rem;flex-shrink:0}
+.plan-lock-notice a{color:var(--purple);font-weight:600}
+.locked-field{position:relative}
+.locked-field .form-control{background:var(--sand-light);color:var(--text-muted);cursor:not-allowed;pointer-events:none}
+.locked-field::after{content:'🔒';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:0.85rem}
+
+/* keyword tags */
+.keyword-input-wrap{border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;cursor:text;transition:border-color 0.2s}
+.keyword-input-wrap:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,0.08)}
+.kw-tag{display:flex;align-items:center;gap:4px;background:var(--purple-light);color:var(--purple);padding:3px 10px;border-radius:40px;font-size:0.75rem;font-weight:600}
+.kw-tag button{background:none;border:none;color:var(--purple);cursor:pointer;font-size:0.75rem;padding:0;line-height:1;opacity:0.6}
+.kw-tag button:hover{opacity:1}
+.kw-input{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text-dark);min-width:120px;flex:1}
+
+/* services list */
+.service-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.service-item{display:flex;align-items:center;gap:8px;background:var(--sand-light);border-radius:8px;padding:8px 12px}
+.service-item span{flex:1;font-size:0.85rem;color:var(--text-dark)}
+.service-item button{background:none;border:none;color:var(--maroon);cursor:pointer;font-size:0.85rem}
+.btn-add-service{display:flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;color:var(--purple);background:var(--purple-light);border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:var(--transition)}
+.btn-add-service:hover{background:var(--purple);color:#fff}
+
+/* image upload */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:var(--transition);background:var(--sand-light)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--purple);background:var(--purple-light)}
+.upload-zone i{font-size:2rem;color:var(--purple-muted);display:block;margin-bottom:8px}
+.upload-zone p{font-size:0.82rem;color:var(--text-muted)}
+.upload-zone strong{font-size:0.85rem;color:var(--text-mid)}
+.image-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.img-preview{aspect-ratio:1;border-radius:8px;background:var(--sand-dark);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.img-preview .remove-img{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;cursor:pointer;border:none}
+
+/* navigation buttons */
+.form-nav{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.btn-next{padding:12px 28px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.92rem;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:6px}
+.btn-next:hover{background:#6d28d9;transform:translateY(-1px)}
+.btn-prev{padding:12px 22px;background:#fff;color:var(--text-mid);border:1.5px solid var(--border);border-radius:10px;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:6px}
+.btn-prev:hover{border-color:var(--purple);color:var(--purple)}
+
+/* ── PREVIEW SIDEBAR ── */
+.preview-sidebar{position:sticky;top:calc(var(--header-h) + 80px)}
+.preview-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.preview-card-thumb{height:130px;background:linear-gradient(135deg,var(--purple-light),var(--sand));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative}
+.preview-plan-badge{position:absolute;top:8px;left:8px;padding:3px 10px;border-radius:4px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:var(--purple-light);color:var(--purple)}
+.preview-body{padding:14px}
+.preview-body h3{font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text-dark);margin-bottom:4px}
+.preview-body p{font-size:0.78rem;color:var(--text-muted);margin-bottom:8px}
+.preview-meta{font-size:0.74rem;color:var(--text-mid);display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.preview-actions{display:flex;gap:8px;margin-top:10px}
+.prev-btn-call{flex:1;padding:8px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:default}
+.prev-btn-wa{padding:8px 12px;background:#e7fdf0;color:#25d366;border:none;border-radius:8px;font-size:1rem;cursor:default}
+.preview-label{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;padding:10px 14px 4px;background:#fff}
+
+/* ── SUCCESS STATE ── */
+.success-screen{display:none;text-align:center;padding:60px 24px;max-width:520px;margin:0 auto}
+.success-screen.active{display:block}
+.success-icon{width:80px;height:80px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 20px;animation:popIn 0.5s cubic-bezier(0.34,1.4,0.64,1) both}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success-screen h2{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;color:var(--text-dark);margin-bottom:8px}
+.success-screen p{color:var(--text-muted);font-size:0.9rem;margin-bottom:24px}
+.success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ── MOBILE BOTTOM BAR ── */
+.mobile-bottom-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;height:var(--footer-h);background:rgba(250,246,240,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center;justify-content:space-around;padding:0 10px}
+.mb-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:12px;cursor:pointer;transition:var(--transition);background:none;border:none;color:var(--text-muted);font-family:inherit}
+.mb-btn i{font-size:1.3rem}
+.mb-btn span{font-size:0.6rem;font-weight:600;text-transform:uppercase}
+.mb-btn.active{color:var(--purple)}
+.mb-btn-menu{width:52px;height:52px;border-radius:50%;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-top:-18px;box-shadow:0 4px 20px rgba(124,58,237,0.4);border:3px solid rgba(250,246,240,0.97)}
+
+@media(max-width:860px){
+  .post-wrap{grid-template-columns:1fr}
+  .preview-sidebar{display:none}
+  .plan-picker{grid-template-columns:1fr 1fr}
+  body{padding-bottom:var(--footer-h)}
+  .mobile-bottom-bar{display:flex}
+  .header-nav{display:none}
+}
+@media(max-width:560px){
+  .plan-picker{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .image-previews{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-logo">
+    <i class="bi bi-grid-3x3-gap-fill"></i> BizGuide
+    <span class="city-tag">Kodaikanal</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn-back" onclick="history.back()"><i class="bi bi-arrow-left"></i> Back</button>
+  </div>
+</header>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1>Post Your Business</h1>
+  <p>Reach thousands of customers in Kodaikanal — free listing available</p>
+</div>
+
+<!-- Steps Bar -->
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="step done" id="step-ind-1">
+      <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+      <span class="step-label">Plan</span>
+      <div class="step-line"></div>
+    </div>
+    <div class="step active" id="step-ind-2">
+      <div class="step-circle">2</div>
+      <span class="step-label">Business Info</span>
+      <div class="step-line"></div>
+    </div>
+    <div class="step" id="step-ind-3">
+      <div class="step-circle">3</div>
+      <span class="step-label">Media & Links</span>
+      <div class="step-line"></div>
+    </div>
+    <div class="step" id="step-ind-4">
+      <div class="step-circle">4</div>
+      <span class="step-label">Review & Submit</span>
+    </div>
+  </div>
+</div>
+
+<div class="post-wrap">
+  <div class="form-steps-wrap">
+
+    <!-- ═══ STEP 1: PLAN ═══ -->
+    <div class="form-step" id="form-step-1">
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-star-fill"></i> Choose Your Plan</div>
+        <div class="plan-picker">
+          <div class="plan-card" data-plan="free" onclick="selectPlan(this)">
+            <div class="plan-check"><i class="bi bi-check"></i></div>
+            <span class="plan-emoji">🆓</span>
+            <h4>Free</h4>
+            <div class="plan-price">₹0 <span>forever</span></div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle-fill"></i> Name & profession</li>
+              <li><i class="bi bi-check-circle-fill"></i> Phone number</li>
+              <li><i class="bi bi-check-circle-fill"></i> Sidebar listing</li>
+              <li class="locked"><i class="bi bi-x-circle-fill"></i> Business page</li>
+              <li class="locked"><i class="bi bi-x-circle-fill"></i> Photos</li>
+            </ul>
+          </div>
+          <div class="plan-card" data-plan="basic" onclick="selectPlan(this)">
+            <div class="plan-check"><i class="bi bi-check"></i></div>
+            <span class="plan-emoji">📋</span>
+            <h4>Basic</h4>
+            <div class="plan-price">₹299 <span>/year</span></div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle-fill"></i> Business name & page</li>
+              <li><i class="bi bi-check-circle-fill"></i> Address & phone</li>
+              <li><i class="bi bi-check-circle-fill"></i> WhatsApp & email</li>
+              <li><i class="bi bi-check-circle-fill"></i> Description</li>
+              <li class="locked"><i class="bi bi-x-circle-fill"></i> Photos & social</li>
+            </ul>
+          </div>
+          <div class="plan-card selected" data-plan="premium" onclick="selectPlan(this)">
+            <div class="plan-popular">Most Popular</div>
+            <div class="plan-check" style="display:flex"><i class="bi bi-check"></i></div>
+            <span class="plan-emoji" style="margin-top:16px">⭐</span>
+            <h4>Premium</h4>
+            <div class="plan-price">₹999 <span>/year</span></div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle-fill"></i> All Basic features</li>
+              <li><i class="bi bi-check-circle-fill"></i> Up to 5 photos</li>
+              <li><i class="bi bi-check-circle-fill"></i> Website & social links</li>
+              <li><i class="bi bi-check-circle-fill"></i> Keywords (5)</li>
+              <li class="locked"><i class="bi bi-x-circle-fill"></i> YouTube & services</li>
+            </ul>
+          </div>
+          <div class="plan-card" data-plan="pro" onclick="selectPlan(this)">
+            <div class="plan-check"><i class="bi bi-check"></i></div>
+            <span class="plan-emoji">🚀</span>
+            <h4>Pro</h4>
+            <div class="plan-price">₹1999 <span>/year</span></div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle-fill"></i> All Premium features</li>
+              <li><i class="bi bi-check-circle-fill"></i> Services list</li>
+              <li><i class="bi bi-check-circle-fill"></i> Top banner placement</li>
+              <li><i class="bi bi-check-circle-fill"></i> YouTube embed</li>
+              <li><i class="bi bi-check-circle-fill"></i> Keywords (15)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-nav" style="justify-content:flex-end">
+          <button class="btn-next" onclick="goStep(2)">Next: Business Info <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 2: BASIC INFO ═══ -->
+    <div class="form-step active" id="form-step-2">
+      <!-- Basic Info -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-building"></i> Basic Information</div>
+        <div class="form-group">
+          <label>Business Name <span class="req">*</span></label>
+          <input class="form-control" id="bizName" placeholder="e.g. Misty Meadows Homestay" oninput="updatePreview()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category <span class="req">*</span></label>
+            <select class="form-control" id="bizCat" onchange="updatePreview()">
+              <option value="">Select category</option>
+              <option>Restaurants</option>
+              <option>Hotels & Stays</option>
+              <option>Shopping</option>
+              <option>Health & Clinic</option>
+              <option>Services</option>
+              <option>Education</option>
+              <option>Automobile</option>
+              <option>Photography</option>
+              <option>Tourism</option>
+              <option>Beauty & Salon</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Sub-category</label>
+            <select class="form-control">
+              <option value="">Select sub-category</option>
+              <option>Homestay</option>
+              <option>Resort</option>
+              <option>Hotel</option>
+              <option>Lodge</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description <span class="req">*</span> <span class="hint">(min 50 chars)</span></label>
+          <textarea class="form-control" id="bizDesc" placeholder="Describe your business — what you offer, what makes you special..." oninput="updateCharCount(this, 300); updatePreview()"></textarea>
+          <div class="char-count" id="descCount">0 / 300</div>
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-telephone-fill"></i> Contact Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone <span class="req">*</span></label>
+            <input class="form-control" type="tel" placeholder="+91 98765 43210" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp <span id="wa-plan-note" class="hint">(Basic+)</span></label>
+            <div class="locked-field" id="wa-field">
+              <input class="form-control" type="tel" placeholder="+91 98765 43210">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="hint">(Basic+)</span></label>
+            <div class="locked-field" id="email-field">
+              <input class="form-control" type="email" placeholder="business@email.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Address <span class="hint">(Basic+)</span></label>
+            <div class="locked-field" id="address-field">
+              <input class="form-control" placeholder="Street / area, Kodaikanal">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-prev" onclick="goStep(1)"><i class="bi bi-arrow-left"></i> Back</button>
+        <button class="btn-next" onclick="goStep(3)">Next: Media & Links <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 3: MEDIA & LINKS ═══ -->
+    <div class="form-step" id="form-step-3">
+      <!-- Photos -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-images"></i> Business Photos <span style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-left:4px">(Premium+, max 5)</span></div>
+        <div id="photo-lock-notice" class="plan-lock-notice">
+          <i class="bi bi-lock-fill"></i>
+          Photo uploads require <strong>Premium</strong> plan or above. <a href="#" onclick="goStep(1);return false">Upgrade →</a>
+        </div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+          <i class="bi bi-cloud-upload"></i>
+          <strong>Click to upload or drag & drop</strong>
+          <p>JPG, PNG up to 5MB each. Max 5 photos.</p>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this)">
+        <div class="image-previews" id="imagePreviews"></div>
+      </div>
+
+      <!-- Links -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-link-45deg"></i> Website & Social Links <span style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-left:4px">(Premium+)</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Website URL</label>
+            <div class="locked-field" id="website-field"><input class="form-control" placeholder="https://yoursite.com"></div>
+          </div>
+          <div class="form-group">
+            <label>Facebook</label>
+            <div class="locked-field" id="fb-field"><input class="form-control" placeholder="facebook.com/yourpage"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Instagram</label>
+            <div class="locked-field" id="ig-field"><input class="form-control" placeholder="@yourbusiness"></div>
+          </div>
+          <div class="form-group">
+            <label>YouTube Video URL <span style="font-size:0.7rem;color:var(--purple)">(Pro only)</span></label>
+            <div class="locked-field" id="yt-field"><input class="form-control" placeholder="https://youtube.com/watch?v=..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keywords -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-tags-fill"></i> Keywords <span style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-left:4px">(Premium: 5 · Pro: 15)</span></div>
+        <div id="kw-lock-notice" class="plan-lock-notice">
+          <i class="bi bi-lock-fill"></i>
+          Keywords require <strong>Premium</strong> plan or above. <a href="#" onclick="goStep(1);return false">Upgrade →</a>
+        </div>
+        <div class="keyword-input-wrap" id="kwWrap" onclick="document.getElementById('kwInput').focus()">
+          <div class="kw-tag">homestay <button onclick="removeKw(this)">✕</button></div>
+          <div class="kw-tag">kodaikanal stay <button onclick="removeKw(this)">✕</button></div>
+          <input type="text" id="kwInput" class="kw-input" placeholder="Type keyword & press Enter..." onkeydown="addKw(event)">
+        </div>
+        <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px">Keywords help customers find your business in search. Add terms people might search for.</p>
+      </div>
+
+      <!-- Services (Pro only) -->
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-list-check"></i> Services List <span style="font-size:0.72rem;font-weight:400;color:var(--purple);margin-left:4px">(Pro only)</span></div>
+        <div id="services-lock-notice" class="plan-lock-notice">
+          <i class="bi bi-lock-fill"></i>
+          Services list requires <strong>Pro</strong> plan. <a href="#" onclick="goStep(1);return false">Upgrade →</a>
+        </div>
+        <div class="service-list" id="serviceList">
+          <div class="service-item"><span>Room booking (AC / Non-AC)</span><button onclick="this.parentElement.remove()"><i class="bi bi-trash"></i></button></div>
+          <div class="service-item"><span>Home-cooked meals</span><button onclick="this.parentElement.remove()"><i class="bi bi-trash"></i></button></div>
+        </div>
+        <button class="btn-add-service" onclick="addService()"><i class="bi bi-plus-lg"></i> Add Service</button>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-prev" onclick="goStep(2)"><i class="bi bi-arrow-left"></i> Back</button>
+        <button class="btn-next" onclick="goStep(4)">Next: Review & Submit <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 4: REVIEW ═══ -->
+    <div class="form-step" id="form-step-4">
+      <div class="form-card">
+        <div class="form-card-title"><i class="bi bi-check2-circle"></i> Review Your Listing</div>
+        <div id="reviewSummary" style="font-size:0.88rem;color:var(--text-mid);line-height:1.8"></div>
+
+        <div style="background:var(--amber-light);border-radius:10px;padding:14px;margin-top:16px;display:flex;gap:10px;align-items:flex-start">
+          <i class="bi bi-info-circle-fill" style="color:var(--amber);font-size:1.1rem;flex-shrink:0;margin-top:2px"></i>
+          <div>
+            <strong style="font-size:0.85rem;color:var(--amber)">Admin Approval Required</strong>
+            <p style="font-size:0.78rem;color:var(--text-mid);margin-top:2px">Your listing will be reviewed by the Kodaikanal city admin within 24 hours. You'll be notified once approved.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <label class="filter-check" style="margin-bottom:10px"><input type="checkbox" id="terms"> <span style="font-size:0.83rem;color:var(--text-mid)">I agree to the <a href="#" style="color:var(--purple)">Terms of Service</a> and confirm that all information is accurate.</span></label>
+        </div>
+
+        <div class="form-nav" style="margin-top:8px">
+          <button class="btn-prev" onclick="goStep(3)"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-next" onclick="submitForm()" style="background:var(--green)"><i class="bi bi-send-fill"></i> Submit Listing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✓</div>
+      <h2>Listing Submitted!</h2>
+      <p>Your business listing has been submitted successfully. Our Kodaikanal admin team will review and approve it within <strong>24 hours</strong>.</p>
+      <div class="success-actions">
+        <button class="btn-next" onclick="location.href='dashboard.html'"><i class="bi bi-grid-1x2"></i> Go to Dashboard</button>
+        <button class="btn-prev" onclick="location.href='index.html'"><i class="bi bi-house"></i> Back to Home</button>
+      </div>
+    </div>
+
+  </div><!-- end form-steps-wrap -->
+
+  <!-- Preview Sidebar -->
+  <div class="preview-sidebar">
+    <div class="preview-label">Live Preview</div>
+    <div class="preview-card">
+      <div class="preview-card-thumb" id="prevThumb">
+        🏡
+        <span class="preview-plan-badge" id="prevPlan">Premium</span>
+      </div>
+      <div class="preview-body">
+        <h3 id="prevName">Your Business Name</h3>
+        <p id="prevCat" style="font-size:0.72rem;color:var(--purple);font-weight:600;margin-bottom:4px">Category</p>
+        <p id="prevDesc" style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px">Your business description will appear here...</p>
+        <div class="preview-meta"><i class="bi bi-geo-alt-fill" style="color:var(--maroon)"></i> Kodaikanal</div>
+        <div class="preview-actions">
+          <div class="prev-btn-call"><i class="bi bi-telephone-fill"></i> Call</div>
+          <div class="prev-btn-wa"><i class="bi bi-whatsapp"></i></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:10px;padding:0 4px">This is how your listing will look to visitors</p>
+  </div>
+</div>
+
+<nav class="mobile-bottom-bar">
+  <button class="mb-btn" onclick="location.href='index.html'"><i class="bi bi-house-fill"></i><span>Home</span></button>
+  <button class="mb-btn"><div class="mb-btn-menu"><i class="bi bi-grid-3x3"></i></div></button>
+  <button class="mb-btn" onclick="location.href='dashboard.html'"><i class="bi bi-person-circle"></i><span>Profile</span></button>
+</nav>
+
+<script>
+let currentStep = 2;
+let selectedPlan = 'premium';
+const planOrder = ['free','basic','premium','pro'];
+
+// ── Step navigation ──────────────────────────────────
+function goStep(n) {
+  document.getElementById('form-step-' + currentStep).classList.remove('active');
+  // Update step indicators
+  for (let i = 1; i <= 4; i++) {
+    const ind = document.getElementById('step-ind-' + i);
+    ind.className = 'step';
+    if (i < n) { ind.classList.add('done'); ind.querySelector('.step-circle').innerHTML = '<i class="bi bi-check-lg"></i>'; }
+    else if (i === n) { ind.classList.add('active'); ind.querySelector('.step-circle').innerHTML = i; }
+    else ind.querySelector('.step-circle').textContent = i;
+  }
+  currentStep = n;
+  document.getElementById('form-step-' + n).classList.add('active');
+  if (n === 4) buildReviewSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Plan selection ───────────────────────────────────
+function selectPlan(card) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedPlan = card.dataset.plan;
+  updatePlanLocks();
+  updatePreview();
+}
+
+function planGte(required) {
+  return planOrder.indexOf(selectedPlan) >= planOrder.indexOf(required);
+}
+
+function updatePlanLocks() {
+  const locks = {
+    'wa-field': 'basic', 'email-field': 'basic', 'address-field': 'basic',
+    'website-field': 'premium', 'fb-field': 'premium', 'ig-field': 'premium',
+    'yt-field': 'pro'
+  };
+  for (const [id, req] of Object.entries(locks)) {
+    const el = document.getElementById(id);
+    if (el) el.className = planGte(req) ? '' : 'locked-field';
+  }
+  // Notices
+  const photoNotice = document.getElementById('photo-lock-notice');
+  if (photoNotice) photoNotice.style.display = planGte('premium') ? 'none' : 'flex';
+  const kwNotice = document.getElementById('kw-lock-notice');
+  if (kwNotice) kwNotice.style.display = planGte('premium') ? 'none' : 'flex';
+  const svcNotice = document.getElementById('services-lock-notice');
+  if (svcNotice) svcNotice.style.display = planGte('pro') ? 'none' : 'flex';
+  // Upload zone
+  const uz = document.getElementById('uploadZone');
+  if (uz) uz.style.opacity = planGte('premium') ? '1' : '0.4';
+  document.getElementById('prevPlan').textContent = {free:'Free',basic:'Basic',premium:'Premium',pro:'Pro'}[selectedPlan];
+  document.getElementById('prevPlan').className = 'preview-plan-badge plan-' + selectedPlan;
+}
+
+// ── Live Preview ─────────────────────────────────────
+function updatePreview() {
+  const name = document.getElementById('bizName')?.value || 'Your Business Name';
+  const cat  = document.getElementById('bizCat')?.value  || 'Category';
+  const desc = document.getElementById('bizDesc')?.value || 'Your business description will appear here...';
+  document.getElementById('prevName').textContent = name || 'Your Business Name';
+  document.getElementById('prevCat').textContent  = cat  || 'Category';
+  document.getElementById('prevDesc').textContent = desc.slice(0, 90) + (desc.length > 90 ? '…' : '') || 'Your business description...';
+}
+
+// ── Char count ───────────────────────────────────────
+function updateCharCount(el, max) {
+  const count = document.getElementById('descCount');
+  if (count) count.textContent = el.value.length + ' / ' + max;
+}
+
+// ── Keywords ─────────────────────────────────────────
+function addKw(e) {
+  if (e.key !== 'Enter' && e.key !== ',') return;
+  e.preventDefault();
+  const input = document.getElementById('kwInput');
+  const val = input.value.trim().replace(/,$/, '');
+  if (!val) return;
+  const tag = document.createElement('div');
+  tag.className = 'kw-tag';
+  tag.innerHTML = `${val} <button onclick="removeKw(this)">✕</button>`;
+  document.getElementById('kwWrap').insertBefore(tag, input);
+  input.value = '';
+}
+function removeKw(btn) { btn.parentElement.remove(); }
+
+// ── Services ─────────────────────────────────────────
+function addService() {
+  const svc = prompt('Enter service name:');
+  if (!svc) return;
+  const item = document.createElement('div');
+  item.className = 'service-item';
+  item.innerHTML = `<span>${svc}</span><button onclick="this.parentElement.remove()"><i class="bi bi-trash"></i></button>`;
+  document.getElementById('serviceList').appendChild(item);
+}
+
+// ── File upload ──────────────────────────────────────
+function handleFiles(input) {
+  if (!planGte('premium')) return;
+  const previews = document.getElementById('imagePreviews');
+  [...input.files].slice(0, 5).forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'img-preview';
+      div.style.backgroundImage = `url(${e.target.result})`;
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'center';
+      div.innerHTML = `<button class="remove-img" onclick="this.parentElement.remove()">✕</button>`;
+      previews.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+const uz = document.getElementById('uploadZone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('dragover'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('dragover'));
+uz.addEventListener('drop', e => { e.preventDefault(); uz.classList.remove('dragover'); if (planGte('premium')) handleFiles({ files: e.dataTransfer.files }); });
+
+// ── Review summary ────────────────────────────────────
+function buildReviewSummary() {
+  const name = document.getElementById('bizName')?.value || '(not filled)';
+  const cat  = document.getElementById('bizCat')?.value  || '(not filled)';
+  const desc = document.getElementById('bizDesc')?.value || '(not filled)';
+  document.getElementById('reviewSummary').innerHTML = `
+    <table style="width:100%;border-collapse:collapse">
+      <tr><td style="padding:6px 0;color:var(--text-muted);width:130px;font-size:0.78rem;font-weight:600">Plan</td><td><span class="plan-tag plan-${selectedPlan}">${{free:'Free',basic:'Basic',premium:'Premium',pro:'Pro'}[selectedPlan]}</span></td></tr>
+      <tr><td style="padding:6px 0;color:var(--text-muted);font-size:0.78rem;font-weight:600">Business Name</td><td>${name}</td></tr>
+      <tr><td style="padding:6px 0;color:var(--text-muted);font-size:0.78rem;font-weight:600">Category</td><td>${cat}</td></tr>
+      <tr><td style="padding:6px 0;color:var(--text-muted);font-size:0.78rem;font-weight:600">Description</td><td>${desc.slice(0,80)}${desc.length>80?'…':''}</td></tr>
+      <tr><td style="padding:6px 0;color:var(--text-muted);font-size:0.78rem;font-weight:600">City</td><td>Kodaikanal</td></tr>
+    </table>`;
+}
+
+// ── Submit ────────────────────────────────────────────
+function submitForm() {
+  if (!document.getElementById('terms').checked) {
+    alert('Please agree to the terms to continue.');
+    return;
+  }
+  document.getElementById('form-step-4').classList.remove('active');
+  document.querySelectorAll('.step').forEach((s, i) => { s.className = 'step done'; s.querySelector('.step-circle').innerHTML = '<i class="bi bi-check-lg"></i>'; });
+  document.getElementById('successScreen').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Header scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Init
+updatePlanLocks();
+</script>
+</body>
+</html>
