@@ -30,13 +30,18 @@ class CategoryController extends Controller
         $this->verifyCsrf();
         $name = $this->sanitize($this->input('name', ''));
         if ($name) {
-            $this->model->create([
+            $data = [
                 'name'        => $name,
                 'slug'        => Helper::slug($name),
                 'description' => $this->sanitize($this->input('description', '')),
                 'sort_order'  => (int) $this->input('sort_order', 0),
                 'status'      => $this->input('status', 'active'),
-            ]);
+            ];
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $uploaded = Helper::uploadFile($_FILES['image'], 'categories');
+                if ($uploaded) $data['image'] = $uploaded;
+            }
+            $this->model->create($data);
             Helper::flash('success', 'Category created.');
         }
         $this->redirect(BASE_URL . '/admin/categories');
@@ -48,13 +53,18 @@ class CategoryController extends Controller
         $this->verifyCsrf();
         $id   = (int) $this->input('id');
         $name = $this->sanitize($this->input('name', ''));
-        $this->model->update($id, [
+        $data = [
             'name'        => $name,
             'slug'        => Helper::slug($name),
             'description' => $this->sanitize($this->input('description', '')),
             'sort_order'  => (int) $this->input('sort_order', 0),
             'status'      => $this->input('status', 'active'),
-        ]);
+        ];
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploaded = Helper::uploadFile($_FILES['image'], 'categories');
+            if ($uploaded) $data['image'] = $uploaded;
+        }
+        $this->model->update($id, $data);
         Helper::flash('success', 'Category updated.');
         $this->redirect(BASE_URL . '/admin/categories');
     }

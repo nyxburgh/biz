@@ -1,0 +1,1 @@
+ALTER TABLE categories ADD COLUMN image varchar(255) DEFAULT NULL AFTER slug;

@@ -1,0 +1,15 @@
+Options -Indexes
+RewriteEngine On
+RewriteBase /nyxburgh/biz/
+
+# ── Admin
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^admin(/.*)?$ admin/index.php [QSA,L]
+
+# ── City subfolder: /cities/{slug}/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^cities/([^/]+)(/.*)?$ cities/$1/index.php [QSA,L]
+
+# ── Main landing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]

@@ -22,6 +22,9 @@ $extraCss = <<<'ENDCSS'
 .c-call{background:var(--green-light);color:var(--green)}.c-call:hover{background:var(--green);color:#fff}
 .c-wa{background:#dcfce7;color:#16a34a}.c-wa:hover{background:#16a34a;color:#fff}
 .c-web{background:var(--purple-light);color:var(--primary)}.c-web:hover{background:var(--primary);color:#fff}
+.c-fb{background:#e7f3ff;color:#1877f2}.c-fb:hover{background:#1877f2;color:#fff}
+.c-ig{background:#fff3f8;color:#dc2743}.c-ig:hover{background:linear-gradient(45deg,#f09433,#dc2743);color:#fff}
+.c-map{background:#fef3c7;color:#8B4513}.c-map:hover{background:#8B4513;color:#fff}
 .rev-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:9px}
 .rev-form{background:var(--sand-light);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
 .star-row{display:flex;gap:5px;margin-bottom:12px}
@@ -31,8 +34,19 @@ $extraCss = <<<'ENDCSS'
 .rel-card:hover{transform:translateY(-2px)}
 .qr-box{text-align:center;padding:14px 0}
 .qr-box img{width:120px;height:120px;border-radius:8px}
-.share-url{background:var(--sand-light);border-radius:9px;padding:10px 12px;font-size:0.75rem;color:var(--text-muted);word-break:break-all;margin-top:8px;cursor:pointer;border:1px solid var(--border)}
+.share-url{background:var(--sand-light);border-radius:9px;padding:10px 12px;font-size:0.75rem;color:var(--primary);word-break:break-all;margin-top:8px;cursor:pointer;border:1px solid var(--border);display:block;text-decoration:none;transition:var(--transition)}
+.share-url:hover{background:#fff;text-decoration:underline}
 .archived-banner{background:#fee2e2;border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:14px}
+.l-hero{position:relative}
+.hero-actions{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:20}
+.btn-circle{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);color:var(--text-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s}
+.btn-circle:hover{transform:scale(1.1);background:#fff}
+.share-menu{position:absolute;top:42px;right:0;background:#fff;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,0.15);width:170px;display:none;z-index:100;overflow:hidden;border:1px solid rgba(0,0,0,0.05)}
+.share-menu.active{display:block}
+.share-item{display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text-dark);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.2s;border-bottom:1px solid var(--sand-dark);background:none;width:100%;text-align:left;border-left:none;border-right:none;border-top:none;cursor:pointer}
+.share-item:last-child{border-bottom:none}
+.share-item:hover{background:var(--sand-light);color:var(--primary)}
+.share-item i{font-size:1.05rem;opacity:0.8}
 .login-prompt{background:var(--purple-light);border-radius:10px;padding:14px;font-size:0.85rem;margin-bottom:14px;text-align:center}
 .login-prompt a{color:var(--primary);font-weight:600}
 @media(max-width:768px){.listing-grid{grid-template-columns:1fr}}
@@ -58,6 +72,20 @@ require CITY_DIR . "/views/layout/header.php";
 <div class="listing-grid">
 <div>
   <div class="l-hero">
+    <div class="hero-actions">
+      <div style="position:relative">
+        <button class="btn-circle share-trigger"><i class="bi bi-share"></i></button>
+        <div class="share-menu">
+          <div class="share-item" onclick="copyUrl()"><i class="bi bi-link-45deg" style="color:#64748b"></i> Link</div>
+          <a href="mailto:?subject=<?= urlencode($listing["business_name"]) ?>&body=<?= urlencode($listing["business_name"] . "\r\nListing: " . $listingUrl) ?>" class="share-item"><i class="bi bi-envelope" style="color:#ef4444"></i> Email</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($listingUrl) ?>" target="_blank" class="share-item"><i class="bi bi-facebook" style="color:#1877f2"></i> Facebook</a>
+          <a href="https://www.instagram.com/" target="_blank" class="share-item"><i class="bi bi-instagram" style="color:#dc2743"></i> Instagram</a>
+          <a href="https://twitter.com/intent/tweet?url=<?= urlencode($listingUrl) ?>&text=<?= urlencode($listing["business_name"]) ?>" target="_blank" class="share-item"><i class="bi bi-twitter" style="color:#1da1f2"></i> Twitter</a>
+          <a href="https://wa.me/?text=<?= urlencode($listing["business_name"] . "\r\n" . $listingUrl) ?>" target="_blank" class="share-item"><i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp</a>
+        </div>
+      </div>
+      <button class="btn-circle"><i class="bi bi-heart"></i></button>
+    </div>
     <?php if($listing["top_banner"] && in_array($listing["plan_level"],["premium","pro"])): ?>
     <div class="l-banner-wrap"><img src="<?= BASE_URL ?>/assets/uploads/listings/<?= htmlspecialchars($listing["top_banner"]) ?>" class="l-banner" alt=""></div>
     <?php elseif(!empty($images) && in_array($listing["plan_level"],["premium","pro"])): ?>
@@ -195,27 +223,49 @@ require CITY_DIR . "/views/layout/header.php";
       <div><div style="font-size:0.7rem;opacity:.75">Website</div><div>Visit Website</div></div>
     </a>
     <?php endif ?>
+    <?php if($listing["facebook"] && in_array($listing["plan_level"],["premium","pro"])): ?>
+    <a href="<?= htmlspecialchars($listing["facebook"]) ?>" target="_blank" class="c-btn c-fb">
+      <i class="bi bi-facebook" style="font-size:1.1rem"></i>
+      <div><div style="font-size:0.7rem;opacity:.75">Facebook</div><div>Visit Profile</div></div>
+    </a>
+    <?php endif ?>
+    <?php if($listing["instagram"] && in_array($listing["plan_level"],["premium","pro"])): ?>
+    <a href="<?= htmlspecialchars($listing["instagram"]) ?>" target="_blank" class="c-btn c-ig">
+      <i class="bi bi-instagram" style="font-size:1.1rem"></i>
+      <div><div style="font-size:0.7rem;opacity:.75">Instagram</div><div>Follow Us</div></div>
+    </a>
+    <?php endif ?>
+    <?php if($listing["address"] && in_array($listing["plan_level"],["premium","pro"])): ?>
+    <a href="https://maps.google.com/maps?q=<?= urlencode($listing["address"]) ?>" target="_blank" class="c-btn c-map">
+      <i class="bi bi-geo-alt-fill" style="font-size:1.1rem"></i>
+      <div><div style="font-size:0.7rem;opacity:.75">Directions</div><div>View on Map</div></div>
+    </a>
+    <?php endif ?>
   </div>
 
   <!-- QR + Share (basic/premium/pro only) -->
   <?php if(in_array($listing["plan_level"],["basic","premium","pro"])): ?>
   <div class="icard">
-    <h3><i class="bi bi-share" style="color:var(--primary)"></i>Share</h3>
+    <div style="position:relative">
+      <h3 class="share-trigger" style="cursor:pointer;margin-bottom:12px;display:inline-flex;align-items:center;gap:7px;color:var(--primary)">
+        <i class="bi bi-share"></i>Share
+      </h3>
+      <div class="share-menu" style="top:30px;right:auto;left:0">
+        <div class="share-item" onclick="copyUrl()"><i class="bi bi-link-45deg" style="color:#64748b"></i> Link</div>
+        <a href="mailto:?subject=<?= urlencode($listing["business_name"]) ?>&body=<?= urlencode($listing["business_name"] . "\r\nListing: " . $listingUrl) ?>" class="share-item"><i class="bi bi-envelope" style="color:#ef4444"></i> Email</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($listingUrl) ?>" target="_blank" class="share-item"><i class="bi bi-facebook" style="color:#1877f2"></i> Facebook</a>
+        <a href="https://www.instagram.com/" target="_blank" class="share-item"><i class="bi bi-instagram" style="color:#dc2743"></i> Instagram</a>
+        <a href="https://twitter.com/intent/tweet?url=<?= urlencode($listingUrl) ?>&text=<?= urlencode($listing["business_name"]) ?>" target="_blank" class="share-item"><i class="bi bi-twitter" style="color:#1da1f2"></i> Twitter</a>
+        <a href="https://wa.me/?text=<?= urlencode($listing["business_name"] . "\r\n" . $listingUrl) ?>" target="_blank" class="share-item"><i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp</a>
+      </div>
+    </div>
     <div class="qr-box">
       <img src="<?= htmlspecialchars($qrUrl) ?>" alt="QR Code" loading="lazy">
       <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px">Scan to open this page</p>
     </div>
-    <div class="share-url" onclick="copyUrl()" title="Click to copy">
+    <a href="<?= htmlspecialchars($listingUrl) ?>" target="_blank" class="share-url" title="Click to open">
       <i class="bi bi-link-45deg me-1"></i><?= htmlspecialchars($listingUrl) ?>
-    </div>
-    <?php if(in_array($listing["plan_level"],["premium","pro"])): ?>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <?php if($listing["facebook"]): ?><a href="<?= htmlspecialchars($listing["facebook"]) ?>" target="_blank" style="width:36px;height:36px;border-radius:9px;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem"><i class="bi bi-facebook"></i></a><?php endif ?>
-      <?php if($listing["instagram"]): ?><a href="<?= htmlspecialchars($listing["instagram"]) ?>" target="_blank" style="width:36px;height:36px;border-radius:9px;background:linear-gradient(45deg,#f09433,#dc2743);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem"><i class="bi bi-instagram"></i></a><?php endif ?>
-      <a href="https://api.whatsapp.com/send?text=<?= urlencode($listing["business_name"].' - '.$listingUrl) ?>" target="_blank" style="width:36px;height:36px;border-radius:9px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem"><i class="bi bi-whatsapp"></i></a>
-      <?php if($listing["address"]): ?><a href="https://maps.google.com/maps?q=<?= urlencode($listing["address"]) ?>" target="_blank" style="width:36px;height:36px;border-radius:9px;background:#8B4513;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem"><i class="bi bi-geo-alt-fill"></i></a><?php endif ?>
-    </div>
-    <?php endif ?>
+    </a>
   </div>
   <?php endif ?>
   <?php endif ?>
@@ -258,9 +308,26 @@ async function submitReview(lid) {
 }
 function showRE(msg){var e=document.getElementById("revErr");e.textContent=msg;e.style.display="block";setTimeout(function(){e.style.display="none";},4000);}
 function copyUrl() {
-  navigator.clipboard.writeText("<?= htmlspecialchars($listingUrl, ENT_QUOTES) ?>").then(function(){
-    alert("URL copied!");
-  }).catch(function(){ alert("<?= htmlspecialchars($listingUrl, ENT_QUOTES) ?>"); });
+  const text = "<?= addslashes($listing["business_name"]) ?>\nURL: <?= $listingUrl ?>";
+  navigator.clipboard.writeText(text).then(function(){
+    alert("Copied to clipboard!");
+  }).catch(function(){ alert(text); });
 }
+
+// Share dropdown logic
+document.querySelectorAll('.share-trigger').forEach(function(btn) {
+  btn.onclick = function(e) {
+    e.stopPropagation();
+    var menu = this.nextElementSibling;
+    // Close other menus
+    document.querySelectorAll('.share-menu').forEach(function(m){ if(m!==menu) m.classList.remove('active'); });
+    menu.classList.toggle('active');
+  };
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.share-trigger') && !e.target.closest('.share-menu')) {
+    document.querySelectorAll('.share-menu').forEach(function(m){ m.classList.remove('active'); });
+  }
+});
 </script>
 <?php require CITY_DIR . "/views/layout/footer.php"; ?>

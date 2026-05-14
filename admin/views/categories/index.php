@@ -37,7 +37,12 @@
         <tr><td colspan="7" class="text-center py-4 text-muted">No categories yet.</td></tr>
       <?php else: foreach ($pager['data'] as $cat): ?>
       <tr>
-        <td class="fw-600"><?= htmlspecialchars($cat['name']) ?></td>
+        <td class="fw-600 d-flex align-items-center">
+          <?php if(!empty($cat['image'])): ?>
+            <img src="<?= BASE_URL ?>/assets/uploads/categories/<?= htmlspecialchars($cat['image']) ?>" style="width:30px;height:30px;object-fit:cover;border-radius:6px;margin-right:8px" alt="">
+          <?php endif ?>
+          <?= htmlspecialchars($cat['name']) ?>
+        </td>
         <td><code><?= htmlspecialchars($cat['slug']) ?></code></td>
         <td><a href="<?= BASE_URL ?>/admin/categories/<?= $cat['id'] ?>/subcategories" class="badge bg-info text-decoration-none"><?= $cat['sub_count'] ?> subcats</a></td>
         <td><span class="badge bg-secondary"><?= $cat['listing_count'] ?></span></td>
@@ -47,6 +52,7 @@
           <div class="d-flex gap-1">
             <button class="btn btn-sm btn-op" data-bs-toggle="modal" data-bs-target="#editCatModal"
               data-id="<?= $cat['id'] ?>" data-name="<?= htmlspecialchars($cat['name'],ENT_QUOTES) ?>"
+              data-img="<?= htmlspecialchars($cat['image']??'', ENT_QUOTES) ?>"
               data-desc="<?= htmlspecialchars($cat['description']??'',ENT_QUOTES) ?>"
               data-sort="<?= $cat['sort_order'] ?>" data-status="<?= $cat['status'] ?>">
               <i class="bi bi-pencil"></i>
@@ -93,10 +99,11 @@
 </div>
 <div class="modal fade" id="addCatModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
   <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Add Category</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-  <form method="POST" action="<?= BASE_URL ?>/admin/categories/store">
+  <form method="POST" action="<?= BASE_URL ?>/admin/categories/store" enctype="multipart/form-data">
     <div class="modal-body">
       <input type="hidden" name="csrf_token" value="<?= $csrf ?>">
       <div class="mb-3"><label class="form-label fw-600">Name *</label><input type="text" name="name" class="form-control" required></div>
+      <div class="mb-3"><label class="form-label fw-600">Category Image</label><input type="file" name="image" class="form-control" accept="image/*"></div>
       <div class="mb-3"><label class="form-label fw-600">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
       <div class="row g-2">
         <div class="col-6"><label class="form-label fw-600">Sort Order</label><input type="number" name="sort_order" class="form-control" value="0"></div>
@@ -108,11 +115,16 @@
 </div></div></div>
 <div class="modal fade" id="editCatModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
   <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Category</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-  <form method="POST" action="<?= BASE_URL ?>/admin/categories/update">
+  <form method="POST" action="<?= BASE_URL ?>/admin/categories/update" enctype="multipart/form-data">
     <div class="modal-body">
       <input type="hidden" name="csrf_token" value="<?= $csrf ?>">
       <input type="hidden" name="id" id="ecId">
       <div class="mb-3"><label class="form-label fw-600">Name *</label><input type="text" name="name" id="ecName" class="form-control" required></div>
+      <div class="mb-3">
+        <label class="form-label fw-600">Category Image</label>
+        <div id="ecImgPreview" class="mb-2"></div>
+        <input type="file" name="image" class="form-control" accept="image/*">
+      </div>
       <div class="mb-3"><label class="form-label fw-600">Description</label><textarea name="description" id="ecDesc" class="form-control" rows="2"></textarea></div>
       <div class="row g-2">
         <div class="col-6"><label class="form-label fw-600">Sort Order</label><input type="number" name="sort_order" id="ecSort" class="form-control"></div>
@@ -127,6 +139,9 @@ document.getElementById("editCatModal").addEventListener("show.bs.modal",functio
   var b=e.relatedTarget;
   document.getElementById("ecId").value=b.dataset.id;
   document.getElementById("ecName").value=b.dataset.name;
+  var preview = document.getElementById("ecImgPreview");
+  if(b.dataset.img) preview.innerHTML = \'<img src="' . BASE_URL . '/assets/uploads/categories/\' + b.dataset.img + \'" style="width:60px;height:60px;object-fit:cover;border-radius:6px">\';
+  else preview.innerHTML = \'\';
   document.getElementById("ecDesc").value=b.dataset.desc;
   document.getElementById("ecSort").value=b.dataset.sort;
   document.getElementById("ecStatus").value=b.dataset.status;

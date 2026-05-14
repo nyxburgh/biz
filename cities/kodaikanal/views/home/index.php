@@ -120,6 +120,24 @@ $extraCss = '<style>
 require CITY_DIR . '/views/layout/header.php';
 $catIcons = ['Restaurants'=>'bi-shop','Hotels & Stays'=>'bi-building','Shopping'=>'bi-bag-heart','Health & Clinic'=>'bi-heart-pulse','Services'=>'bi-tools','Education'=>'bi-mortarboard','Automobile'=>'bi-car-front','Photography'=>'bi-camera'];
 $catColors = ['ic-purple','ic-green','ic-maroon','ic-teal','ic-amber','ic-purple','ic-green','ic-maroon'];
+$catImages = [
+    'Restaurants' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=150&q=80',
+    'Hotels' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=150&q=80',
+    'Hotels & Stays' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=150&q=80',
+    'Shopping' => 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=150&q=80',
+    'Health & Clinic' => 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=150&q=80',
+    'Services' => 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=150&q=80',
+    'Education' => 'https://images.unsplash.com/photo-1524901548305-08eeddc35080?auto=format&fit=crop&w=150&q=80',
+    'Automobile' => 'https://images.unsplash.com/photo-1503375894024-757e5eab9baf?auto=format&fit=crop&w=150&q=80',
+    'Photography' => 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=150&q=80',
+    'Travels' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80',
+    'Cafe' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=150&q=80',
+    'Chocolate shops' => 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=150&q=80',
+    'Bakery' => 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=150&q=80',
+    'Stationery' => 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=150&q=80',
+    'tent House' => 'https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?auto=format&fit=crop&w=150&q=80',
+    'Restaurant' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=150&q=80'
+];
 $listingImage = function(array $ad): string {
     $file = $ad['top_banner'] ?? ($ad['first_image'] ?? '');
     return BASE_URL . '/assets/uploads/listings/' . htmlspecialchars($file ?: 'demo.jpg');
@@ -143,7 +161,16 @@ $listingImage = function(array $ad): string {
   <div class="cat-grid">
     <?php foreach($categories as $i=>$cat): ?>
     <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="cat-card">
-      <div class="cat-icon <?= $catColors[$i%count($catColors)] ?>"><i class="bi <?= $catIcons[$cat['name']] ?? 'bi-shop' ?>"></i></div>
+      <?php
+      if (!empty($cat['image'])) {
+          $cimg = BASE_URL . '/assets/uploads/categories/' . $cat['image'];
+      } else {
+          $cimg = $catImages[$cat['name']] ?? 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=150&q=80';
+      }
+      ?>
+      <div style="width:50px;height:50px;margin:0 auto 8px;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.06)">
+        <img src="<?= htmlspecialchars($cimg) ?>" style="width:100%;height:100%;object-fit:cover;display:block" alt="<?= htmlspecialchars($cat['name']) ?>">
+      </div>
       <h4><?= htmlspecialchars($cat['name']) ?></h4>
       <span><?= $cat['listing_count'] ?> listings</span>
     </a>
