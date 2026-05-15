@@ -54,7 +54,8 @@ $flashI = Helper::getFlash('info');
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden;-webkit-text-size-adjust:100%}
-body{font-family:'DM Sans',sans-serif;background:var(--sand-light);color:var(--text-dark);font-size:15px;line-height:1.6;padding-top:var(--header-h);overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--sand-light);color:var(--text-dark);font-size:15px;line-height:1.6;padding-top:var(--header-h);overflow-x:hidden;display:flex;flex-direction:column;min-height:100vh}
+main{flex:1}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;height:auto}
 .site-header{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--header-h);background:rgba(250,246,240,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px}
@@ -156,7 +157,6 @@ img{max-width:100%;height:auto}
     <a href="<?= $cityUrl ?>/dashboard" class="mb-btn <?= ($activePage??'')==='dashboard'?'active':'' ?>"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a>
     <a href="<?= $cityUrl ?>/logout" class="mb-btn"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
   <?php else: ?>
-    <a href="<?= $cityUrl ?>/login" class="mb-btn <?= ($activePage??'')==='login'?'active':'' ?>"><i class="bi bi-person-circle"></i><span>Login</span></a>
-    <a href="<?= $cityUrl ?>/search" class="mb-btn"><i class="bi bi-bookmark"></i><span>Saved</span></a>
+    <a href="<?= $cityUrl ?>/post-ad" class="mb-btn <?= ($activePage??'')==='post-ad'?'active':'' ?>"><i class="bi bi-plus-lg"></i><span>Post Ad</span></a>
   <?php endif ?>
 </nav>

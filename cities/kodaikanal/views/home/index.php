@@ -17,14 +17,24 @@ $extraCss = '<style>
 .main-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px}
 .main-grid>div:first-child{min-width:0}
 .section-title{font-family:"Syne",sans-serif;font-weight:700;font-size:1rem;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
-.cat-card{background:#fff;border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);text-decoration:none;display:block;color:inherit}
-.cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.cat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 8px}
-.ic-purple{background:var(--purple-light);color:var(--purple)}.ic-green{background:var(--green-light);color:var(--green)}
-.ic-maroon{background:var(--maroon-light);color:var(--maroon)}.ic-teal{background:var(--teal-light);color:var(--teal)}.ic-amber{background:var(--amber-light);color:var(--amber)}
-.cat-card h4{font-family:"Syne",sans-serif;font-weight:700;font-size:0.75rem;color:var(--text-dark);margin-bottom:2px}
-.cat-card span{font-size:0.68rem;color:var(--text-muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.section-head .section-title{margin-bottom:0}
+.see-all{font-size:0.85rem;font-weight:700;color:var(--purple);text-decoration:none;opacity:.92;transition:var(--transition)}
+.see-all:hover{color:var(--primary);opacity:1}
+.category-panel{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:28px;box-shadow:0 24px 60px rgba(45,23,105,0.14);padding:18px;overflow:hidden;margin-bottom:24px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:0}
+.category-card{display:block;border-radius:24px;overflow:hidden;position:relative;min-height:220px;box-shadow:0 16px 45px rgba(15,23,57,0.12);transition:transform 0.4s ease,box-shadow 0.4s ease;border:1px solid rgba(255,255,255,0.16);background:#111}
+.category-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 22px 60px rgba(15,23,57,0.18);border-color:rgba(255,255,255,0.22)}
+.cat-img{position:relative;height:220px;background-size:cover;background-position:center center;display:flex;align-items:flex-end;overflow:hidden}
+.cat-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,52,0.08),rgba(0,0,0,0.62));opacity:1;transition:opacity 0.3s ease}
+.cat-info{position:absolute;bottom:18px;left:18px;right:18px;z-index:2;color:#fff}
+.cat-title{font-family:"Syne",sans-serif;font-weight:800;font-size:1.05rem;margin:0 0 4px;line-height:1.1;text-shadow:0 10px 30px rgba(0,0,0,0.35)}
+.cat-count{font-size:0.8rem;color:rgba(255,255,255,0.82);letter-spacing:0.02em}
+.category-card:hover .cat-img::after{background:linear-gradient(180deg,rgba(8,18,52,0.12),rgba(0,0,0,0.72))}
+@media(max-width:1024px){.category-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding-bottom:6px;margin-bottom:0}
+.category-card{min-width:0;max-width:none;flex:none;scroll-snap-align:none}}
+@media(max-width:540px){.category-grid{grid-template-columns:1fr;gap:12px}.cat-img{height:170px}}
 .ads-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .ad-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:var(--transition);text-decoration:none;display:block;color:inherit}
 .ad-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
@@ -121,22 +131,23 @@ require CITY_DIR . '/views/layout/header.php';
 $catIcons = ['Restaurants'=>'bi-shop','Hotels & Stays'=>'bi-building','Shopping'=>'bi-bag-heart','Health & Clinic'=>'bi-heart-pulse','Services'=>'bi-tools','Education'=>'bi-mortarboard','Automobile'=>'bi-car-front','Photography'=>'bi-camera'];
 $catColors = ['ic-purple','ic-green','ic-maroon','ic-teal','ic-amber','ic-purple','ic-green','ic-maroon'];
 $catImages = [
-    'Restaurants' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=150&q=80',
-    'Hotels' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=150&q=80',
-    'Hotels & Stays' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=150&q=80',
-    'Shopping' => 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=150&q=80',
-    'Health & Clinic' => 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=150&q=80',
-    'Services' => 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=150&q=80',
-    'Education' => 'https://images.unsplash.com/photo-1524901548305-08eeddc35080?auto=format&fit=crop&w=150&q=80',
-    'Automobile' => 'https://images.unsplash.com/photo-1503375894024-757e5eab9baf?auto=format&fit=crop&w=150&q=80',
-    'Photography' => 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=150&q=80',
-    'Travels' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80',
-    'Cafe' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=150&q=80',
-    'Chocolate shops' => 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=150&q=80',
-    'Bakery' => 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=150&q=80',
-    'Stationery' => 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=150&q=80',
-    'tent House' => 'https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?auto=format&fit=crop&w=150&q=80',
-    'Restaurant' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=150&q=80'
+    'Travels' => 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+    'Travel' => 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+    'Hotels' => 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80',
+    'Hotel' => 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80',
+    'Hotels & Stays' => 'https://images.unsplash.com/photo-1551882547-ff46d4462ae1?auto=format&fit=crop&w=1200&q=80',
+    'Cafe' => 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+    'Cafes' => 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+    'Restaurant' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+    'Restaurants' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+    'Bakery' => 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80',
+    'Photography' => 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80',
+    'Shopping' => 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80',
+    'Health & Clinic' => 'https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=1200&q=80',
+    'Services' => 'https://images.unsplash.com/photo-1559126763-55ef1198cc18?auto=format&fit=crop&w=1200&q=80',
+    'Education' => 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80',
+    'Automobile' => 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+    'Default' => 'https://images.unsplash.com/photo-1519821172141-bd4c0d3360c2?auto=format&fit=crop&w=1200&q=80'
 ];
 $listingImage = function(array $ad): string {
     $file = $ad['top_banner'] ?? ($ad['first_image'] ?? '');
@@ -157,24 +168,30 @@ $listingImage = function(array $ad): string {
 </section>
 <div class="main-wrap"><div class="main-grid">
 <div>
-  <h2 class="section-title"><i class="bi bi-grid-fill" style="color:var(--primary)"></i> Categories</h2>
-  <div class="cat-grid">
-    <?php foreach($categories as $i=>$cat): ?>
-    <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="cat-card">
+  <div class="category-panel">
+    <div class="section-head">
+      <h2 class="section-title"><i class="bi bi-grid-fill" style="color:var(--primary)"></i> Categories</h2>
+      <a href="<?= $cityUrl ?>/search" class="see-all">See All</a>
+    </div>
+    <div class="category-grid">
+      <?php foreach($categories as $i=>$cat): ?>
       <?php
-      if (!empty($cat['image'])) {
-          $cimg = BASE_URL . '/assets/uploads/categories/' . $cat['image'];
-      } else {
-          $cimg = $catImages[$cat['name']] ?? 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=150&q=80';
-      }
+        if (!empty($cat['image'])) {
+            $cimg = BASE_URL . '/assets/uploads/categories/' . $cat['image'];
+        } else {
+            $cimg = $catImages[$cat['name']] ?? $catImages[strtolower($cat['name'])] ?? $catImages['default'];
+        }
       ?>
-      <div style="width:50px;height:50px;margin:0 auto 8px;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.06)">
-        <img src="<?= htmlspecialchars($cimg) ?>" style="width:100%;height:100%;object-fit:cover;display:block" alt="<?= htmlspecialchars($cat['name']) ?>">
-      </div>
-      <h4><?= htmlspecialchars($cat['name']) ?></h4>
-      <span><?= $cat['listing_count'] ?> listings</span>
-    </a>
-    <?php endforeach ?>
+      <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="category-card">
+        <div class="cat-img" style="background-image:url('<?= htmlspecialchars($cimg) ?>')">
+          <div class="cat-info">
+            <h3 class="cat-title"><?= htmlspecialchars($cat['name']) ?></h3>
+            <p class="cat-count"><?= $cat['listing_count'] ?> listings</p>
+          </div>
+        </div>
+      </a>
+      <?php endforeach ?>
+    </div>
   </div>
   <?php if(!empty($banners)): ?>
   <h2 class="section-title"><i class="bi bi-star-fill" style="color:var(--amber)"></i> Featured Businesses</h2>

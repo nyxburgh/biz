@@ -15,14 +15,24 @@ $extraCss = '<style>
 .main-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px}
 .main-grid>div:first-child{min-width:0}
 .section-title{font-family:"Syne",sans-serif;font-weight:700;font-size:1rem;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
-.cat-card{background:#fff;border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);text-decoration:none;display:block;color:inherit}
-.cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.cat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 8px}
-.ic-purple{background:var(--purple-light);color:var(--purple)}.ic-green{background:var(--green-light);color:var(--green)}
-.ic-maroon{background:var(--maroon-light);color:var(--maroon)}.ic-teal{background:var(--teal-light);color:var(--teal)}.ic-amber{background:var(--amber-light);color:var(--amber)}
-.cat-card h4{font-family:"Syne",sans-serif;font-weight:700;font-size:0.75rem;color:var(--text-dark);margin-bottom:2px}
-.cat-card span{font-size:0.68rem;color:var(--text-muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.section-head .section-title{margin-bottom:0}
+.see-all{font-size:0.85rem;font-weight:700;color:var(--purple);text-decoration:none;opacity:.92;transition:var(--transition)}
+.see-all:hover{color:var(--primary);opacity:1}
+.category-panel{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:28px;box-shadow:0 24px 60px rgba(45,23,105,0.14);padding:18px;overflow:hidden;margin-bottom:24px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:0}
+.category-card{display:block;border-radius:24px;overflow:hidden;position:relative;min-height:220px;box-shadow:0 16px 45px rgba(15,23,57,0.12);transition:transform 0.4s ease,box-shadow 0.4s ease;border:1px solid rgba(255,255,255,0.16);background:#111}
+.category-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 22px 60px rgba(15,23,57,0.18);border-color:rgba(255,255,255,0.22)}
+.cat-img{position:relative;height:220px;background-size:cover;background-position:center center;display:flex;align-items:flex-end;overflow:hidden}
+.cat-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,52,0.08),rgba(0,0,0,0.62));opacity:1;transition:opacity 0.3s ease}
+.cat-info{position:absolute;bottom:18px;left:18px;right:18px;z-index:2;color:#fff}
+.cat-title{font-family:"Syne",sans-serif;font-weight:800;font-size:1.05rem;margin:0 0 4px;line-height:1.1;text-shadow:0 10px 30px rgba(0,0,0,0.35)}
+.cat-count{font-size:0.8rem;color:rgba(255,255,255,0.82);letter-spacing:0.02em}
+.category-card:hover .cat-img::after{background:linear-gradient(180deg,rgba(8,18,52,0.12),rgba(0,0,0,0.72))}
+@media(max-width:1024px){.category-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding-bottom:6px;margin-bottom:0}
+.category-card{min-width:0;max-width:none;flex:none;scroll-snap-align:none}}
+@media(max-width:540px){.category-grid{grid-template-columns:1fr;gap:12px}.cat-img{height:170px}}
 .ads-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .ad-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:var(--transition);text-decoration:none;display:block;color:inherit}
 .ad-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
@@ -137,15 +147,30 @@ $listingImage = function(array $ad): string {
 </section>
 <div class="main-wrap"><div class="main-grid">
 <div>
-  <h2 class="section-title"><i class="bi bi-grid-fill" style="color:var(--primary)"></i> Categories</h2>
-  <div class="cat-grid">
-    <?php foreach($categories as $i=>$cat): ?>
-    <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="cat-card">
-      <div class="cat-icon <?= $catColors[$i%count($catColors)] ?>"><i class="bi <?= $catIcons[$cat['name']] ?? 'bi-shop' ?>"></i></div>
-      <h4><?= htmlspecialchars($cat['name']) ?></h4>
-      <span><?= $cat['listing_count'] ?> listings</span>
-    </a>
-    <?php endforeach ?>
+  <div class="category-panel">
+    <div class="section-head">
+      <h2 class="section-title"><i class="bi bi-grid-fill" style="color:var(--primary)"></i> Categories</h2>
+      <a href="<?= $cityUrl ?>/search" class="see-all">See All</a>
+    </div>
+    <div class="category-grid">
+      <?php foreach($categories as $i=>$cat): ?>
+      <?php
+        if (!empty($cat['image'])) {
+            $cimg = BASE_URL . '/assets/uploads/categories/' . $cat['image'];
+        } else {
+            $cimg = $catImages[$cat['name']] ?? $catImages[strtolower($cat['name'])] ?? $catImages['default'];
+        }
+      ?>
+      <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="category-card">
+        <div class="cat-img" style="background-image:url('<?= htmlspecialchars($cimg) ?>')">
+          <div class="cat-info">
+            <h3 class="cat-title"><?= htmlspecialchars($cat['name']) ?></h3>
+            <p class="cat-count"><?= $cat['listing_count'] ?> listings</p>
+          </div>
+        </div>
+      </a>
+      <?php endforeach ?>
+    </div>
   </div>
   <?php if(!empty($banners)): ?>
   <h2 class="section-title"><i class="bi bi-star-fill" style="color:var(--amber)"></i> Featured Businesses</h2>
