@@ -70,9 +70,12 @@ img{max-width:100%;height:auto}
 .btn-post{padding:8px 16px;border-radius:40px;background:var(--primary);color:#fff;border:none;cursor:pointer;font-size:0.85rem;font-weight:600;font-family:inherit;display:flex;align-items:center;gap:5px;transition:var(--transition)}
 .btn-post:hover{background:#6d28d9}
 .user-av{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.88rem;text-decoration:none}
-.mobile-bottom-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;height:var(--footer-h);background:rgba(250,246,240,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:env(safe-area-inset-bottom)}
-.mb-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:10px;cursor:pointer;background:none;border:none;color:var(--text-muted);font-family:inherit;-webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px;justify-content:center}
-.mb-btn span{font-size:0.58rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.mobile-bottom-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;height:var(--footer-h);background:rgba(250,246,240,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:env(safe-area-inset-bottom)}  .mobile-back-btn{display:none;position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid rgba(124,58,237,0.18);box-shadow:0 12px 26px rgba(124,58,237,0.18);z-index:9999;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,background 0.25s ease;overflow:hidden;touch-action:manipulation}
+  .mobile-back-btn svg{width:18px;height:18px;stroke:var(--primary);stroke-width:2;fill:none}
+  .mobile-back-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(124,58,237,0.22);background:rgba(124,58,237,0.04)}
+  .mobile-back-btn:active{transform:scale(0.96)}
+  .mb-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:10px;cursor:pointer;background:none;border:none;color:var(--text-muted);font-family:inherit;-webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px;justify-content:center}
+  .mb-btn span{font-size:0.58rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
 .mb-btn i{font-size:1.25rem}
 .mb-btn.active,.mb-btn:active{color:var(--primary)}
 .mb-fab{width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-top:-18px;box-shadow:0 4px 20px rgba(124,58,237,.4);cursor:pointer;flex-shrink:0;border:3px solid rgba(250,246,240,.97);-webkit-tap-highlight-color:transparent;text-decoration:none}
@@ -100,6 +103,7 @@ img{max-width:100%;height:auto}
   .mobile-center-logo{display:flex}
   .site-header{justify-content:center}
   .flash-area{right:8px;left:8px;max-width:100%}
+  .mobile-back-btn{display:flex}
 }
 @media(max-width:768px){
   .site-footer-main{display:none!important}
@@ -108,7 +112,23 @@ img{max-width:100%;height:auto}
 <?= $extraCss ?? '' ?>
 </head>
 <body>
-<?php if($flashS||$flashE||$flashI): ?>
+<?php if(($activePage ?? '') !== 'home'): ?>
+<button class="mobile-back-btn" type="button" onclick="handleMobileBackButton()" aria-label="Go back">
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+<script>
+function handleMobileBackButton(){
+  if(window.history.length > 1){
+    window.history.back();
+  } else {
+    window.location.href = '<?= htmlspecialchars($cityUrl) ?>';
+  }
+}
+</script>
+<?php endif ?>
+<?php if($flashS||$flashE||$flashI): ?> 
 <div class="flash-area" id="flashes">
   <?php if($flashS): ?><div class="flash flash-s"><i class="bi bi-check-circle-fill"></i><?= htmlspecialchars($flashS) ?></div><?php endif ?>
   <?php if($flashE): ?><div class="flash flash-e"><i class="bi bi-exclamation-circle-fill"></i><?= htmlspecialchars($flashE) ?></div><?php endif ?>
