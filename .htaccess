@@ -1,6 +1,6 @@
 Options -Indexes
 RewriteEngine On
-RewriteBase /nyxburgh/biz/
+RewriteBase /biz/
 
 # ── Admin
 RewriteCond %{REQUEST_FILENAME} !-f

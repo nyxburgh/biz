@@ -29,6 +29,7 @@ class Router
         }
 
         $uri = '/' . trim($requestPath, '/');
+        $uri = preg_replace('#/index\.php$#i', '', $uri) ?: '/';
 
         foreach ($this->routes as $route) {
             if ($route['method'] !== $method) {

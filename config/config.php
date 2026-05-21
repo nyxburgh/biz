@@ -28,12 +28,12 @@ if (isset($_SERVER['HTTP_HOST'])) {
 
         // Local: localhost + app folder
     } else {
-        define('BASE_URL', 'http://localhost/nyxburgh/biz');
+        define('BASE_URL', 'http://localhost/biz');
         define('IS_SUBDOMAIN', false);
         define('SESSION_NAME', 'bizguide_local');
     }
 } else {
-    define('BASE_URL', 'http://localhost/nyxburgh/biz');
+    define('BASE_URL', 'http://localhost/biz');
     define('IS_SUBDOMAIN', false);
     define('SESSION_NAME', 'bizguide_local');
 }
