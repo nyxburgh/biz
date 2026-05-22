@@ -49,6 +49,12 @@ $extraCss = <<<'ENDCSS'
 .share-item i{font-size:1.05rem;opacity:0.8}
 .login-prompt{background:var(--purple-light);border-radius:10px;padding:14px;font-size:0.85rem;margin-bottom:14px;text-align:center}
 .login-prompt a{color:var(--primary);font-weight:600}
+.c-phone{background:#e0f2fe;color:#0284c7}.c-phone:hover{background:#0284c7;color:#fff}
+.icon-row{display:flex;gap:8px;margin-bottom:7px}
+.icon-btn{height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;text-decoration:none;transition:var(--transition);flex:1}
+.i-fb{background:#e7f3ff;color:#1877f2}.i-fb:hover{background:#1877f2;color:#fff}
+.i-ig{background:#fff3f8;color:#dc2743}.i-ig:hover{background:linear-gradient(45deg,#f09433,#dc2743);color:#fff}
+.i-map{background:#fef3c7;color:#8B4513}.i-map:hover{background:#8B4513;color:#fff}
 @media(max-width:768px){.listing-grid{grid-template-columns:1fr}}
 </style>
 ENDCSS;
@@ -97,6 +103,9 @@ require CITY_DIR . "/views/layout/header.php";
         <?php if($listing["city_name"]): ?><span class="l-badge"><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($listing["city_name"]) ?></span><?php endif ?>
       </div>
       <div class="l-title"><?= htmlspecialchars($listing["business_name"]) ?></div>
+      <?php if($listing["address"]): ?>
+      <div style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin-top:4px"><i class="bi bi-geo-alt me-1"></i><?= htmlspecialchars($listing["address"]) ?></div>
+      <?php endif ?>
       <?php if($listing["avg_rating"]): ?>
       <div style="display:flex;align-items:center;gap:7px;margin-top:6px">
         <span style="color:#f59e0b;font-size:1rem"><?= str_repeat("★",(int)$listing["avg_rating"]) ?><?= str_repeat("☆",5-(int)$listing["avg_rating"]) ?></span>
@@ -112,14 +121,6 @@ require CITY_DIR . "/views/layout/header.php";
     <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7"><?= nl2br(htmlspecialchars($listing["short_description"])) ?></p>
   </div>
   <?php endif ?>
-
-  <div class="icard"><h3><i class="bi bi-card-text" style="color:var(--primary)"></i>Details</h3>
-    <?php if($listing["address"]): ?><div class="drow"><span class="dlbl">Address</span><span><?= htmlspecialchars($listing["address"]) ?></span></div><?php endif ?>
-    <?php if($listing["phone"]): ?><div class="drow"><span class="dlbl">Phone</span><span><?= htmlspecialchars($listing["phone"]) ?></span></div><?php endif ?>
-    <?php if($listing["whatsapp"] && in_array($listing["plan_level"],["basic","premium","pro"])): ?><div class="drow"><span class="dlbl">WhatsApp</span><span><?= htmlspecialchars($listing["whatsapp"]) ?></span></div><?php endif ?>
-    <?php if($listing["email"]): ?><div class="drow"><span class="dlbl">Email</span><span><?= htmlspecialchars($listing["email"]) ?></span></div><?php endif ?>
-    <?php if($listing["website"] && in_array($listing["plan_level"],["premium","pro"])): ?><div class="drow"><span class="dlbl">Website</span><span><a href="<?= htmlspecialchars($listing["website"]) ?>" target="_blank" style="color:var(--primary)"><?= htmlspecialchars($listing["website"]) ?></a></span></div><?php endif ?>
-  </div>
 
   <?php if(!empty($listing["map_embed"])): ?>
   <?php
@@ -138,11 +139,11 @@ require CITY_DIR . "/views/layout/header.php";
   <?php if(!empty($images) && in_array($listing["plan_level"],["premium","pro"])): ?>
   <div class="icard"><h3><i class="bi bi-images" style="color:var(--primary)"></i>Photos</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">
-      <?php foreach($images as $img): ?>
+      <?php foreach($images as $i => $img): ?>
       <img src="<?= BASE_URL ?>/assets/uploads/listings/<?= htmlspecialchars($img["filename"]) ?>"
            alt="<?= htmlspecialchars($img["alt_text"]??"") ?>"
            style="width:100%;height:110px;object-fit:cover;border-radius:8px;cursor:pointer"
-           onclick="this.requestFullscreen&&this.requestFullscreen()">
+           onclick="openLb(<?= $i ?>)">
       <?php endforeach ?>
     </div>
   </div>
@@ -219,7 +220,7 @@ require CITY_DIR . "/views/layout/header.php";
   <div class="icard">
     <h3><i class="bi bi-telephone" style="color:var(--primary)"></i>Contact</h3>
     <?php if($listing["phone"]): ?>
-    <a href="tel:<?= htmlspecialchars($listing["phone"]) ?>" class="c-btn c-call">
+    <a href="tel:<?= htmlspecialchars($listing["phone"]) ?>" class="c-btn c-phone">
       <i class="bi bi-telephone-fill" style="font-size:1.1rem"></i>
       <div><div style="font-size:0.7rem;opacity:.75">Call Now</div><div><?= htmlspecialchars($listing["phone"]) ?></div></div>
     </a>
@@ -230,29 +231,24 @@ require CITY_DIR . "/views/layout/header.php";
       <div><div style="font-size:0.7rem;opacity:.75">WhatsApp</div><div><?= htmlspecialchars($listing["whatsapp"]) ?></div></div>
     </a>
     <?php endif ?>
+    <?php if($listing["email"]): ?>
+    <a href="mailto:<?= htmlspecialchars($listing["email"]) ?>" class="c-btn" style="background:#f0f9ff;color:#0284c7">
+      <i class="bi bi-envelope-fill" style="font-size:1.1rem"></i>
+      <div><div style="font-size:0.7rem;opacity:.75">Email</div><div><?= htmlspecialchars($listing["email"]) ?></div></div>
+    </a>
+    <?php endif ?>
     <?php if($listing["website"] && in_array($listing["plan_level"],["premium","pro"])): ?>
     <a href="<?= htmlspecialchars($listing["website"]) ?>" target="_blank" class="c-btn c-web">
       <i class="bi bi-globe" style="font-size:1.1rem"></i>
       <div><div style="font-size:0.7rem;opacity:.75">Website</div><div>Visit Website</div></div>
     </a>
     <?php endif ?>
-    <?php if($listing["facebook"] && in_array($listing["plan_level"],["premium","pro"])): ?>
-    <a href="<?= htmlspecialchars($listing["facebook"]) ?>" target="_blank" class="c-btn c-fb">
-      <i class="bi bi-facebook" style="font-size:1.1rem"></i>
-      <div><div style="font-size:0.7rem;opacity:.75">Facebook</div><div>Visit Profile</div></div>
-    </a>
-    <?php endif ?>
-    <?php if($listing["instagram"] && in_array($listing["plan_level"],["premium","pro"])): ?>
-    <a href="<?= htmlspecialchars($listing["instagram"]) ?>" target="_blank" class="c-btn c-ig">
-      <i class="bi bi-instagram" style="font-size:1.1rem"></i>
-      <div><div style="font-size:0.7rem;opacity:.75">Instagram</div><div>Follow Us</div></div>
-    </a>
-    <?php endif ?>
-    <?php if($listing["address"] && in_array($listing["plan_level"],["premium","pro"])): ?>
-    <a href="https://maps.google.com/maps?q=<?= urlencode($listing["address"]) ?>" target="_blank" class="c-btn c-map">
-      <i class="bi bi-geo-alt-fill" style="font-size:1.1rem"></i>
-      <div><div style="font-size:0.7rem;opacity:.75">Directions</div><div>View on Map</div></div>
-    </a>
+    <?php if(in_array($listing["plan_level"],["premium","pro"]) && ($listing["facebook"] || $listing["instagram"] || $listing["address"])): ?>
+    <div class="icon-row">
+      <?php if($listing["facebook"]): ?><a href="<?= htmlspecialchars($listing["facebook"]) ?>" target="_blank" class="icon-btn i-fb" title="Facebook"><i class="bi bi-facebook"></i></a><?php endif ?>
+      <?php if($listing["instagram"]): ?><a href="<?= htmlspecialchars($listing["instagram"]) ?>" target="_blank" class="icon-btn i-ig" title="Instagram"><i class="bi bi-instagram"></i></a><?php endif ?>
+      <?php if($listing["address"]): ?><a href="https://maps.google.com/maps?q=<?= urlencode($listing["address"]) ?>" target="_blank" class="icon-btn i-map" title="Directions"><i class="bi bi-geo-alt-fill"></i></a><?php endif ?>
+    </div>
     <?php endif ?>
   </div>
 
@@ -297,7 +293,28 @@ require CITY_DIR . "/views/layout/header.php";
 </div>
 </div>
 </main>
+
+<!-- Lightbox -->
+<div id="lb" onclick="if(event.target===this)closeLb()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;align-items:center;justify-content:center">
+  <button onclick="closeLb()" style="position:absolute;top:14px;right:18px;background:none;border:none;color:#fff;font-size:2.2rem;cursor:pointer;line-height:1;padding:4px 8px">&times;</button>
+  <button onclick="lbNav(-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2rem;cursor:pointer;padding:8px 16px;border-radius:8px;line-height:1">&#8249;</button>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:92vw">
+    <img id="lbImg" src="" style="max-width:90vw;max-height:82vh;object-fit:contain;border-radius:8px;display:block">
+    <div id="lbCount" style="color:rgba(255,255,255,0.5);font-size:0.82rem"></div>
+  </div>
+  <button onclick="lbNav(1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2rem;cursor:pointer;padding:8px 16px;border-radius:8px;line-height:1">&#8250;</button>
+</div>
+
 <script>
+// Lightbox
+var lbImgs=[<?php foreach($images as $img): ?>"<?= BASE_URL ?>/assets/uploads/listings/<?= htmlspecialchars($img["filename"],ENT_QUOTES) ?>",<?php endforeach ?>];
+var lbIdx=0;
+function openLb(i){lbIdx=i;document.getElementById('lb').style.display='flex';document.body.style.overflow='hidden';lbShow();}
+function closeLb(){document.getElementById('lb').style.display='none';document.body.style.overflow='';}
+function lbNav(d){lbIdx=(lbIdx+d+lbImgs.length)%lbImgs.length;lbShow();}
+function lbShow(){document.getElementById('lbImg').src=lbImgs[lbIdx];document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImgs.length;}
+document.addEventListener('keydown',function(e){if(document.getElementById('lb').style.display==='none')return;if(e.key==='ArrowRight')lbNav(1);else if(e.key==='ArrowLeft')lbNav(-1);else if(e.key==='Escape')closeLb();});
+
 var selRating = 0;
 function setRating(n) {
   selRating = n;
