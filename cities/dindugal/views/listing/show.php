@@ -34,8 +34,6 @@ $extraCss = <<<'ENDCSS'
 .rel-card:hover{transform:translateY(-2px)}
 .qr-box{text-align:center;padding:14px 0}
 .qr-box img{width:120px;height:120px;border-radius:8px}
-.share-url{background:var(--sand-light);border-radius:9px;padding:10px 12px;font-size:0.75rem;color:var(--primary);word-break:break-all;margin-top:8px;cursor:pointer;border:1px solid var(--border);display:block;text-decoration:none;transition:var(--transition)}
-.share-url:hover{background:#fff;text-decoration:underline}
 .archived-banner{background:#fee2e2;border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:14px}
 .l-hero{position:relative}
 .hero-actions{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:20}
@@ -271,9 +269,6 @@ require CITY_DIR . "/views/layout/header.php";
       <img src="<?= htmlspecialchars($qrUrl) ?>" alt="QR Code" loading="lazy">
       <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px">Scan to open this page</p>
     </div>
-    <a href="<?= htmlspecialchars($listingUrl) ?>" target="_blank" class="share-url" title="Click to open">
-      <i class="bi bi-link-45deg me-1"></i><?= htmlspecialchars($listingUrl) ?>
-    </a>
   </div>
   <?php endif ?>
   <?php endif ?>
