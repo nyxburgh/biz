@@ -74,6 +74,9 @@ img{max-width:100%;height:auto}
   .mobile-back-btn svg{width:18px;height:18px;stroke:var(--primary);stroke-width:2;fill:none}
   .mobile-back-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(124,58,237,0.22);background:rgba(124,58,237,0.04)}
   .mobile-back-btn:active{transform:scale(0.96)}
+  .mobile-home-btn{display:none;position:fixed;top:calc(12px + env(safe-area-inset-top));right:12px;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid rgba(124,58,237,0.18);box-shadow:0 12px 26px rgba(124,58,237,0.18);z-index:9999;align-items:center;justify-content:center;transition:transform 0.25s ease,box-shadow 0.25s ease,background 0.25s ease;touch-action:manipulation;text-decoration:none;color:var(--primary);font-size:1.1rem}
+  .mobile-home-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(124,58,237,0.22);background:rgba(124,58,237,0.04)}
+  .mobile-home-btn:active{transform:scale(0.96)}
   .mb-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:10px;cursor:pointer;background:none;border:none;color:var(--text-muted);font-family:inherit;-webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px;justify-content:center}
 .mb-btn span{font-size:0.58rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
 .mb-btn i{font-size:1.25rem}
@@ -99,6 +102,7 @@ img{max-width:100%;height:auto}
   body{padding-bottom:calc(var(--footer-h) + 24px + env(safe-area-inset-bottom))}
   .mobile-bottom-bar{display:flex}
   .mobile-back-btn{display:flex}
+  .mobile-home-btn{display:flex}
   .header-nav,.header-actions,.desktop-only{display:none!important}
   .mobile-center-logo{display:flex}
   .site-header{justify-content:center}
@@ -117,6 +121,9 @@ img{max-width:100%;height:auto}
     <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </button>
+<a class="mobile-home-btn" href="<?= htmlspecialchars($cityUrl) ?>" aria-label="Go home">
+  <i class="bi bi-house-fill"></i>
+</a>
 <script>
 function handleMobileBackButton(){
   if(window.history.length > 1){
