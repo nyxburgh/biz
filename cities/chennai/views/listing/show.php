@@ -5,8 +5,8 @@ $extraCss = <<<'ENDCSS'
 <style>
 .listing-wrap{max-width:1050px;margin:0 auto;padding:24px 16px}
 .listing-grid{display:grid;grid-template-columns:1fr 280px;gap:22px;align-items:start}
-.l-hero{background:linear-gradient(135deg,#2d1b69,var(--primary));border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
-.l-banner-wrap{width:100%;height:160px;overflow:hidden}
+.l-hero{background:linear-gradient(135deg,#2d1b69,var(--primary));border-radius:var(--radius);margin-bottom:14px}
+.l-banner-wrap{width:100%;height:160px;overflow:hidden;border-top-left-radius:var(--radius);border-top-right-radius:var(--radius)}
 .l-banner{width:100%;height:160px;object-fit:cover;object-position:center;display:block}
 .l-hero-body{padding:18px}
 .l-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:#fff;margin-bottom:4px}
@@ -39,11 +39,11 @@ $extraCss = <<<'ENDCSS'
 .hero-actions{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:20}
 .btn-circle{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);color:var(--text-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s}
 .btn-circle:hover{transform:scale(1.1);background:#fff}
-.share-menu{position:absolute;top:42px;right:0;background:#fff;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,0.15);width:170px;display:none;z-index:100;overflow:hidden;border:1px solid rgba(0,0,0,0.05)}
-.share-menu.active{display:block}
-.share-item{display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text-dark);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.2s;border-bottom:1px solid var(--sand-dark);background:none;width:100%;text-align:left;border-left:none;border-right:none;border-top:none;cursor:pointer}
+.share-menu{position:absolute;top:55px;right:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.15);width:200px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:all 0.25s ease;z-index:999;border:1px solid rgba(255,255,255,0.4);max-height:80vh;overflow-y:auto}
+.share-menu.active{opacity:1;visibility:visible;transform:translateY(0)}
+.share-item{display:flex;align-items:center;gap:12px;padding:14px 18px;color:var(--text-dark);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.25s ease;border-bottom:1px solid rgba(0,0,0,0.04);background:none;width:100%;text-align:left;border-left:none;border-right:none;border-top:none;cursor:pointer}
 .share-item:last-child{border-bottom:none}
-.share-item:hover{background:var(--sand-light);color:var(--primary)}
+.share-item:hover{background:var(--sand-light);color:var(--primary);padding-left:22px}
 .share-item i{font-size:1.05rem;opacity:0.8}
 .login-prompt{background:var(--purple-light);border-radius:10px;padding:14px;font-size:0.85rem;margin-bottom:14px;text-align:center}
 .login-prompt a{color:var(--primary);font-weight:600}
@@ -53,7 +53,10 @@ $extraCss = <<<'ENDCSS'
 .i-fb{background:#e7f3ff;color:#1877f2}.i-fb:hover{background:#1877f2;color:#fff}
 .i-ig{background:#fff3f8;color:#dc2743}.i-ig:hover{background:linear-gradient(45deg,#f09433,#dc2743);color:#fff}
 .i-map{background:#fef3c7;color:#8B4513}.i-map:hover{background:#8B4513;color:#fff}
-@media(max-width:768px){.listing-grid{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .listing-grid{grid-template-columns:1fr}
+  .share-menu{right:10px !important;left:auto !important;width:220px;max-width:calc(100vw - 20px);}
+}
 </style>
 ENDCSS;
 require CITY_DIR . "/views/layout/header.php";
