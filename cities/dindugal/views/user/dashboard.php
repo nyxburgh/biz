@@ -60,7 +60,7 @@ require CITY_DIR . "/views/layout/header.php";
 .pform input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:inherit;font-size:0.88rem;outline:none;margin-bottom:14px}
 .pform input:focus{border-color:var(--primary)}
 .btn-save{padding:12px 24px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:0.9rem;font-weight:700;font-family:inherit;cursor:pointer;min-height:46px}
-@media(max-width:768px){.tabs-inner{flex-wrap:nowrap}.stat-cards{grid-template-columns:repeat(2,1fr)}.dash-stats{gap:12px}}
+@media(max-width:768px){.tabs-inner{flex-wrap:nowrap}.stat-cards{grid-template-columns:repeat(2,1fr)}.dash-stats{gap:12px}.tab-logout-desktop{display:none!important}.mobile-logout-btn{display:flex!important}}
 </style>
 
 <section class="dash-hero">
@@ -89,8 +89,13 @@ require CITY_DIR . "/views/layout/header.php";
   <button class="tab-btn" data-tab="reviews"><i class="bi bi-star"></i> Reviews <span class="tab-badge"><?= $listing["review_count"]??0 ?></span></button>
   <button class="tab-btn" data-tab="payments"><i class="bi bi-credit-card"></i> Payments</button>
   <button class="tab-btn" data-tab="profile"><i class="bi bi-person-gear"></i> Profile</button>
-  <a class="tab-btn" href="<?= $cityUrl ?>/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  <a class="tab-btn tab-logout-desktop" href="<?= $cityUrl ?>/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
 </div></div>
+
+<!-- Mobile-only logout button -->
+<div class="mobile-logout-btn" style="display:none;padding:10px 16px 0;max-width:1050px;margin:0 auto;justify-content:flex-end;">
+  <a href="<?= $cityUrl ?>/logout" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:40px;border:1.5px solid rgba(124,58,237,0.25);color:#7c3aed;font-size:0.82rem;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none;background:rgba(124,58,237,0.06);transition:all 0.2s ease;-webkit-tap-highlight-color:transparent;" onmouseenter="this.style.background='rgba(124,58,237,0.12)'" onmouseleave="this.style.background='rgba(124,58,237,0.06)'"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
 
 <div class="dash-wrap">
 

@@ -356,124 +356,235 @@ $flashI = Helper::getFlash('info');
       border-left: 4px solid #0ea5e9
     }
 
-    .mobile-bottom-bar {
-      display: none;
-    }
 
-    .bottom-sheet-modal {
+    /* ═══════════════════════════════════════════════
+       MOBILE BOTTOM-SHEET CITY SELECTOR — PREMIUM UI
+       ═══════════════════════════════════════════════ */
+
+    /* Floating bottom-bar — hidden on desktop */
+    .mobile-bottom-bar { display: none; }
+
+    /* ── Backdrop overlay ── */
+    .city-sheet-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 99999;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      inset: 0;
+      z-index: 99990;
+      background: rgba(15, 10, 30, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
     }
-    
-    .bottom-sheet-modal.is-open {
+    .city-sheet-backdrop.is-open {
       opacity: 1;
       pointer-events: auto;
     }
-    
-    .bottom-sheet-modal .modal-dialog {
-      width: 100%;
-      margin: 0;
-      background: #fff;
-      border-radius: 24px 24px 0 0;
-      padding-bottom: env(safe-area-inset-bottom);
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
-      transform: translateY(100%);
-      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /* ── Floating sheet wrapper ── */
+    .city-bottom-sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+      padding-bottom: 18px;
+      padding-bottom: calc(18px + env(safe-area-inset-bottom));
     }
-    
-    .bottom-sheet-modal.is-open .modal-dialog {
+
+    /* ── Sheet panel ── */
+    .city-sheet-panel {
+      width: 91%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.9) inset,
+        0 30px 80px rgba(15, 5, 40, 0.38),
+        0 8px 24px rgba(124, 58, 237, 0.18),
+        0 0 0 1px rgba(124, 58, 237, 0.07);
+      transform: translateY(110%);
+      transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+      pointer-events: auto;
+      overflow: hidden;
+    }
+    .city-bottom-sheet.is-open .city-sheet-panel {
       transform: translateY(0);
     }
-    
-    .city-card-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 0 20px 20px 20px;
+
+    /* ── Drag handle ── */
+    .city-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #ddd8f0;
+      border-radius: 99px;
+      margin: 12px auto 0;
     }
 
-    .city-card {
+    /* ── Header row ── */
+    .city-sheet-header {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
-      background: #f9f9f9;
-      border-radius: 16px;
-      border: 2px solid transparent;
-      text-decoration: none;
-      color: var(--text-dark);
-      transition: all 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+      justify-content: space-between;
+      padding: 10px 20px 14px;
+    }
+    .city-sheet-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.22rem;
+      color: #1a1028;
+      letter-spacing: -0.025em;
+    }
+    .city-sheet-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(124, 58, 237, 0.25);
+      background: rgba(124, 58, 237, 0.05);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease, transform 0.2s ease;
       -webkit-tap-highlight-color: transparent;
     }
-
-    .city-card:active {
-      transform: scale(0.96);
-      background: #f0f0f0;
+    .city-sheet-close:active {
+      transform: scale(0.88);
+      background: rgba(124, 58, 237, 0.12);
     }
 
-    .city-card.active {
+    /* ── City card list ── */
+    .city-sheet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 14px 18px;
+    }
+
+    /* ── Individual city card ── */
+    .city-sheet-card {
+      display: flex;
+      align-items: center;
+      padding: 13px 14px 13px 13px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(226, 213, 240, 0.7);
+      background: #faf9ff;
+      text-decoration: none;
+      color: #1a1028;
+      transition:
+        transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1),
+        box-shadow 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      overflow: hidden;
+      min-height: 68px;
+    }
+    .city-sheet-card:active {
+      transform: scale(0.966);
+      background: #f0ecff;
+    }
+
+    /* Ripple */
+    .city-sheet-card .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, 0.18);
+      transform: scale(0);
+      animation: rippleAnim 0.55s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* ── Selected card ── */
+    .city-sheet-card.active {
       border-color: var(--primary);
-      background: var(--purple-light);
+      background: rgba(124, 58, 237, 0.07);
+      box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.13),
+        0 6px 20px rgba(124, 58, 237, 0.16);
     }
 
-    .city-card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+    /* ── Card icon container ── */
+    .city-sheet-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
       background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 3px 12px rgba(124, 58, 237, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.3rem;
       color: var(--primary);
-      margin-right: 16px;
+      margin-right: 14px;
+      flex-shrink: 0;
+      transition: background 0.22s ease, box-shadow 0.22s ease;
+    }
+    .city-sheet-card.active .city-sheet-icon {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.42);
     }
 
-    .city-card-info {
+    /* ── Card text ── */
+    .city-sheet-info {
       flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
-
-    .city-card-info .city-name {
+    .city-sheet-name {
+      font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.97rem;
+      color: #1a1028;
+      letter-spacing: -0.01em;
     }
-
-    .city-card-info .city-desc {
-      font-size: 0.75rem;
+    .city-sheet-state {
+      font-size: 0.73rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
-    .bs-drag-handle {
-      width: 40px;
-      height: 5px;
-      background: #e0e0e0;
-      border-radius: 10px;
-      margin: 12px auto;
+    /* ── Right indicator ── */
+    .city-sheet-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.04);
+      margin-left: 8px;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .city-sheet-card.active .city-sheet-arrow {
+      background: var(--primary);
+      color: #fff;
     }
 
-    @media(max-width:768px) {
+    /* ═══════════════════════════════════════
+       MOBILE BOTTOM NAV BAR — PREMIUM REDESIGN
+       ═══════════════════════════════════════ */
+    @media(max-width: 768px) {
       body {
         padding-bottom: calc(var(--footer-h) + 24px + env(safe-area-inset-bottom));
       }
-      
+
       .mobile-bottom-bar {
         display: flex;
         position: fixed;
@@ -481,41 +592,43 @@ $flashI = Helper::getFlash('info');
         left: 0;
         right: 0;
         z-index: 950;
-        height: 72px; /* Thumb friendly */
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border-top: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.05);
+        height: 72px;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(28px) saturate(1.8);
+        -webkit-backdrop-filter: blur(28px) saturate(1.8);
+        border-top: 1px solid rgba(124, 58, 237, 0.08);
+        border-radius: 22px 22px 0 0;
+        box-shadow: 0 -6px 32px rgba(15, 5, 40, 0.08), 0 -1px 0 rgba(255,255,255,0.9);
         align-items: center;
-        justify-content: space-around;
-        padding: 0 10px;
+        justify-content: space-evenly;
+        padding: 0 4px;
         padding-bottom: env(safe-area-inset-bottom);
       }
-      
+
       .mb-btn {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 4px;
+        gap: 3px;
         flex: 1;
         height: 100%;
-        color: var(--text-muted);
+        color: #b0a0c8;
         text-decoration: none;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
         -webkit-tap-highlight-color: transparent;
         background: none;
         border: none;
         padding: 0;
+        position: relative;
+        cursor: pointer;
       }
 
       .mb-btn span {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
         font-weight: 500;
         letter-spacing: 0.02em;
-        transition: color 0.2s ease;
+        transition: color 0.2s ease, font-weight 0.2s ease;
       }
 
       .mb-btn i {
@@ -523,55 +636,42 @@ $flashI = Helper::getFlash('info');
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
       }
 
-      .mb-btn:active {
-        transform: scale(0.9);
-      }
+      .mb-btn:active { transform: scale(0.88); }
 
       .mb-btn.active {
         color: var(--primary);
       }
-
       .mb-btn.active i {
         transform: translateY(-2px);
-        filter: drop-shadow(0 4px 8px rgba(124, 58, 237, 0.4));
+        filter: drop-shadow(0 4px 8px rgba(124, 58, 237, 0.45));
       }
-      
-      .mb-btn.active span {
-        font-weight: 700;
+      .mb-btn.active span { font-weight: 700; }
+
+      /* Active underline dot */
+      .mb-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 6px rgba(124, 58, 237, 0.6);
       }
 
-      .mobile-back-btn {
-        display: flex;
-      }
 
-      .mobile-home-btn {
-        display: flex;
-      }
 
-      .header-nav,
-      .header-actions,
-      .desktop-only {
-        display: none !important;
-      }
-
-      .mobile-center-logo {
-        display: flex;
-      }
-
-      .site-header {
-        justify-content: center;
-      }
-
-      .flash-area {
-        right: 8px;
-        left: 8px;
-        max-width: 100%;
-      }
-      
-      .site-footer-main {
-        display: none !important;
-      }
+      .mobile-back-btn { display: flex; }
+      .mobile-home-btn { display: flex; }
+      .header-nav, .header-actions, .desktop-only { display: none !important; }
+      .mobile-center-logo { display: flex; }
+      .site-header { justify-content: center; }
+      .flash-area { right: 8px; left: 8px; max-width: 100%; }
+      .site-footer-main { display: none !important; }
     }
+
   </style>
   <?= $extraCss ?? '' ?>
 </head>
@@ -640,78 +740,88 @@ $flashI = Helper::getFlash('info');
     </div>
   </header>
   <nav class="mobile-bottom-bar">
-    <a href="<?= $cityUrl ?>" class="mb-btn <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">
+    <a href="<?= htmlspecialchars($cityUrl) ?>" class="mb-btn <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">
       <i class="bi bi-house-fill"></i><span>Home</span>
     </a>
-    <a href="<?= $cityUrl ?>/search" class="mb-btn <?= ($activePage ?? '') === 'search' ? 'active' : '' ?>">
+    <a href="<?= htmlspecialchars($cityUrl) ?>/search" class="mb-btn <?= ($activePage ?? '') === 'search' ? 'active' : '' ?>">
       <i class="bi bi-search"></i><span>Search</span>
     </a>
     <?php if ($isUser): ?>
-      <a href="<?= $cityUrl ?>/dashboard" class="mb-btn <?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">
+      <a href="<?= htmlspecialchars($cityUrl) ?>/dashboard" class="mb-btn <?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">
         <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
       </a>
     <?php else: ?>
-      <a href="<?= $cityUrl ?>/login" class="mb-btn <?= ($activePage ?? '') === 'post-ad' ? 'active' : '' ?>">
-        <i class="bi bi-plus-lg"></i><span>Post Ad</span>
+      <a href="<?= htmlspecialchars($cityUrl) ?>/post-ad" class="mb-btn <?= ($activePage ?? '') === 'post-ad' ? 'active' : '' ?>">
+        <i class="bi bi-plus-circle-fill"></i><span>Post Ad</span>
       </a>
     <?php endif ?>
-    <a href="#" class="mb-btn" onclick="openCitySelectModal(event)">
+    <button class="mb-btn <?= ($activePage ?? '') === 'map' ? 'active' : '' ?>" onclick="openCitySheet(event)">
       <i class="bi bi-geo-alt-fill"></i><span>Map</span>
-    </a>
+    </button>
   </nav>
 
-  <!-- City Selection Bottom Sheet -->
-  <div class="bottom-sheet-modal" id="citySelectModal" tabindex="-1" aria-labelledby="citySelectModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      
-        <div class="bs-drag-handle"></div>
-        <div class="modal-header" style="border:none; padding:10px 20px;">
-          <h5 class="modal-title" id="citySelectModalLabel" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.25rem;">
-            Select City
-          </h5>
-          <button type="button" class="btn-close" onclick="closeCitySelectModal()" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="padding:0;">
-          <div class="city-card-list">
-            <a href="/biz/cities/kodaikanal" class="city-card <?= strpos($cityUrl, 'kodaikanal') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Kodaikanal</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Tamil Nadu</span>
-              </div>
-            </a>
-            <a href="/biz/cities/dindugal" class="city-card <?= strpos($cityUrl, 'dindugal') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Dindigul</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Tamil Nadu</span>
-              </div>
-            </a>
-            <a href="/biz/cities/bengaluru" class="city-card <?= strpos($cityUrl, 'bengaluru') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Bengaluru</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Karnataka</span>
-              </div>
-            </a>
+  <!-- ── City Selection Bottom Sheet ── -->
+  <div class="city-sheet-backdrop" id="citySheetBackdrop" onclick="closeCitySheet()"></div>
+  <div class="city-bottom-sheet" id="cityBottomSheet">
+    <div class="city-sheet-panel">
+      <div class="city-sheet-handle"></div>
+      <div class="city-sheet-header">
+        <span class="city-sheet-title">Select City</span>
+        <button class="city-sheet-close" onclick="closeCitySheet()" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="city-sheet-list">
+        <a href="/biz/cities/kodaikanal" class="city-sheet-card <?= strpos($cityUrl, 'kodaikanal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
+          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div class="city-sheet-info">
+            <span class="city-sheet-name">Kodaikanal</span>
+            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
           </div>
-        </div>
+          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
+        </a>
+        <a href="/biz/cities/dindugal" class="city-sheet-card <?= strpos($cityUrl, 'dindugal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
+          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div class="city-sheet-info">
+            <span class="city-sheet-name">Dindigul</span>
+            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
+          </div>
+          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
+        </a>
+        <a href="/biz/cities/bengaluru" class="city-sheet-card <?= strpos($cityUrl, 'bengaluru') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
+          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div class="city-sheet-info">
+            <span class="city-sheet-name">Bengaluru</span>
+            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Karnataka</span>
+          </div>
+          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
+        </a>
       </div>
     </div>
   </div>
 <script>
-  function openCitySelectModal(e) {
-    if(e) e.preventDefault();
-    document.getElementById('citySelectModal').classList.add('is-open');
+  function openCitySheet(e) {
+    if (e) e.preventDefault();
+    document.getElementById('citySheetBackdrop').classList.add('is-open');
+    document.getElementById('cityBottomSheet').classList.add('is-open');
+    document.body.style.overflow = 'hidden';
   }
-  function closeCitySelectModal() {
-    document.getElementById('citySelectModal').classList.remove('is-open');
+  function closeCitySheet() {
+    document.getElementById('citySheetBackdrop').classList.remove('is-open');
+    document.getElementById('cityBottomSheet').classList.remove('is-open');
+    document.body.style.overflow = '';
   }
-  // Close when clicking outside dialog
-  window.addEventListener('click', function(e) {
-    const m = document.getElementById('citySelectModal');
-    if (e.target === m) {
-      closeCitySelectModal();
-    }
+  function sheetRipple(e) {
+    var card = e.currentTarget;
+    var r = document.createElement('span');
+    var rect = card.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    r.className = 'ripple';
+    r.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size/2) + 'px;top:' + (e.clientY - rect.top - size/2) + 'px';
+    card.appendChild(r);
+    setTimeout(function() { r.remove(); }, 600);
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeCitySheet();
   });
 </script>
