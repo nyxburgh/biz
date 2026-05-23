@@ -1,44 +1,13 @@
-<?php
-$cityName = defined('CITY_NAME') ? CITY_NAME : 'BizGuide';
-$cityUrl = defined('CITY_URL') ? CITY_URL : '';
-$cityColor = defined('CITY_COLOR') ? CITY_COLOR : '#7c3aed';
-$pageTitle = $pageTitle ?? $cityName;
-$isUser = !empty($_SESSION['user_id']);
-$userData = $_SESSION['user_data'] ?? null;
-$userInit = $isUser ? strtoupper(substr($userData['name'] ?? 'U', 0, 1)) : '';
-$isOwner = $isUser && ($userData['user_type'] ?? 'owner') === 'owner';
-// Check if owner already has a listing — hide Post Ad if so
-$hasListing = false;
-if ($isOwner) {
-  $hasListing = (bool) Database::fetchOne(
-    "SELECT bl.id
-         FROM business_listings bl
-         JOIN users u ON bl.user_id = u.id
-         LEFT JOIN plans pl ON u.plan_id = pl.id
-         WHERE bl.user_id=? AND COALESCE(pl.name, 'free') != 'free'
-         LIMIT 1",
-    [$_SESSION['user_id']]
-  );
-}
-$flashS = Helper::getFlash('success');
-$flashE = Helper::getFlash('error');
-$flashI = Helper::getFlash('info');
-?>
-<!DOCTYPE html>
-<html lang="en">
+import re
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="<?= htmlspecialchars($cityColor) ?>">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title><?= htmlspecialchars($pageTitle) ?> — BizGuide <?= htmlspecialchars($cityName) ?></title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <style>
+files = [
+    '/opt/lampp/htdocs/biz/cities/_template/views/layout/header.php',
+    '/opt/lampp/htdocs/biz/cities/chennai/views/layout/header.php',
+    '/opt/lampp/htdocs/biz/cities/dindugal/views/layout/header.php',
+    '/opt/lampp/htdocs/biz/cities/kodaikanal/views/layout/header.php'
+]
+
+full_style = """  <style>
     :root {
       --primary: <?= htmlspecialchars($cityColor) ?>;
       --sand: #f5ede0;
@@ -572,146 +541,17 @@ $flashI = Helper::getFlash('info');
         display: none !important;
       }
     }
-  </style>
-  <?= $extraCss ?? '' ?>
-</head>
+  </style>"""
 
-<body>
-  <?php if (($activePage ?? '') !== 'home'): ?>
-    <button class="mobile-back-btn" type="button" onclick="handleMobileBackButton()" aria-label="Go back">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </button>
-    <a class="mobile-home-btn" href="<?= htmlspecialchars($cityUrl) ?>" aria-label="Go home">
-      <i class="bi bi-house-fill"></i>
-    </a>
-    <script>
-      function handleMobileBackButton() {
-        if (window.history.length > 1) {
-          window.history.back();
-        } else {
-          window.location.href = '<?= htmlspecialchars($cityUrl) ?>';
-        }
-      }
-    </script>
-  <?php endif ?>
-  <?php if ($flashS || $flashE || $flashI): ?>
-    <div class="flash-area" id="flashes">
-      <?php if ($flashS): ?>
-        <div class="flash flash-s"><i class="bi bi-check-circle-fill"></i><?= htmlspecialchars($flashS) ?></div>
-      <?php endif ?>
-      <?php if ($flashE): ?>
-        <div class="flash flash-e"><i class="bi bi-exclamation-circle-fill"></i><?= htmlspecialchars($flashE) ?></div>
-      <?php endif ?>
-      <?php if ($flashI): ?>
-        <div class="flash flash-i"><i class="bi bi-info-circle-fill"></i><?= htmlspecialchars($flashI) ?></div>
-      <?php endif ?>
-    </div>
-    <script>setTimeout(function () { var w = document.getElementById('flashes'); if (w) w.style.display = 'none'; }, 4500);</script>
-  <?php endif ?>
-  <header class="site-header">
-    <a href="<?= $cityUrl ?>" class="header-logo desktop-only">
-      <i class="bi bi-grid-3x3-gap-fill" style="font-size:1.3rem"></i>
-      BizGuide <span class="city-tag"><?= htmlspecialchars($cityName) ?></span>
-    </a>
-    <div class="mobile-center-logo">
-      <i class="bi bi-grid-3x3-gap-fill" style="font-size:1.2rem;color:var(--primary)"></i>
-      <a href="<?= $cityUrl ?>"
-        style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--primary)">BizGuide</a>
-      <span class="city-tag"><?= htmlspecialchars($cityName) ?></span>
-    </div>
-    <nav class="header-nav">
-      <a href="<?= $cityUrl ?>">Home</a>
-      <a href="<?= $cityUrl ?>/search">Businesses</a>
-    </nav>
-    <div class="header-actions">
-      <?php if ($isUser): ?>
-        <a href="<?= $cityUrl ?>/dashboard" class="user-av" title="Dashboard"><?= $userInit ?></a>
-        <?php if ($isOwner && !$hasListing): ?>
-          <a href="<?= $cityUrl ?>/post-ad" class="btn-post"><i class="bi bi-plus-lg"></i> Post Ad</a>
-        <?php elseif ($isOwner && $hasListing): ?>
-          <a href="<?= $cityUrl ?>/dashboard" class="btn-post" style="background:var(--green)"><i
-              class="bi bi-grid-1x2"></i> My Ads</a>
-        <?php endif ?>
-      <?php else: ?>
-        <a href="<?= $cityUrl ?>/login" class="btn-post"><i class="bi bi-plus-lg"></i> Post Ad</a>
-      <?php endif ?>
-    </div>
-  </header>
-  <nav class="mobile-bottom-bar">
-    <a href="<?= $cityUrl ?>" class="mb-btn <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">
-      <i class="bi bi-house-fill"></i><span>Home</span>
-    </a>
-    <a href="<?= $cityUrl ?>/search" class="mb-btn <?= ($activePage ?? '') === 'search' ? 'active' : '' ?>">
-      <i class="bi bi-search"></i><span>Search</span>
-    </a>
-    <?php if ($isUser): ?>
-      <a href="<?= $cityUrl ?>/dashboard" class="mb-btn <?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">
-        <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
-      </a>
-    <?php else: ?>
-      <a href="<?= $cityUrl ?>/login" class="mb-btn <?= ($activePage ?? '') === 'post-ad' ? 'active' : '' ?>">
-        <i class="bi bi-plus-lg"></i><span>Post Ad</span>
-      </a>
-    <?php endif ?>
-    <a href="#" class="mb-btn" onclick="openCitySelectModal(event)">
-      <i class="bi bi-geo-alt-fill"></i><span>Map</span>
-    </a>
-  </nav>
+for f in files:
+    with open(f, 'r') as file:
+        content = file.read()
+    
+    # Replace the entire style block
+    pattern = re.compile(r'\s*<style>.*?</style>', re.DOTALL)
+    content = pattern.sub('\n' + full_style, content)
+    
+    with open(f, 'w') as file:
+        file.write(content)
 
-  <!-- City Selection Bottom Sheet -->
-  <div class="bottom-sheet-modal" id="citySelectModal" tabindex="-1" aria-labelledby="citySelectModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      
-        <div class="bs-drag-handle"></div>
-        <div class="modal-header" style="border:none; padding:10px 20px;">
-          <h5 class="modal-title" id="citySelectModalLabel" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.25rem;">
-            Select City
-          </h5>
-          <button type="button" class="btn-close" onclick="closeCitySelectModal()" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="padding:0;">
-          <div class="city-card-list">
-            <a href="/biz/cities/kodaikanal" class="city-card <?= strpos($cityUrl, 'kodaikanal') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Kodaikanal</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Tamil Nadu</span>
-              </div>
-            </a>
-            <a href="/biz/cities/dindugal" class="city-card <?= strpos($cityUrl, 'dindugal') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Dindigul</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Tamil Nadu</span>
-              </div>
-            </a>
-            <a href="/biz/cities/bengaluru" class="city-card <?= strpos($cityUrl, 'bengaluru') !== False ? 'active' : '' ?>">
-              <div class="city-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="city-card-info">
-                <span class="city-name">Bengaluru</span>
-                <span class="city-desc"><i class="bi bi-pin-map"></i> Karnataka</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<script>
-  function openCitySelectModal(e) {
-    if(e) e.preventDefault();
-    document.getElementById('citySelectModal').classList.add('is-open');
-  }
-  function closeCitySelectModal() {
-    document.getElementById('citySelectModal').classList.remove('is-open');
-  }
-  // Close when clicking outside dialog
-  window.addEventListener('click', function(e) {
-    const m = document.getElementById('citySelectModal');
-    if (e.target === m) {
-      closeCitySelectModal();
-    }
-  });
-</script>
+print("Done completely fixing style blocks.")
