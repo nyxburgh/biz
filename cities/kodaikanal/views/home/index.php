@@ -186,7 +186,7 @@ $listingImage = function(array $ad): string {
         if (!empty($cat['image'])) {
             $cimg = BASE_URL . '/assets/uploads/categories/' . $cat['image'];
         } else {
-            $cimg = $catImages[$cat['name']] ?? $catImages[strtolower($cat['name'])] ?? $catImages['default'];
+            $cimg = $catImages[$cat['name']] ?? $catImages[strtolower($cat['name'])] ?? $catImages['Default'];
         }
       ?>
       <a href="<?= $cityUrl ?>/search?cat=<?= $cat['id'] ?>" class="category-card">
