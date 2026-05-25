@@ -357,225 +357,9 @@ $flashI = Helper::getFlash('info');
     }
 
 
-    /* ═══════════════════════════════════════════════
-       MOBILE BOTTOM-SHEET CITY SELECTOR — PREMIUM UI
-       ═══════════════════════════════════════════════ */
-
-    /* Floating bottom-bar — hidden on desktop */
+    /* ── Mobile bottom bar & drawer: hidden on desktop ── */
     .mobile-bottom-bar { display: none; }
-
-    /* ── Backdrop overlay ── */
-    .city-sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 99990;
-      background: rgba(15, 10, 30, 0.55);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-    }
-    .city-sheet-backdrop.is-open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* ── Floating sheet wrapper ── */
-    .city-bottom-sheet {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      pointer-events: none;
-      padding-bottom: 18px;
-      padding-bottom: calc(18px + env(safe-area-inset-bottom));
-    }
-
-    /* ── Sheet panel ── */
-    .city-sheet-panel {
-      width: 91%;
-      max-width: 420px;
-      background: #ffffff;
-      border-radius: 30px;
-      box-shadow:
-        0 2px 0 rgba(255,255,255,0.9) inset,
-        0 30px 80px rgba(15, 5, 40, 0.38),
-        0 8px 24px rgba(124, 58, 237, 0.18),
-        0 0 0 1px rgba(124, 58, 237, 0.07);
-      transform: translateY(110%);
-      transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform;
-      pointer-events: auto;
-      overflow: hidden;
-    }
-    .city-bottom-sheet.is-open .city-sheet-panel {
-      transform: translateY(0);
-    }
-
-    /* ── Drag handle ── */
-    .city-sheet-handle {
-      width: 36px;
-      height: 4px;
-      background: #ddd8f0;
-      border-radius: 99px;
-      margin: 12px auto 0;
-    }
-
-    /* ── Header row ── */
-    .city-sheet-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px 14px;
-    }
-    .city-sheet-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.22rem;
-      color: #1a1028;
-      letter-spacing: -0.025em;
-    }
-    .city-sheet-close {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(124, 58, 237, 0.25);
-      background: rgba(124, 58, 237, 0.05);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.2s ease, transform 0.2s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .city-sheet-close:active {
-      transform: scale(0.88);
-      background: rgba(124, 58, 237, 0.12);
-    }
-
-    /* ── City card list ── */
-    .city-sheet-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 0 14px 18px;
-    }
-
-    /* ── Individual city card ── */
-    .city-sheet-card {
-      display: flex;
-      align-items: center;
-      padding: 13px 14px 13px 13px;
-      border-radius: 20px;
-      border: 1.5px solid rgba(226, 213, 240, 0.7);
-      background: #faf9ff;
-      text-decoration: none;
-      color: #1a1028;
-      transition:
-        transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1),
-        box-shadow 0.22s ease,
-        border-color 0.22s ease,
-        background 0.22s ease;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      overflow: hidden;
-      min-height: 68px;
-    }
-    .city-sheet-card:active {
-      transform: scale(0.966);
-      background: #f0ecff;
-    }
-
-    /* Ripple */
-    .city-sheet-card .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(124, 58, 237, 0.18);
-      transform: scale(0);
-      animation: rippleAnim 0.55s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    /* ── Selected card ── */
-    .city-sheet-card.active {
-      border-color: var(--primary);
-      background: rgba(124, 58, 237, 0.07);
-      box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.13),
-        0 6px 20px rgba(124, 58, 237, 0.16);
-    }
-
-    /* ── Card icon container ── */
-    .city-sheet-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 15px;
-      background: #fff;
-      box-shadow: 0 3px 12px rgba(124, 58, 237, 0.14);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      color: var(--primary);
-      margin-right: 14px;
-      flex-shrink: 0;
-      transition: background 0.22s ease, box-shadow 0.22s ease;
-    }
-    .city-sheet-card.active .city-sheet-icon {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.42);
-    }
-
-    /* ── Card text ── */
-    .city-sheet-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .city-sheet-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.97rem;
-      color: #1a1028;
-      letter-spacing: -0.01em;
-    }
-    .city-sheet-state {
-      font-size: 0.73rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    /* ── Right indicator ── */
-    .city-sheet-arrow {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      background: rgba(0,0,0,0.04);
-      margin-left: 8px;
-      flex-shrink: 0;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-    .city-sheet-card.active .city-sheet-arrow {
-      background: var(--primary);
-      color: #fff;
-    }
+    .cs-overlay, .cs-drawer { display: none; }
 
     /* ═══════════════════════════════════════
        MOBILE BOTTOM NAV BAR — PREMIUM REDESIGN
@@ -670,6 +454,93 @@ $flashI = Helper::getFlash('info');
       .site-header { justify-content: center; }
       .flash-area { right: 8px; left: 8px; max-width: 100%; }
       .site-footer-main { display: none !important; }
+
+      /* ── Simple city drawer ── */
+      .cs-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        background: rgba(15,10,30,0.4);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .cs-overlay.open { opacity: 1; pointer-events: auto; }
+
+      .cs-drawer {
+        display: block;
+        position: fixed;
+        bottom: calc(72px + env(safe-area-inset-bottom));
+        right: 12px;
+        width: 75%;
+        z-index: 9001;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(15,10,30,0.18), 0 2px 8px rgba(124,58,237,0.1);
+        transform: translateY(calc(100% + 80px));
+        transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+        will-change: transform;
+        overflow: hidden;
+      }
+      .cs-drawer.open { transform: translateY(0); }
+
+      .cs-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px 10px;
+        border-bottom: 1px solid #f0eef8;
+      }
+      .cs-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #1a1028;
+      }
+      .cs-close {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        background: #f5f4f8;
+        border: none;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.85rem;
+        color: #6b7280;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .cs-close:active { background: #ede9fe; }
+
+      .cs-list { padding: 8px 10px 12px; }
+      .cs-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 8px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #1a1028;
+        transition: background 0.15s;
+        -webkit-tap-highlight-color: transparent;
+        min-height: 48px;
+      }
+      .cs-item:active { background: #f5f3ff; }
+      .cs-item.active { background: #f0ecff; }
+      .cs-ico {
+        width: 34px; height: 34px;
+        border-radius: 9px;
+        background: #ede9fe;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.95rem;
+        color: var(--primary);
+        flex-shrink: 0;
+      }
+      .cs-item.active .cs-ico { background: var(--primary); color: #fff; }
+      .cs-info { flex: 1; }
+      .cs-name { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; }
+      .cs-state { font-size: 0.7rem; color: #9ca3af; }
+      .cs-check { font-size: 0.8rem; color: var(--primary); display: none; }
+      .cs-item.active .cs-check { display: block; }
     }
 
   </style>
@@ -735,6 +606,7 @@ $flashI = Helper::getFlash('info');
               class="bi bi-grid-1x2"></i> My Ads</a>
         <?php endif ?>
       <?php else: ?>
+        <a href="<?= $cityUrl ?>/login" class="btn-login">Login</a>
         <a href="<?= $cityUrl ?>/login" class="btn-post"><i class="bi bi-plus-lg"></i> Post Ad</a>
       <?php endif ?>
     </div>
@@ -760,68 +632,48 @@ $flashI = Helper::getFlash('info');
     </button>
   </nav>
 
-  <!-- ── City Selection Bottom Sheet ── -->
-  <div class="city-sheet-backdrop" id="citySheetBackdrop" onclick="closeCitySheet()"></div>
-  <div class="city-bottom-sheet" id="cityBottomSheet">
-    <div class="city-sheet-panel">
-      <div class="city-sheet-handle"></div>
-      <div class="city-sheet-header">
-        <span class="city-sheet-title">Select City</span>
-        <button class="city-sheet-close" onclick="closeCitySheet()" aria-label="Close">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-      <div class="city-sheet-list">
-        <a href="/biz/cities/kodaikanal" class="city-sheet-card <?= strpos($cityUrl, 'kodaikanal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Kodaikanal</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
-        <a href="/biz/cities/dindugal" class="city-sheet-card <?= strpos($cityUrl, 'dindugal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Dindigul</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
-        <a href="/biz/cities/bengaluru" class="city-sheet-card <?= strpos($cityUrl, 'bengaluru') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Bengaluru</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Karnataka</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
-      </div>
+  <!-- ── City drawer (mobile only) ── -->
+  <div class="cs-overlay" id="csOverlay" onclick="closeCitySheet()"></div>
+  <div class="cs-drawer" id="csDrawer">
+    <div class="cs-head">
+      <span class="cs-title"><i class="bi bi-geo-alt me-1"></i>Select City</span>
+      <button class="cs-close" onclick="closeCitySheet()"><i class="bi bi-x"></i></button>
+    </div>
+    <div class="cs-list">
+      <a href="/biz/cities/kodaikanal" class="cs-item <?= strpos($cityUrl,'kodaikanal')!==false?'active':'' ?>">
+        <div class="cs-ico"><i class="bi bi-tree"></i></div>
+        <div class="cs-info"><div class="cs-name">Kodaikanal</div><div class="cs-state">Tamil Nadu</div></div>
+        <i class="cs-check bi bi-check-lg"></i>
+      </a>
+      <a href="/biz/cities/dindugal" class="cs-item <?= strpos($cityUrl,'dindugal')!==false?'active':'' ?>">
+        <div class="cs-ico"><i class="bi bi-building"></i></div>
+        <div class="cs-info"><div class="cs-name">Dindigul</div><div class="cs-state">Tamil Nadu</div></div>
+        <i class="cs-check bi bi-check-lg"></i>
+      </a>
+      <a href="/biz/cities/chennai" class="cs-item <?= strpos($cityUrl,'chennai')!==false?'active':'' ?>">
+        <div class="cs-ico"><i class="bi bi-buildings"></i></div>
+        <div class="cs-info"><div class="cs-name">Chennai</div><div class="cs-state">Tamil Nadu</div></div>
+        <i class="cs-check bi bi-check-lg"></i>
+      </a>
     </div>
   </div>
 <script>
   function openCitySheet(e) {
     if (e) e.preventDefault();
-    document.getElementById('citySheetBackdrop').classList.add('is-open');
-    document.getElementById('cityBottomSheet').classList.add('is-open');
+    document.getElementById('csOverlay').classList.add('open');
+    document.getElementById('csDrawer').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
   function closeCitySheet() {
-    document.getElementById('citySheetBackdrop').classList.remove('is-open');
-    document.getElementById('cityBottomSheet').classList.remove('is-open');
+    document.getElementById('csOverlay').classList.remove('open');
+    document.getElementById('csDrawer').classList.remove('open');
     document.body.style.overflow = '';
   }
-  function sheetRipple(e) {
-    var card = e.currentTarget;
-    var r = document.createElement('span');
-    var rect = card.getBoundingClientRect();
-    var size = Math.max(rect.width, rect.height);
-    r.className = 'ripple';
-    r.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size/2) + 'px;top:' + (e.clientY - rect.top - size/2) + 'px';
-    card.appendChild(r);
-    setTimeout(function() { r.remove(); }, 600);
-  }
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeCitySheet();
-  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCitySheet(); });
+  // swipe down to close
+  (function(){
+    var d=document.getElementById('csDrawer'),ty=0;
+    d.addEventListener('touchstart',function(e){ty=e.touches[0].clientY},{passive:true});
+    d.addEventListener('touchend',function(e){if(e.changedTouches[0].clientY-ty>50)closeCitySheet()},{passive:true});
+  })();
 </script>
