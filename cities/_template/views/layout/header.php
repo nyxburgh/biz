@@ -752,7 +752,7 @@ $flashI = Helper::getFlash('info');
         <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
       </a>
     <?php else: ?>
-      <a href="<?= htmlspecialchars($cityUrl) ?>/post-ad" class="mb-btn <?= ($activePage ?? '') === 'post-ad' ? 'active' : '' ?>">
+      <a href="<?= htmlspecialchars($cityUrl) ?>/login" class="mb-btn <?= ($activePage ?? '') === 'post-ad' ? 'active' : '' ?>">
         <i class="bi bi-plus-circle-fill"></i><span>Post Ad</span>
       </a>
     <?php endif ?>
