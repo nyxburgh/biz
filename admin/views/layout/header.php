@@ -196,6 +196,16 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:#f4f3fb;color:#1e1245
     </a>
     <?php endif ?>
 
+    <div class="sect">Notifications</div>
+    <a href="<?= BASE_URL ?>/admin/notifications"
+       <?= str_contains($_SERVER['REQUEST_URI'], '/notifications') ? 'class="active"' : '' ?>>
+      <i class="bi bi-bell-fill"></i> Push Notifications
+      <?php try {
+        $fcmCount = (int)(Database::fetchOne("SELECT COUNT(*) AS c FROM fcm_tokens")['c'] ?? 0);
+        if ($fcmCount > 0): ?>
+        <span class="badge ms-auto" style="background:#a78bfa;font-size:.6rem"><?= $fcmCount ?></span>
+      <?php endif; } catch (Exception $e) {} ?>
+    </a>
     <div class="sect">Analytics</div>
     <a href="<?= BASE_URL ?>/admin/reports"
        <?= str_contains($_SERVER['REQUEST_URI'], '/reports') ? 'class="active"' : '' ?>>

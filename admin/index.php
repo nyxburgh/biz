@@ -3,6 +3,9 @@
 // BizGuide — Admin Entry Point & Route Definitions
 // URL: /admin/
 // ============================================================
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 define('ROOT',      dirname(__DIR__));
 define('BASE_PATH', ROOT);
@@ -102,6 +105,8 @@ $router->post('/admin/admins/delete',         'AdminController', 'delete');
 
 // ── Reports ──────────────────────────────────────────────────
 $router->get('/admin/reports', 'ReportController', 'index');
+$router->get( '/admin/notifications',      'NotificationController', 'index');
+$router->post('/admin/notifications/send', 'NotificationController', 'send');
 
 // ── Dispatch ─────────────────────────────────────────────────
 $router->dispatch(ROOT . '/admin/controllers');
