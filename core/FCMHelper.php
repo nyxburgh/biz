@@ -132,6 +132,7 @@ class FCMHelper
         }
 
         foreach ($tokens as $token) {
+            $clickLink = isset($data['click_action']) ? $data['click_action'] : BASE_URL;
             $message = [
                 'message' => [
                     'token'        => $token,
@@ -139,14 +140,23 @@ class FCMHelper
                         'title' => $title,
                         'body'  => $body,
                     ],
+                    'android' => [
+                        'notification' => [
+                            'title'        => $title,
+                            'body'         => $body,
+                            'click_action' => $clickLink,
+                            'icon'         => 'ic_notification',
+                        ],
+                    ],
                     'webpush' => [
                         'notification' => [
                             'title' => $title,
                             'body'  => $body,
                             'icon'  => BASE_URL . '/assets/icons/icon-192.png',
+                            'badge' => BASE_URL . '/assets/icons/icon-96.png',
                         ],
                         'fcm_options' => [
-                            'link' => isset($data['click_action']) ? $data['click_action'] : BASE_URL,
+                            'link' => $clickLink,
                         ],
                     ],
                 ],
@@ -184,10 +194,18 @@ class FCMHelper
                 if (count($result['errors']) < 5) {
                     $result['errors'][] = "HTTP {$httpCode}: " . self::summarizeFcmError($errorMessage);
                 }
-                // Remove invalid tokens from DB
-                if ($httpCode === 404 || $httpCode === 400) {
+                // Remove invalid/unregistered tokens from DB
+                if ($httpCode === 404 || $httpCode === 410) {
                     self::removeInvalidToken($token);
                     $result['removed']++;
+                } elseif ($httpCode === 400) {
+                    // Only remove on 400 if FCM reports INVALID_ARGUMENT for the token itself
+                    $decoded400 = json_decode($resp, true);
+                    $fcmStatus = isset($decoded400['error']['status']) ? $decoded400['error']['status'] : '';
+                    if ($fcmStatus === 'INVALID_ARGUMENT') {
+                        self::removeInvalidToken($token);
+                        $result['removed']++;
+                    }
                 }
             } else {
                 $result['sent']++;

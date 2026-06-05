@@ -58,6 +58,11 @@ $router->post("$base/upgrade",                 'UserController',    'submitUpgra
 $router->post("$base/review",                  'UserController',    'submitReview');
 $router->post("$base/suggest-keyword",         'UserController',    'suggestKeyword');
 
+// ── FCM push notifications ────────────────────────────────────
+$router->get( "$base/firebase-messaging-sw.js",  'FCMController', 'sw');
+$router->get( "$base/fcm-sw.js",                 'FCMController', 'sw');
+$router->post("$base/fcm-token",                 'FCMController', 'saveToken');
+
 // ── Business listing page — must be LAST (catch-all slug) ─────
 $router->get("$base/{slug}",                   'ListingController', 'show');
 
