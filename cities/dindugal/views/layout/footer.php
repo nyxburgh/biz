@@ -21,9 +21,9 @@
         <h4 style="font-size:0.8rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px">Plans</h4>
         <div style="display:flex;flex-direction:column;gap:6px;font-size:0.8rem">
           <a href="<?= $cityUrl ?>/post-ad" style="color:rgba(255,255,255,0.55)">Free Listing</a>
-          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Basic â¹299</a>
-          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Premium â¹599</a>
-          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Pro â¹999</a>
+          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Basic â‚¹299</a>
+          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Premium â‚¹599</a>
+          <a href="<?= $cityUrl ?>/upgrade" style="color:rgba(255,255,255,0.55)">Pro â‚¹999</a>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
   var VAPID_KEY = "BHBKh3Ro89NFSZ1LM9hP1gMiAkLBuEzJyJY3mSB3ZgVhsGwBWdGQkqFyqtLxbC0GQzqcvqLlTVolQDXbCDV40qM";
   // Use CITY_URL (PHP-injected) so SW and token endpoint are always same-origin as the page
   var SW_URL             = "<?= rtrim(defined('CITY_URL') ? CITY_URL : BASE_URL, '/') ?>/firebase-messaging-sw.js";
-  var FCM_TOKEN_ENDPOINT = "<?= rtrim(defined('CITY_URL') ? CITY_URL : BASE_URL, '/') ?>/fcm-token";
+  var FCM_TOKEN_ENDPOINT = "<?= rtrim(BASE_URL, '/') ?>/fcm-token.php";
   var ICON_URL           = "<?= rtrim(BASE_URL, '/') ?>/assets/icons/icon-192.png";
   var BADGE_URL          = "<?= rtrim(BASE_URL, '/') ?>/assets/icons/icon-96.png";
   var CITY_SLUG          = "<?= defined('CITY_SLUG') ? htmlspecialchars(CITY_SLUG) : '' ?>";
@@ -92,19 +92,34 @@
     }).catch(function(e) { console.warn("FCM token save failed:", e); });
   }
 
-  function requestAndGetToken(swReg) {
+  function requestAndGetToken(retried) {
     if (Notification.permission !== "granted") return;
-    messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg })
-      .then(function(token) {
+    navigator.serviceWorker.ready.then(function(swReg) {
+      return messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg }).then(function(token) {
         if (token) { saveToken(token); }
-        else { showMobilePrompt(swReg); }
-      })
-      .catch(function(e) { console.warn("FCM getToken:", e); });
+      }).catch(function(e) {
+        console.warn("FCM getToken:", e);
+        var msg = e.message || "";
+        var isStorageError = e.name === "VersionError" || e.name === "AbortError" || msg.includes("VersionError") || msg.includes("storage error") || msg.includes("push service error");
+        if (!retried && isStorageError) {
+          try {
+            if (window.indexedDB) {
+              window.indexedDB.deleteDatabase("firebase-messaging-database");
+              window.indexedDB.deleteDatabase("fcm_token_details_db");
+            }
+            if (msg.includes("registration") || msg.includes("push service")) {
+              swReg.unregister().then(function() { console.log("FCM SW unregistered for reset"); });
+            }
+            setTimeout(function() { requestAndGetToken(true); }, 800);
+          } catch(err) { console.error("FCM cleanup failed:", err); }
+        }
+      });
+    });
   }
 
-  function requestPermission(swReg) {
+  function requestPermission() {
     Notification.requestPermission().then(function(perm) {
-      if (perm === "granted") requestAndGetToken(swReg);
+      if (perm === "granted") requestAndGetToken();
       var prompt = document.getElementById(PROMPT_ID);
       if (prompt) prompt.remove();
     });
@@ -114,7 +129,7 @@
     return window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
   }
 
-  function showMobilePrompt(swReg) {
+  function showMobilePrompt() {
     if (Notification.permission !== "default" || document.getElementById(PROMPT_ID)) return;
     if (!isLikelyMobile()) return;
 
@@ -124,30 +139,28 @@
     btn.textContent = "Enable alerts";
     btn.setAttribute("aria-label", "Enable BizGuide alerts");
     btn.style.cssText = "position:fixed;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:10000;border:0;border-radius:999px;background:#2d1b69;color:#fff;font:700 14px/1.1 system-ui,-apple-system,Segoe UI,sans-serif;padding:13px 16px;box-shadow:0 8px 24px rgba(45,27,105,.28);touch-action:manipulation";
-    btn.addEventListener("click", function() { requestPermission(swReg); });
+    btn.addEventListener("click", function() { requestPermission(); });
     document.body.appendChild(btn);
   }
 
-  function bindResumeChecks(swReg) {
-    window.addEventListener("focus", function() { requestAndGetToken(swReg); });
+  function bindResumeChecks() {
+    window.addEventListener("focus", function() { requestAndGetToken(); });
     document.addEventListener("visibilitychange", function() {
-      if (!document.hidden) requestAndGetToken(swReg);
+      if (!document.hidden) requestAndGetToken();
     });
   }
 
   function initFCM() {
-    // Derive scope from SW URL so it always matches the script's allowed path.
-    // FCMController serves the SW with Service-Worker-Allowed: / so scope "/" works
-    // on subdomains; for subfolder installs the SW path is already under CITY_URL.
-    var swScope = SW_URL.substring(0, SW_URL.lastIndexOf('/') + 1);
-    navigator.serviceWorker.register(SW_URL, { scope: swScope })
-      .then(function(swReg) {
-        bindResumeChecks(swReg);
+    // Register without explicit scope so the browser uses the SW script directory as scope.
+    // This avoids requiring Service-Worker-Allowed headers and works on all servers (Nginx/Apache).
+    navigator.serviceWorker.register(SW_URL)
+      .then(function() {
+        bindResumeChecks();
         if (Notification.permission === "granted") {
-          requestAndGetToken(swReg);
+          requestAndGetToken();
         } else if (Notification.permission !== "denied") {
-          showMobilePrompt(swReg);
-          if (!isLikelyMobile()) requestPermission(swReg);
+          showMobilePrompt();
+          if (!isLikelyMobile()) requestPermission();
         }
       }).catch(function(e) { console.warn("FCM SW registration error:", e); });
   }

@@ -2,6 +2,12 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /biz/
 
+# ── Service Worker: no-cache headers so browsers pick up SW updates promptly
+<FilesMatch "firebase-messaging-sw\.js$">
+  Header set Cache-Control "no-store, no-cache, must-revalidate"
+  Header set Pragma "no-cache"
+</FilesMatch>
+
 # ── Admin
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^admin(/.*)?$ admin/index.php [QSA,L]
