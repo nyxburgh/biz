@@ -23,6 +23,20 @@ if ($isOwner) {
 $flashS = Helper::getFlash('success');
 $flashE = Helper::getFlash('error');
 $flashI = Helper::getFlash('info');
+$mapCities = Database::fetchAll(
+  "SELECT c.id, c.name, c.slug, COUNT(bl.id) AS ad_count
+   FROM cities c
+   INNER JOIN business_listings bl ON bl.city_id = c.id AND bl.status = 'approved'
+   WHERE c.status = 'active'
+   GROUP BY c.id, c.name, c.slug
+   HAVING ad_count > 0
+   ORDER BY c.sort_order, c.name"
+);
+$cityIcons = [
+  'kodaikanal' => 'bi-tree',
+  'dindugal' => 'bi-building',
+  'chennai' => 'bi-buildings',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -640,21 +654,32 @@ $flashI = Helper::getFlash('info');
       <button class="cs-close" onclick="closeCitySheet()"><i class="bi bi-x"></i></button>
     </div>
     <div class="cs-list">
-      <a href="/biz/cities/kodaikanal" class="cs-item <?= strpos($cityUrl,'kodaikanal')!==false?'active':'' ?>">
-        <div class="cs-ico"><i class="bi bi-tree"></i></div>
-        <div class="cs-info"><div class="cs-name">Kodaikanal</div><div class="cs-state">Tamil Nadu</div></div>
-        <i class="cs-check bi bi-check-lg"></i>
-      </a>
-      <a href="/biz/cities/dindugal" class="cs-item <?= strpos($cityUrl,'dindugal')!==false?'active':'' ?>">
-        <div class="cs-ico"><i class="bi bi-building"></i></div>
-        <div class="cs-info"><div class="cs-name">Dindigul</div><div class="cs-state">Tamil Nadu</div></div>
-        <i class="cs-check bi bi-check-lg"></i>
-      </a>
-      <a href="/biz/cities/chennai" class="cs-item <?= strpos($cityUrl,'chennai')!==false?'active':'' ?>">
-        <div class="cs-ico"><i class="bi bi-buildings"></i></div>
-        <div class="cs-info"><div class="cs-name">Chennai</div><div class="cs-state">Tamil Nadu</div></div>
-        <i class="cs-check bi bi-check-lg"></i>
-      </a>
+      <?php if ($mapCities): ?>
+        <?php foreach ($mapCities as $mapCity): ?>
+          <?php
+            $mapSlug = (string) $mapCity['slug'];
+            $mapIcon = $cityIcons[$mapSlug] ?? 'bi-geo-alt-fill';
+            $mapUrl = rtrim(BASE_URL, '/') . '/cities/' . rawurlencode($mapSlug);
+            $isActiveCity = defined('CITY_SLUG') && CITY_SLUG === $mapSlug;
+          ?>
+          <a href="<?= htmlspecialchars($mapUrl) ?>" class="cs-item <?= $isActiveCity ? 'active' : '' ?>">
+            <div class="cs-ico"><i class="bi <?= htmlspecialchars($mapIcon) ?>"></i></div>
+            <div class="cs-info">
+              <div class="cs-name"><?= htmlspecialchars($mapCity['name']) ?></div>
+              <div class="cs-state">Tamil Nadu</div>
+            </div>
+            <i class="cs-check bi bi-check-lg"></i>
+          </a>
+        <?php endforeach ?>
+      <?php else: ?>
+        <div class="cs-item" style="cursor:default">
+          <div class="cs-ico"><i class="bi bi-info-circle"></i></div>
+          <div class="cs-info">
+            <div class="cs-name">No cities yet</div>
+            <div class="cs-state">Approved ads will appear here</div>
+          </div>
+        </div>
+      <?php endif ?>
     </div>
   </div>
 <script>

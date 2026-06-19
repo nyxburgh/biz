@@ -23,6 +23,15 @@ if ($isOwner) {
 $flashS = Helper::getFlash('success');
 $flashE = Helper::getFlash('error');
 $flashI = Helper::getFlash('info');
+$mapCities = Database::fetchAll(
+  "SELECT c.id, c.name, c.slug, COUNT(bl.id) AS ad_count
+   FROM cities c
+   INNER JOIN business_listings bl ON bl.city_id = c.id AND bl.status = 'approved'
+   WHERE c.status = 'active'
+   GROUP BY c.id, c.name, c.slug
+   HAVING ad_count > 0
+   ORDER BY c.sort_order, c.name"
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -773,30 +782,21 @@ $flashI = Helper::getFlash('info');
         </button>
       </div>
       <div class="city-sheet-list">
-        <a href="/biz/cities/kodaikanal" class="city-sheet-card <?= strpos($cityUrl, 'kodaikanal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Kodaikanal</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
-        <a href="/biz/cities/dindugal" class="city-sheet-card <?= strpos($cityUrl, 'dindugal') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Dindigul</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
-        <a href="/biz/cities/bengaluru" class="city-sheet-card <?= strpos($cityUrl, 'bengaluru') !== false ? 'active' : '' ?>" onclick="sheetRipple(event)">
-          <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
-          <div class="city-sheet-info">
-            <span class="city-sheet-name">Bengaluru</span>
-            <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Karnataka</span>
-          </div>
-          <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
-        </a>
+        <?php foreach ($mapCities as $mapCity): ?>
+          <?php
+            $mapSlug = (string) $mapCity['slug'];
+            $mapUrl = rtrim(BASE_URL, '/') . '/cities/' . rawurlencode($mapSlug);
+            $isActiveCity = defined('CITY_SLUG') && CITY_SLUG === $mapSlug;
+          ?>
+          <a href="<?= htmlspecialchars($mapUrl) ?>" class="city-sheet-card <?= $isActiveCity ? 'active' : '' ?>" onclick="sheetRipple(event)">
+            <div class="city-sheet-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="city-sheet-info">
+              <span class="city-sheet-name"><?= htmlspecialchars($mapCity['name']) ?></span>
+              <span class="city-sheet-state"><i class="bi bi-pin-map-fill"></i> Tamil Nadu</span>
+            </div>
+            <div class="city-sheet-arrow"><i class="bi bi-chevron-right"></i></div>
+          </a>
+        <?php endforeach ?>
       </div>
     </div>
   </div>
